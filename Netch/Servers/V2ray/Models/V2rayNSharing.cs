@@ -13,7 +13,7 @@
         /// <summary>
         ///     额外 ID
         /// </summary>
-        public int aid { get; set; };
+        public int aid { get; set; }
 
         /// <summary>
         ///     伪装域名（HTTP，WS）
@@ -38,7 +38,7 @@
         /// <summary>
         ///     端口
         /// </summary>
-        public int port { get; set; };
+        public int port { get; set; }
 
         /// <summary>
         ///     备注
