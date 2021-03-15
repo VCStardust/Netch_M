@@ -46,9 +46,9 @@ namespace Netch.Servers.VMess
                         v = "2",
                         ps = server.Remark,
                         add = server.Hostname,
-                        port = server.Port.ToString(),
+                        port = server.Port,
                         id = server.UserID,
-                        aid = server.AlterID.ToString(),
+                        aid = server.AlterID,
                         net = server.TransferProtocol,
                         type = server.FakeType,
                         host = server.Host,
@@ -89,9 +89,9 @@ namespace Netch.Servers.VMess
 
             data.Remark = vmess.ps;
             data.Hostname = vmess.add;
-            data.Port = ushort.Parse(vmess.port);
+            data.Port = (ushort)(vmess.port);
             data.UserID = vmess.id;
-            data.AlterID = int.Parse(vmess.aid);
+            data.AlterID = vmess.aid;
             data.TransferProtocol = vmess.net;
             data.FakeType = vmess.type;
 
