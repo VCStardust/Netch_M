@@ -69,19 +69,19 @@ namespace nfapinet
         public ushort ip_family;  // AF_INET for IPv4 and AF_INET6 for IPv6
 
         // Local IP (or network if localIpAddressMask is not zero)
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
         public byte[] localIpAddress;
 
         // Local IP mask
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
         public byte[] localIpAddressMask;
 
         // Remote IP (or network if remoteIpAddressMask is not zero)
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
         public byte[] remoteIpAddress;
 
         // Remote IP mask
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
         public byte[] remoteIpAddressMask;
 
         public UInt32 filteringFlag; // See NF_FILTERING_FLAG
@@ -101,19 +101,19 @@ namespace nfapinet
         public ushort ip_family;  // AF_INET for IPv4 and AF_INET6 for IPv6
 
         // Local IP (or network if localIpAddressMask is not zero)
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
         public byte[] localIpAddress;
 
         // Local IP mask
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
         public byte[] localIpAddressMask;
 
         // Remote IP (or network if remoteIpAddressMask is not zero)
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
         public byte[] remoteIpAddress;
 
         // Remote IP mask
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
         public byte[] remoteIpAddressMask;
 
         public UInt32 filteringFlag; // See NF_FILTERING_FLAG
@@ -135,11 +135,11 @@ namespace nfapinet
         public ushort ip_family;     // AF_INET for IPv4 and AF_INET6 for IPv6
 
         // Local address as sockaddr_in for IPv4 and sockaddr_in6 for IPv6
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_ADDRESS_LENGTH)]
         public byte[] localAddress;
 
         // Remote address as sockaddr_in for IPv4 and sockaddr_in6 for IPv6
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_ADDRESS_LENGTH)]
         public byte[] remoteAddress;
     };
 
@@ -153,7 +153,7 @@ namespace nfapinet
         public ushort ip_family; // AF_INET for IPv4 and AF_INET6 for IPv6
 
         // Local address as sockaddr_in for IPv4 and sockaddr_in6 for IPv6
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_ADDRESS_LENGTH)]
         public byte[] localAddress;
     };
 
@@ -180,11 +180,11 @@ namespace nfapinet
         public ushort ip_family;     // AF_INET for IPv4 and AF_INET6 for IPv6
 
         // Local address as sockaddr_in for IPv4 and sockaddr_in6 for IPv6
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_ADDRESS_LENGTH)]
         public byte[] localAddress;
 
         // Remote address as sockaddr_in for IPv4 and sockaddr_in6 for IPv6
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_ADDRESS_LENGTH)]
         public byte[] remoteAddress;
     };
 
@@ -257,15 +257,15 @@ namespace nfapinet
         public ushort ip_family;
 
         // Local IP (or network if localIpAddressMask is not zero)
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
         public byte[] localIpAddress;
 
         // Local IP mask
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
         public byte[] localIpAddressMask;
 
         // Redirect bind request to this IP 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int) NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
         public byte[] newLocalIpAddress;
 
         // Redirect bind request to this port, if it is not zero
@@ -432,13 +432,13 @@ namespace nfapinet
         {
             if (options.ToInt64() != 0)
             {
-                NF_UDP_OPTIONS optionsCopy = (NF_UDP_OPTIONS) Marshal.PtrToStructure((IntPtr) options, typeof(NF_UDP_OPTIONS));
+                NF_UDP_OPTIONS optionsCopy = (NF_UDP_OPTIONS)Marshal.PtrToStructure((IntPtr)options, typeof(NF_UDP_OPTIONS));
                 int optionsLen = 8 + optionsCopy.optionsLength;
                 m_pEventHandler.udpReceive(id, remoteAddress, buf, len, options, optionsLen);
             }
             else
             {
-                m_pEventHandler.udpReceive(id, remoteAddress, buf, len, (IntPtr) null, 0);
+                m_pEventHandler.udpReceive(id, remoteAddress, buf, len, (IntPtr)null, 0);
             }
         }
 
@@ -446,13 +446,13 @@ namespace nfapinet
         {
             if (options.ToInt64() != 0)
             {
-                NF_UDP_OPTIONS optionsCopy = (NF_UDP_OPTIONS) Marshal.PtrToStructure((IntPtr) options, typeof(NF_UDP_OPTIONS));
+                NF_UDP_OPTIONS optionsCopy = (NF_UDP_OPTIONS)Marshal.PtrToStructure((IntPtr)options, typeof(NF_UDP_OPTIONS));
                 int optionsLen = 8 + optionsCopy.optionsLength;
                 m_pEventHandler.udpSend(id, remoteAddress, buf, len, options, optionsLen);
             }
             else
             {
-                m_pEventHandler.udpSend(id, remoteAddress, buf, len, (IntPtr) null, 0);
+                m_pEventHandler.udpSend(id, remoteAddress, buf, len, (IntPtr)null, 0);
             }
         }
 
@@ -522,9 +522,9 @@ namespace nfapinet
     // Managed wrapper over API 
     public class NFAPI
     {
-        private static IntPtr m_pEventHandlerRaw = (IntPtr) null;
+        private static IntPtr m_pEventHandlerRaw = (IntPtr)null;
         private static NF_EventHandlerInternal m_pEventHandler;
-        private static IntPtr m_pIPEventHandlerRaw = (IntPtr) null;
+        private static IntPtr m_pIPEventHandlerRaw = (IntPtr)null;
         private static NF_IPEventHandlerInternal m_pIPEventHandler;
 
         /**
@@ -690,13 +690,13 @@ namespace nfapinet
         {
             if (buf == null)
             {
-                buf = new byte[(int) NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH];
+                buf = new byte[(int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH];
             }
             else
             {
-                if (buf.Length < (int) NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)
+                if (buf.Length < (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)
                 {
-                    Array.Resize(ref buf, (int) NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH);
+                    Array.Resize(ref buf, (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH);
                 }
             }
         }
@@ -875,9 +875,9 @@ namespace nfapinet
 
             fixed (char* p = buf)
             {
-                if (nf_getProcessNameFromKernel(processId, (IntPtr) p, buf.Length))
+                if (nf_getProcessNameFromKernel(processId, (IntPtr)p, buf.Length))
                 {
-                    return Marshal.PtrToStringUni((IntPtr) p);
+                    return Marshal.PtrToStringUni((IntPtr)p);
                 }
             }
 
@@ -893,9 +893,9 @@ namespace nfapinet
 
             fixed (char* p = buf)
             {
-                if (nf_getProcessNameW(processId, (IntPtr) p, buf.Length))
+                if (nf_getProcessNameW(processId, (IntPtr)p, buf.Length))
                 {
-                    return Marshal.PtrToStringUni((IntPtr) p);
+                    return Marshal.PtrToStringUni((IntPtr)p);
                 }
             }
 

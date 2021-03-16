@@ -1,7 +1,7 @@
-﻿using System.IO;
-using System.Text;
-using Netch.Models;
+﻿using Netch.Models;
 using Netch.Servers.Socks5;
+using System.IO;
+using System.Text;
 
 namespace Netch.Controllers
 {

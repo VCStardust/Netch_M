@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using Netch.Controllers;
+using Netch.Utils;
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using Microsoft.Win32;
-using Netch.Controllers;
-using Netch.Utils;
 using Vanara.PInvoke;
 
 namespace Netch.Models
@@ -23,7 +23,7 @@ namespace Netch.Models
                 .First(ni => ni.Supports(NetworkInterfaceComponent.IPv4) &&
                              ni.GetIPProperties().GetIPv4Properties().Index == pRoute.dwForwardIfIndex);
 
-            Index = (int) pRoute.dwForwardIfIndex;
+            Index = (int)pRoute.dwForwardIfIndex;
             Gateway = new IPAddress(pRoute.dwForwardNextHop.S_un_b);
             _parametersRegistry =
                 Registry.LocalMachine.OpenSubKey($@"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\{NetworkInterface.Id}", true)!;
@@ -54,7 +54,7 @@ namespace Netch.Models
             {
                 try
                 {
-                    return (string) _parametersRegistry.GetValue("NameServer");
+                    return (string)_parametersRegistry.GetValue("NameServer");
                 }
                 catch
                 {

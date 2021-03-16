@@ -1,13 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Text.Encodings.Web;
-using System.Text.Json;
 using Netch.Controllers;
 using Netch.Models;
 using Netch.Servers.V2ray;
 using Netch.Servers.V2ray.Models;
 using Netch.Servers.VMess.Form;
 using Netch.Utils;
+using System;
+using System.Collections.Generic;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Netch.Servers.VMess
 {
@@ -21,13 +22,13 @@ namespace Netch.Servers.VMess
 
         public string ShortName { get; } = "V2";
 
-        public string[] UriScheme { get; } = {"vmess"};
+        public string[] UriScheme { get; } = { "vmess" };
 
         public Type ServerType { get; } = typeof(VMess);
 
         public void Edit(Server s)
         {
-            new VMessForm((VMess) s).ShowDialog();
+            new VMessForm((VMess)s).ShowDialog();
         }
 
         public void Create()
@@ -39,22 +40,22 @@ namespace Netch.Servers.VMess
         {
             if (Global.Settings.V2RayConfig.V2rayNShareLink)
             {
-                var server = (VMess) s;
+                var server = (VMess)s;
 
                 var vmessJson = JsonSerializer.Serialize(new V2rayNSharing
-                    {
-                        v = "2",
-                        ps = server.Remark,
-                        add = server.Hostname,
-                        port = server.Port,
-                        id = server.UserID,
-                        aid = server.AlterID,
-                        net = server.TransferProtocol,
-                        type = server.FakeType,
-                        host = server.Host,
-                        path = server.Path,
-                        tls = server.TLSSecureType
-                    },
+                {
+                    v = 2,
+                    ps = server.Remark,
+                    add = server.Hostname,
+                    port = server.Port,
+                    id = server.UserID,
+                    aid = server.AlterID,
+                    net = server.TransferProtocol,
+                    type = server.FakeType,
+                    host = server.Host,
+                    path = server.Path,
+                    tls = server.TLSSecureType
+                },
                     new JsonSerializerOptions
                     {
                         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
@@ -85,11 +86,12 @@ namespace Netch.Servers.VMess
                 return V2rayUtils.ParseVUri(text);
             }
 
-            V2rayNSharing vmess = JsonSerializer.Deserialize<V2rayNSharing>(s)!;
+            V2rayNSharing vmess = JsonSerializer.Deserialize<V2rayNSharing>(s,
+                new JsonSerializerOptions { NumberHandling = JsonNumberHandling.WriteAsString | JsonNumberHandling.AllowReadingFromString })!;
 
             data.Remark = vmess.ps;
             data.Hostname = vmess.add;
-            data.Port = (ushort)(vmess.port);
+            data.Port = vmess.port;
             data.UserID = vmess.id;
             data.AlterID = vmess.aid;
             data.TransferProtocol = vmess.net;
@@ -112,7 +114,7 @@ namespace Netch.Servers.VMess
             data.TLSSecureType = vmess.tls;
             data.EncryptMethod = "auto"; // V2Ray 加密方式不包括在链接中，主动添加一个
 
-            return new[] {data};
+            return new[] { data };
         }
 
         public bool CheckServer(Server s)

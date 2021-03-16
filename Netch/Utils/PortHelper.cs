@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Netch.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
-using Netch.Models;
 
 namespace Netch.Utils
 {
@@ -131,7 +131,7 @@ namespace Netch.Utils
             var random = new Random();
             for (ushort i = 0; i < 55535; i++)
             {
-                var p = (ushort) random.Next(10000, 65535);
+                var p = (ushort)random.Next(10000, 65535);
                 try
                 {
                     CheckPort(p, portType);

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Netch.Controllers;
+using System;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Netch.Controllers;
 
 namespace Netch.Utils.HttpProxyHandler
 {
@@ -14,7 +14,7 @@ namespace Netch.Utils.HttpProxyHandler
     {
         private static HttpWebServer? _httpWebServer;
         private static string? _pacContent;
-        public static readonly string PacPrefix= $"http://127.0.0.1:{Global.Settings.Pac_Port}/pac/";
+        public static readonly string PacPrefix = $"http://127.0.0.1:{Global.Settings.Pac_Port}/pac/";
 
         public static string InitPACServer()
         {

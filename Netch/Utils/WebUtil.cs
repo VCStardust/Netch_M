@@ -20,7 +20,7 @@ namespace Netch.Utils
 
         public static HttpWebRequest CreateRequest(string url, int? timeout = null, string? userAgent = null)
         {
-            var req = (HttpWebRequest) WebRequest.Create(url);
+            var req = (HttpWebRequest)WebRequest.Create(url);
             req.UserAgent = string.IsNullOrWhiteSpace(userAgent) ? DefaultUserAgent : userAgent;
             req.Accept = "*/*";
             req.KeepAlive = true;
@@ -34,7 +34,7 @@ namespace Netch.Utils
         {
             var testSocket = new Socket(remoteIPEndPoint.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
             testSocket.Connect(remoteIPEndPoint);
-            return (IPEndPoint) testSocket.LocalEndPoint;
+            return (IPEndPoint)testSocket.LocalEndPoint;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Netch.Utils
         /// <returns></returns>
         public static async Task<byte[]> DownloadBytesAsync(HttpWebRequest req)
         {
-            using var webResponse = (HttpWebResponse) await req.GetResponseAsync();
+            using var webResponse = (HttpWebResponse)await req.GetResponseAsync();
             using var memoryStream = new MemoryStream();
             using var input = webResponse.GetResponseStream();
 
@@ -61,7 +61,7 @@ namespace Netch.Utils
         /// <returns></returns>
         public static string DownloadString(HttpWebRequest req, out HttpWebResponse rep, string encoding = "UTF-8")
         {
-            rep = (HttpWebResponse) req.GetResponse();
+            rep = (HttpWebResponse)req.GetResponse();
             using var responseStream = rep.GetResponseStream();
             using var streamReader = new StreamReader(responseStream, Encoding.GetEncoding(encoding));
 
@@ -91,7 +91,7 @@ namespace Netch.Utils
         /// <returns></returns>
         public static async Task DownloadFileAsync(HttpWebRequest req, string fileFullPath)
         {
-            using var webResponse = (HttpWebResponse) await req.GetResponseAsync();
+            using var webResponse = (HttpWebResponse)await req.GetResponseAsync();
             using var input = webResponse.GetResponseStream();
             using var fileStream = File.OpenWrite(fileFullPath);
 

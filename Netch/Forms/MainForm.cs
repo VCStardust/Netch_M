@@ -1,3 +1,9 @@
+using Microsoft.Win32;
+using Netch.Controllers;
+using Netch.Forms.Mode;
+using Netch.Models;
+using Netch.Properties;
+using Netch.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,12 +14,6 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Win32;
-using Netch.Controllers;
-using Netch.Forms.Mode;
-using Netch.Models;
-using Netch.Properties;
-using Netch.Utils;
 
 namespace Netch.Forms
 {
@@ -42,8 +42,8 @@ namespace Netch.Forms
 
             #region i18N Translations
 
-            _mainFormText.Add(UninstallServiceToolStripMenuItem.Name, new[] {"Uninstall {0}", "NF Service"});
-            _mainFormText.Add(UninstallTapDriverToolStripMenuItem.Name, new[] {"Uninstall {0}", "TUN/TAP driver"});
+            _mainFormText.Add(UninstallServiceToolStripMenuItem.Name, new[] { "Uninstall {0}", "NF Service" });
+            _mainFormText.Add(UninstallTapDriverToolStripMenuItem.Name, new[] { "Uninstall {0}", "TUN/TAP driver" });
 
             #endregion
 
@@ -55,10 +55,10 @@ namespace Netch.Forms
                 switch (args.KeyData)
                 {
                     case Keys.Escape:
-                    {
-                        SelectLastMode();
-                        return;
-                    }
+                        {
+                            SelectLastMode();
+                            return;
+                        }
                 }
             };
 
@@ -77,7 +77,7 @@ namespace Netch.Forms
                     Text = i18N.TranslateFormat("Add [{0}] Server", fullName)
                 };
 
-                _mainFormText.Add(control.Name, new[] {"Add [{0}] Server", fullName});
+                _mainFormText.Add(control.Name, new[] { "Add [{0}] Server", fullName });
                 control.Click += AddServerToolStripMenuItem_Click;
                 ServerToolStripMenuItem.DropDownItems.Add(control);
             }
@@ -199,7 +199,7 @@ namespace Netch.Forms
                         return string.Empty;
 
                     if (value is object[] values)
-                        return i18N.TranslateFormat((string) values.First(), values.Skip(1).ToArray());
+                        return i18N.TranslateFormat((string)values.First(), values.Skip(1).ToArray());
 
                     return i18N.Translate(value);
                 }
@@ -239,7 +239,7 @@ namespace Netch.Forms
 
         private void AddServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var s = ((ToolStripMenuItem) sender).Text;
+            var s = ((ToolStripMenuItem)sender).Text;
 
             var start = s.IndexOf("[", StringComparison.Ordinal) + 1;
             var end = s.IndexOf("]", start, StringComparison.Ordinal);
@@ -888,7 +888,7 @@ namespace Netch.Forms
 
             try
             {
-                Global.Settings.ModeComboBoxSelectedIndex = Global.Modes.IndexOf((Models.Mode) ModeComboBox.SelectedItem);
+                Global.Settings.ModeComboBoxSelectedIndex = Global.Modes.IndexOf((Models.Mode)ModeComboBox.SelectedItem);
             }
             catch
             {
@@ -905,7 +905,7 @@ namespace Netch.Forms
                 return;
             }
 
-            var mode = (Models.Mode) ModeComboBox.SelectedItem;
+            var mode = (Models.Mode)ModeComboBox.SelectedItem;
             if (ModifierKeys == Keys.Control)
             {
                 Utils.Utils.Open(ModeHelper.GetFullPath(mode.RelativePath!));
@@ -940,7 +940,7 @@ namespace Netch.Forms
                 return;
             }
 
-            ModeHelper.Delete((Models.Mode) ModeComboBox.SelectedItem);
+            ModeHelper.Delete((Models.Mode)ModeComboBox.SelectedItem);
             SelectLastMode();
         }
 
@@ -957,7 +957,7 @@ namespace Netch.Forms
         {
             // Clear
             foreach (var button in ProfileTable.Controls)
-                ((Button) button).Dispose();
+                ((Button)button).Dispose();
 
             ProfileTable.Controls.Clear();
             ProfileTable.ColumnStyles.Clear();
@@ -983,7 +983,7 @@ namespace Netch.Forms
                 var columnCount = Global.Settings.ProfileTableColumnCount;
 
                 ProfileTable.ColumnCount = profileCount >= columnCount ? columnCount : profileCount;
-                ProfileTable.RowCount = (int) Math.Ceiling(profileCount / (float) columnCount);
+                ProfileTable.RowCount = (int)Math.Ceiling(profileCount / (float)columnCount);
 
                 for (var i = 0; i < profileCount; ++i)
                 {
@@ -1033,8 +1033,8 @@ namespace Netch.Forms
 
         private Profile CreateProfileAtIndex(int index)
         {
-            var server = (Server) ServerComboBox.SelectedItem;
-            var mode = (Models.Mode) ModeComboBox.SelectedItem;
+            var server = (Server)ServerComboBox.SelectedItem;
+            var mode = (Models.Mode)ModeComboBox.SelectedItem;
             var name = ProfileNameText.Text;
 
             Profile? profile;
@@ -1048,8 +1048,8 @@ namespace Netch.Forms
 
         private async void ProfileButton_Click(object sender, EventArgs e)
         {
-            var profileButton = (Button) sender;
-            var profile = (Profile?) profileButton.Tag;
+            var profileButton = (Button)sender;
+            var profile = (Profile?)profileButton.Tag;
             var index = ProfileTable.Controls.IndexOf(profileButton);
 
             switch (ModifierKeys)
@@ -1271,13 +1271,13 @@ namespace Netch.Forms
             {
                 NatTypeStatusLightLabel.Visible = Global.Flags.IsWindows10Upper;
                 var c = natType switch
-                        {
-                            1 => Color.LimeGreen,
-                            2 => Color.Yellow,
-                            3 => Color.Red,
-                            4 => Color.Black,
-                            _ => throw new ArgumentOutOfRangeException(nameof(natType), natType, null)
-                        };
+                {
+                    1 => Color.LimeGreen,
+                    2 => Color.Yellow,
+                    3 => Color.Red,
+                    4 => Color.Black,
+                    _ => throw new ArgumentOutOfRangeException(nameof(natType), natType, null)
+                };
 
                 NatTypeStatusLightLabel.ForeColor = c;
             }
@@ -1395,7 +1395,7 @@ namespace Netch.Forms
                 Configuration.Save();
             }
 
-            foreach (var file in new[] {"data\\last.json", "data\\privoxy.conf"})
+            foreach (var file in new[] { "data\\last.json", "data\\privoxy.conf" })
                 if (File.Exists(file))
                     File.Delete(file);
 
@@ -1557,38 +1557,38 @@ namespace Netch.Forms
             switch (cbx.Items[e.Index])
             {
                 case Server item:
-                {
-                    // 计算延迟底色
-                    var numBoxBackBrush = item.Delay switch {> 200 => Brushes.Red, > 80 => Brushes.Yellow, >= 0 => _greenBrush, _ => Brushes.Gray};
+                    {
+                        // 计算延迟底色
+                        var numBoxBackBrush = item.Delay switch { > 200 => Brushes.Red, > 80 => Brushes.Yellow, >= 0 => _greenBrush, _ => Brushes.Gray };
 
-                    // 绘制延迟底色
-                    e.Graphics.FillRectangle(numBoxBackBrush, _numberBoxX, e.Bounds.Y, _numberBoxWidth, e.Bounds.Height);
+                        // 绘制延迟底色
+                        e.Graphics.FillRectangle(numBoxBackBrush, _numberBoxX, e.Bounds.Y, _numberBoxWidth, e.Bounds.Height);
 
-                    // 绘制延迟字符串
-                    TextRenderer.DrawText(e.Graphics,
-                        item.Delay.ToString(),
-                        cbx.Font,
-                        new Point(_numberBoxX + _numberBoxWrap, e.Bounds.Y),
-                        Color.Black,
-                        TextFormatFlags.Left);
+                        // 绘制延迟字符串
+                        TextRenderer.DrawText(e.Graphics,
+                            item.Delay.ToString(),
+                            cbx.Font,
+                            new Point(_numberBoxX + _numberBoxWrap, e.Bounds.Y),
+                            Color.Black,
+                            TextFormatFlags.Left);
 
-                    break;
-                }
+                        break;
+                    }
                 case Models.Mode item:
-                {
-                    // 绘制 模式Box 底色
-                    e.Graphics.FillRectangle(Brushes.Gray, _numberBoxX, e.Bounds.Y, _numberBoxWidth, e.Bounds.Height);
+                    {
+                        // 绘制 模式Box 底色
+                        e.Graphics.FillRectangle(Brushes.Gray, _numberBoxX, e.Bounds.Y, _numberBoxWidth, e.Bounds.Height);
 
-                    // 绘制 模式行数 字符串
-                    TextRenderer.DrawText(e.Graphics,
-                        item.Rule.Count.ToString(),
-                        cbx.Font,
-                        new Point(_numberBoxX + _numberBoxWrap, e.Bounds.Y),
-                        Color.Black,
-                        TextFormatFlags.Left);
+                        // 绘制 模式行数 字符串
+                        TextRenderer.DrawText(e.Graphics,
+                            item.Rule.Count.ToString(),
+                            cbx.Font,
+                            new Point(_numberBoxX + _numberBoxWrap, e.Bounds.Y),
+                            Color.Black,
+                            TextFormatFlags.Left);
 
-                    break;
-                }
+                        break;
+                    }
             }
         }
 

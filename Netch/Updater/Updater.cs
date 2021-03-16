@@ -1,3 +1,6 @@
+using Netch.Controllers;
+using Netch.Properties;
+using Netch.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,9 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using Netch.Controllers;
-using Netch.Properties;
-using Netch.Utils;
 
 namespace Netch.Updater
 {
@@ -91,7 +91,7 @@ namespace Netch.Updater
 
         #region Apply Update
 
-        private static readonly ImmutableArray<string> KeepDirectories = new List<string> {"data", "mode\\Custom"}.ToImmutableArray();
+        private static readonly ImmutableArray<string> KeepDirectories = new List<string> { "data", "mode\\Custom" }.ToImmutableArray();
 
         private void ApplyUpdate()
         {

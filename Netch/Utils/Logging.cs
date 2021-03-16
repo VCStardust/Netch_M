@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Netch.Models;
+using System;
 using System.IO;
-using Netch.Models;
 
 namespace Netch.Utils
 {

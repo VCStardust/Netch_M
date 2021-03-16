@@ -38,7 +38,7 @@
         /// <summary>
         ///     端口
         /// </summary>
-        public int port { get; set; }
+        public ushort port { get; set; }
 
         /// <summary>
         ///     备注
@@ -58,6 +58,6 @@
         /// <summary>
         ///     链接版本
         /// </summary>
-        public string v { get; set; } = string.Empty;
+        public int v { get; set; } = 2;
     }
 }

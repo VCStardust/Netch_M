@@ -20,12 +20,12 @@ namespace Netch.Controllers
         /// <returns></returns>
         public void Start()
         {
-            aiodns_dial((int) NameList.TYPE_REST, null);
-            aiodns_dial((int) NameList.TYPE_ADDR, Encoding.UTF8.GetBytes($"{Global.Settings.LocalAddress}:53"));
-            aiodns_dial((int) NameList.TYPE_LIST, Encoding.UTF8.GetBytes(Path.GetFullPath(Global.Settings.AioDNS.RulePath)));
-            aiodns_dial((int) NameList.TYPE_CDNS, Encoding.UTF8.GetBytes($"{Global.Settings.AioDNS.ChinaDNS}:53"));
-            aiodns_dial((int) NameList.TYPE_ODNS, Encoding.UTF8.GetBytes($"{Global.Settings.AioDNS.OtherDNS}:53"));
-            aiodns_dial((int) NameList.TYPE_METH, Encoding.UTF8.GetBytes(Global.Settings.AioDNS.Protocol));
+            aiodns_dial((int)NameList.TYPE_REST, null);
+            aiodns_dial((int)NameList.TYPE_ADDR, Encoding.UTF8.GetBytes($"{Global.Settings.LocalAddress}:53"));
+            aiodns_dial((int)NameList.TYPE_LIST, Encoding.UTF8.GetBytes(Path.GetFullPath(Global.Settings.AioDNS.RulePath)));
+            aiodns_dial((int)NameList.TYPE_CDNS, Encoding.UTF8.GetBytes($"{Global.Settings.AioDNS.ChinaDNS}:53"));
+            aiodns_dial((int)NameList.TYPE_ODNS, Encoding.UTF8.GetBytes($"{Global.Settings.AioDNS.OtherDNS}:53"));
+            aiodns_dial((int)NameList.TYPE_METH, Encoding.UTF8.GetBytes(Global.Settings.AioDNS.Protocol));
 
             if (!aiodns_init())
                 throw new Exception("AioDNS start failed");

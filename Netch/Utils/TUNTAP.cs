@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using Netch.Controllers;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Microsoft.Win32;
-using Netch.Controllers;
 
 namespace Netch.Utils
 {
@@ -33,7 +33,7 @@ namespace Netch.Utils
                         continue;
 
                     if (componentId == TUNTAP_COMPONENT_ID_0901 || componentId == TUNTAP_COMPONENT_ID_0801)
-                        return (string) (adapterRegistry.GetValue("NetCfgInstanceId") ??
+                        return (string)(adapterRegistry.GetValue("NetCfgInstanceId") ??
                                          throw new Exception("Tap adapter have no NetCfgInstanceId key"));
                 }
             }
@@ -73,7 +73,7 @@ namespace Netch.Utils
         {
             Logging.Info("卸载 TUN/TAP 适配器");
             var installProcess = new Process
-                {StartInfo = {WindowStyle = ProcessWindowStyle.Hidden, FileName = Path.Combine("bin/tap-driver", "deltapall.bat")}};
+            { StartInfo = { WindowStyle = ProcessWindowStyle.Hidden, FileName = Path.Combine("bin/tap-driver", "deltapall.bat") } };
 
             installProcess.Start();
             installProcess.WaitForExit();

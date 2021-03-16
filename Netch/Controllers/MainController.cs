@@ -1,10 +1,10 @@
+using Netch.Models;
+using Netch.Servers.Socks5;
+using Netch.Utils;
 using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Netch.Models;
-using Netch.Servers.Socks5;
-using Netch.Utils;
 using static Netch.Utils.PortHelper;
 
 namespace Netch.Controllers
@@ -113,7 +113,7 @@ namespace Netch.Controllers
             Global.MainForm.StatusText(i18N.TranslateFormat("Starting {0}", controller.Name));
 
             controller.Start(in server, mode);
-            if (controller is Guard {Instance: { }} guard)
+            if (controller is Guard { Instance: { } } guard)
                 Task.Run(() =>
                 {
                     Thread.Sleep(1000);
@@ -139,12 +139,12 @@ namespace Netch.Controllers
                 return;
 
             if (port != null)
-                PortCheck((ushort) port, portName, portType);
+                PortCheck((ushort)port, portName, portType);
 
             Global.MainForm.StatusText(i18N.TranslateFormat("Starting {0}", ModeController.Name));
 
             ModeController.Start(mode);
-            if (ModeController is Guard {Instance: { }} guard)
+            if (ModeController is Guard { Instance: { } } guard)
                 Global.Job.AddProcess(guard.Instance!);
         }
 

@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using Netch.Controllers;
+using Netch.Properties;
+using Netch.Utils;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using Netch.Controllers;
-using Netch.Properties;
-using Netch.Utils;
 
 namespace Netch.Forms.Mode
 {

@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Netch.Models;
+using Netch.Servers.Socks5;
+using Netch.Utils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Netch.Models;
-using Netch.Servers.Socks5;
-using Netch.Utils;
 
 namespace Netch.Controllers
 {
@@ -26,9 +26,9 @@ namespace Netch.Controllers
         /// </summary>
         public DNSController DNSController = new();
 
-        protected override IEnumerable<string> StartedKeywords { get; } = new[] {"Running"};
+        protected override IEnumerable<string> StartedKeywords { get; } = new[] { "Running" };
 
-        protected override IEnumerable<string> StoppedKeywords { get; } = new[] {"failed", "invalid vconfig file"};
+        protected override IEnumerable<string> StoppedKeywords { get; } = new[] { "failed", "invalid vconfig file" };
 
         public override string MainFile { get; protected set; } = "tun2socks.exe";
 
@@ -52,13 +52,13 @@ namespace Netch.Controllers
             List<string> dns;
             if (Global.Settings.TUNTAP.UseCustomDNS)
             {
-                dns = Global.Settings.TUNTAP.DNS.Any() ? Global.Settings.TUNTAP.DNS : Global.Settings.TUNTAP.DNS = new List<string> {"1.1.1.1"};
+                dns = Global.Settings.TUNTAP.DNS.Any() ? Global.Settings.TUNTAP.DNS : Global.Settings.TUNTAP.DNS = new List<string> { "1.1.1.1" };
             }
             else
             {
                 MainController.PortCheck(53, "DNS");
                 DNSController.Start();
-                dns = new List<string> {"127.0.0.1"};
+                dns = new List<string> { "127.0.0.1" };
             }
 
             SetupRouteTable(mode);

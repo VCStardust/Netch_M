@@ -1,10 +1,10 @@
-using System;
-using System.IO;
-using System.Linq;
 using Netch.Controllers;
 using Netch.Models;
 using Netch.Servers.Shadowsocks;
 using Netch.Servers.Socks5;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace Netch.Utils
 {
@@ -126,15 +126,15 @@ namespace Netch.Utils
         public static bool SkipServerController(Server server, Mode mode)
         {
             return mode.Type switch
-                   {
-                       0 => server switch
-                            {
-                                Socks5 => true,
-                                Shadowsocks shadowsocks when !shadowsocks.HasPlugin() && Global.Settings.RedirectorSS => true,
-                                _ => false
-                            },
-                       _ => false
-                   };
+            {
+                0 => server switch
+                {
+                    Socks5 => true,
+                    Shadowsocks shadowsocks when !shadowsocks.HasPlugin() && Global.Settings.RedirectorSS => true,
+                    _ => false
+                },
+                _ => false
+            };
         }
 
         public static IModeController? GetModeControllerByType(int type, out ushort? port, out string portName, out PortType portType)
@@ -157,7 +157,7 @@ namespace Netch.Utils
                     port = Global.Settings.HTTPLocalPort;
                     portName = "HTTP";
                     portType = PortType.TCP;
-                    StatusPortInfoText.HttpPort = (ushort) port;
+                    StatusPortInfoText.HttpPort = (ushort)port;
                     return new HTTPController();
                 case 4:
                     return null;

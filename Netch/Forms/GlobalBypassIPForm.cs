@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Netch.Properties;
+using Netch.Utils;
+using System;
 using System.Net;
 using System.Windows.Forms;
-using Netch.Properties;
-using Netch.Utils;
 
 namespace Netch.Forms
 {
@@ -53,7 +53,7 @@ namespace Netch.Forms
         {
             Global.Settings.BypassIPs.Clear();
             foreach (var ip in IPListBox.Items)
-                Global.Settings.BypassIPs.Add((string) ip);
+                Global.Settings.BypassIPs.Add((string)ip);
 
             Configuration.Save();
             MessageBoxX.Show(i18N.Translate("Saved"));

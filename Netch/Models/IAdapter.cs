@@ -3,7 +3,7 @@ using System.Net.NetworkInformation;
 
 namespace Netch.Models
 {
-    public interface  IAdapter
+    public interface IAdapter
     {
         public abstract int Index { get; }
 

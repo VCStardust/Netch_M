@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Netch.Models;
+﻿using Netch.Models;
+using System.Collections.Generic;
 
 namespace Netch.Servers.Shadowsocks
 {
@@ -15,7 +15,7 @@ namespace Netch.Servers.Shadowsocks
         /// <summary>
         ///     密码
         /// </summary>
-        public string? Password { get; set; }
+        public string Password { get; set; } = string.Empty;
 
         /// <summary>
         ///     插件

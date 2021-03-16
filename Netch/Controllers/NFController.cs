@@ -1,15 +1,14 @@
-﻿using System;
+﻿using Netch.Models;
+using Netch.Servers.Shadowsocks;
+using Netch.Servers.Socks5;
+using Netch.Utils;
+using nfapinet;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
-using System.Threading.Tasks;
-using Netch.Models;
-using Netch.Servers.Shadowsocks;
-using Netch.Servers.Socks5;
-using Netch.Utils;
-using nfapinet;
 
 namespace Netch.Controllers
 {
@@ -22,20 +21,11 @@ namespace Netch.Controllers
 
         static NFController()
         {
-            string fileName;
-            switch ($"{Environment.OSVersion.Version.Major}.{Environment.OSVersion.Version.Minor}")
+            var fileName = $"{Environment.OSVersion.Version.Major}.{Environment.OSVersion.Version.Minor}" switch
             {
-                case "10.0":
-                case "6.3":
-                case "6.2":
-                case "6.1":
-                case "6.0":
-                    fileName = "nfdriver.sys";
-                    break;
-                default:
-                    throw new MessageException($"不支持的系统版本：{Environment.OSVersion.Version}");
-            }
-
+                "10.0" or "6.3" or "6.2" or "6.1" or "6.0" => "nfdriver.sys",
+                _ => throw new MessageException($"不支持的系统版本：{Environment.OSVersion.Version}"),
+            };
             BinDriver = "bin\\" + fileName;
         }
 
@@ -55,22 +45,30 @@ namespace Netch.Controllers
             SetServer(Global.Settings.ProcessProxyProtocol);
 
             if (!CheckRule(mode.FullRule, out var list))
+            {
                 throw new MessageException($"\"{string.Join("", list.Select(s => s + "\n"))}\" does not conform to C++ regular expression syntax");
+            }
 
             SetName(mode);
 
             #endregion
 
             if (Global.Settings.RedirectDNS)
-                aio_dial((int)NameList.TYPE_REDIRCTOR_DNS, Global.Settings.RedirectDNSAddr.ToString());
+            {
+                aio_dial((int)NameList.TYPE_REDIRCTOR_DNS, Global.Settings.RedirectDNSAddr);
+            }
 
             if (Global.Settings.RedirectICMP)
-                aio_dial((int)NameList.TYPE_REDIRCTOR_ICMP, Global.Settings.RedirectICMPAddr.ToString());
+            {
+                aio_dial((int)NameList.TYPE_REDIRCTOR_ICMP, Global.Settings.RedirectICMPAddr);
+            }
 
             aio_dial((int)NameList.TYPE_FILTERCHILDPROC, Global.Settings.ChildProcessHandle.ToString());
 
             if (!aio_init())
+            {
                 throw new MessageException("Redirector Start failed, run Netch with \"-console\" argument");
+            }
         }
 
         public void Stop()
@@ -100,14 +98,18 @@ namespace Netch.Controllers
             try
             {
                 if (r.StartsWith("!"))
+                {
                     return aio_dial((int)NameList.TYPE_ADDNAME, r.Substring(1));
+                }
 
                 return aio_dial((int)NameList.TYPE_ADDNAME, r);
             }
             finally
             {
                 if (clear)
+                {
                     aio_dial((int)NameList.TYPE_CLRNAME, "");
+                }
             }
         }
 
@@ -129,20 +131,28 @@ namespace Netch.Controllers
             if (Version.TryParse(binFileVersion, out var binResult) && Version.TryParse(systemFileVersion, out var systemResult))
             {
                 if (binResult.CompareTo(systemResult) > 0)
+                {
                     // Bin greater than Installed
                     reinstallFlag = true;
+                }
                 else if (systemResult.Major != binResult.Major)
+                {
                     // Installed greater than Bin but Major Version Difference (has breaking changes), do downgrade
                     reinstallFlag = true;
+                }
             }
             else
             {
                 if (!systemFileVersion.Equals(binFileVersion))
+                {
                     reinstallFlag = true;
+                }
             }
 
             if (!reinstallFlag)
+            {
                 return;
+            }
 
             Logging.Info("更新驱动");
             UninstallDriver();
@@ -187,8 +197,8 @@ namespace Netch.Controllers
             {
                 aio_dial((int)NameList.TYPE_TCPTYPE + offset, "Shadowsocks");
                 aio_dial((int)NameList.TYPE_TCPHOST + offset, $"{shadowsocks.AutoResolveHostname()}:{shadowsocks.Port}");
-                aio_dial((int)NameList.TYPE_TCPMETH + offset, shadowsocks.EncryptMethod ?? string.Empty);
-                aio_dial((int)NameList.TYPE_TCPPASS + offset, shadowsocks.Password ?? string.Empty);
+                aio_dial((int)NameList.TYPE_TCPMETH + offset, shadowsocks.EncryptMethod);
+                aio_dial((int)NameList.TYPE_TCPPASS + offset, shadowsocks.Password);
             }
             else
             {
@@ -285,7 +295,9 @@ namespace Netch.Controllers
             Logging.Info("安装 NF 驱动");
 
             if (!File.Exists(BinDriver))
+            {
                 throw new MessageException(i18N.Translate("builtin driver files missing, can't install NF driver"));
+            }
 
             try
             {
@@ -332,7 +344,9 @@ namespace Netch.Controllers
             }
 
             if (!File.Exists(SystemDriver))
+            {
                 return true;
+            }
 
             NFAPI.nf_unRegisterDriver("netfilter2");
             File.Delete(SystemDriver);

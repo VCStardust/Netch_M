@@ -1,3 +1,6 @@
+using Netch.Controllers;
+using Netch.Forms;
+using Netch.Models;
 using System;
 using System.Collections.Generic;
 using System.Text.Encodings.Web;
@@ -5,9 +8,6 @@ using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
 using WindowsJobAPI;
-using Netch.Controllers;
-using Netch.Forms;
-using Netch.Models;
 
 namespace Netch
 {

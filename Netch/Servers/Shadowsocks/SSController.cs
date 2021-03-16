@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using Netch.Controllers;
 using Netch.Models;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Netch.Servers.Shadowsocks
 {
@@ -10,9 +9,9 @@ namespace Netch.Servers.Shadowsocks
     {
         public override string MainFile { get; protected set; } = "Shadowsocks.exe";
 
-        protected override IEnumerable<string> StartedKeywords { get; } = new[] {"listening at"};
+        protected override IEnumerable<string> StartedKeywords { get; } = new[] { "listening at" };
 
-        protected override IEnumerable<string> StoppedKeywords { get; } = new[] {"Invalid config path", "usage", "plugin service exit unexpectedly"};
+        protected override IEnumerable<string> StoppedKeywords { get; } = new[] { "Invalid config path", "usage", "plugin service exit unexpectedly" };
 
         public override string Name { get; } = "Shadowsocks";
 
@@ -22,28 +21,62 @@ namespace Netch.Servers.Shadowsocks
 
         public void Start(in Server s, in Mode mode)
         {
-            var server = (Shadowsocks) s;
+            var server = (Shadowsocks)s;
 
-            #region Argument
-
-            var argument = new StringBuilder();
-            argument.Append($"-s {server.AutoResolveHostname()} " + $"-p {server.Port} " + $"-b {this.LocalAddress()} " +
-                            $"-l {this.Socks5LocalPort()} " + $"-m {server.EncryptMethod} " + $"-k \"{server.Password}\" " + "-u");
-
-            if (!string.IsNullOrWhiteSpace(server.Plugin) && !string.IsNullOrWhiteSpace(server.PluginOption))
-                argument.Append($" --plugin {server.Plugin}" + $" --plugin-opts \"{server.PluginOption}\"");
+            var command = new SSParameter
+            {
+                s = server.AutoResolveHostname(),
+                p = server.Port.ToString(),
+                b = this.LocalAddress(),
+                l = this.Socks5LocalPort().ToString(),
+                m = server.EncryptMethod,
+                k = server.Password,
+                u = true,
+                plugin = server.Plugin,
+                plugin_opts = server.PluginOption
+            };
 
             if (mode.BypassChina)
-                argument.Append($" --acl \"{Path.GetFullPath(File.Exists(Global.UserACL) ? Global.UserACL : Global.BuiltinACL)}\"");
+                command.acl = $"{Path.GetFullPath(File.Exists(Global.UserACL) ? Global.UserACL : Global.BuiltinACL)}";
 
-            #endregion
+            StartInstanceAuto(command.ToString());
+        }
 
-            StartInstanceAuto(argument.ToString());
+        [Verb]
+        private class SSParameter : ParameterBase
+        {
+            public string? s { get; set; }
+
+            public string? p { get; set; }
+
+            public string? b { get; set; }
+
+            public string? l { get; set; }
+
+            public string? m { get; set; }
+
+            public string? k { get; set; }
+
+            public bool u { get; set; }
+
+            [Full]
+            [Optional]
+            public string? plugin { get; set; }
+
+            [Full]
+            [Optional]
+            [RealName("plugin-opts")]
+            public string? plugin_opts { get; set; }
+
+            [Full]
+            [Quote]
+            [Optional]
+            public string? acl { get; set; }
         }
 
         public override void Stop()
         {
-                StopInstance();
+            StopInstance();
         }
     }
 }
