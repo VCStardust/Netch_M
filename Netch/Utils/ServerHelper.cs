@@ -73,7 +73,7 @@ namespace Netch.Utils
                 try
                 {
                     _mux = true;
-                    Parallel.ForEach(Global.Settings.Server, new ParallelOptions { MaxDegreeOfParallelism = 16 }, server => { server.Test(); });
+                    Parallel.ForEach(Global.Settings.Server, new ParallelOptions { MaxDegreeOfParallelism = 32 }, server => { server.Test(); });
                     _mux = false;
                     TestDelayFinished?.Invoke(null, new EventArgs());
                 }
