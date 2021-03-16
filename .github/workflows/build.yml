@@ -1,8 +1,6 @@
 name: Netch CI
 on:
   push:
-    paths:
-    - '!*.md'
   pull_request:
 jobs:
   build:
