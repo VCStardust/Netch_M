@@ -1,6 +1,4 @@
-﻿using Netch;
-
-namespace UnitTest
+﻿namespace UnitTest
 {
     public class TestBase
     {

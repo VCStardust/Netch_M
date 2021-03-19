@@ -26,7 +26,7 @@ namespace Netch
             AttachConsole();
 #else
             if (args.Contains("-console"))
-                if (!NativeMethods.AttachConsole();
+                AttachConsole();
 #endif
 
             // 设置当前目录

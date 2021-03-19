@@ -432,7 +432,7 @@ namespace nfapinet
         {
             if (options.ToInt64() != 0)
             {
-                NF_UDP_OPTIONS optionsCopy = (NF_UDP_OPTIONS)Marshal.PtrToStructure((IntPtr)options, typeof(NF_UDP_OPTIONS));
+                NF_UDP_OPTIONS optionsCopy = (NF_UDP_OPTIONS)Marshal.PtrToStructure(options, typeof(NF_UDP_OPTIONS));
                 int optionsLen = 8 + optionsCopy.optionsLength;
                 m_pEventHandler.udpReceive(id, remoteAddress, buf, len, options, optionsLen);
             }
@@ -446,7 +446,7 @@ namespace nfapinet
         {
             if (options.ToInt64() != 0)
             {
-                NF_UDP_OPTIONS optionsCopy = (NF_UDP_OPTIONS)Marshal.PtrToStructure((IntPtr)options, typeof(NF_UDP_OPTIONS));
+                NF_UDP_OPTIONS optionsCopy = (NF_UDP_OPTIONS)Marshal.PtrToStructure(options, typeof(NF_UDP_OPTIONS));
                 int optionsLen = 8 + optionsCopy.optionsLength;
                 m_pEventHandler.udpSend(id, remoteAddress, buf, len, options, optionsLen);
             }

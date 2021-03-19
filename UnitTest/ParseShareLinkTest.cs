@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Text.Json;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Netch;
 using Netch.Servers.ShadowsocksR;
 using Netch.Servers.VMess;
 using Netch.Utils;
+using System;
+using System.Linq;
+using System.Text.Json;
 
 namespace UnitTest
 {
@@ -18,9 +18,9 @@ namespace UnitTest
             const string normalCase =
                 "ssr://MTI3LjAuMC4xOjEyMzQ6YXV0aF9hZXMxMjhfbWQ1OmFlcy0xMjgtY2ZiOnRsczEuMl90aWNrZXRfYXV0aDpZV0ZoWW1KaS8_b2Jmc3BhcmFtPVluSmxZV3QzWVRFeExtMXZaUQ";
 
-            var server = (ShadowsocksR) ShareLink.ParseText(normalCase).First();
+            var server = (ShadowsocksR)ShareLink.ParseText(normalCase).First();
             Assert.AreEqual(server.Hostname, "127.0.0.1");
-            Assert.AreEqual(server.Port, (ushort) 1234);
+            Assert.AreEqual(server.Port, (ushort)1234);
             Assert.AreEqual(server.Protocol, "auth_aes128_md5");
             Assert.AreEqual(server.EncryptMethod, "aes-128-cfb");
             Assert.AreEqual(server.OBFS, "tls1.2_ticket_auth");
@@ -31,9 +31,9 @@ namespace UnitTest
             const string normalCaseWithRemark =
                 "ssr://MTI3LjAuMC4xOjEyMzQ6YXV0aF9hZXMxMjhfbWQ1OmFlcy0xMjgtY2ZiOnRsczEuMl90aWNrZXRfYXV0aDpZV0ZoWW1KaS8_b2Jmc3BhcmFtPVluSmxZV3QzWVRFeExtMXZaUSZyZW1hcmtzPTVyV0w2Sy1WNUxpdDVwYUg";
 
-            server = (ShadowsocksR) ShareLink.ParseText(normalCaseWithRemark).First();
+            server = (ShadowsocksR)ShareLink.ParseText(normalCaseWithRemark).First();
             Assert.AreEqual(server.Hostname, "127.0.0.1");
-            Assert.AreEqual(server.Port, (ushort) 1234);
+            Assert.AreEqual(server.Port, (ushort)1234);
             Assert.AreEqual(server.Protocol, "auth_aes128_md5");
             Assert.AreEqual(server.EncryptMethod, "aes-128-cfb");
             Assert.AreEqual(server.OBFS, "tls1.2_ticket_auth");
@@ -45,13 +45,13 @@ namespace UnitTest
         [TestMethod]
         public void ParseV2RayNFormatUri()
         {
-            var server = (VMess) ShareLink.ParseText(
+            var server = (VMess)ShareLink.ParseText(
                     @"vmess://eyAidiI6ICIyIiwgInBzIjogIuWkh+azqOWIq+WQjSIsICJhZGQiOiAiMTExLjExMS4xMTEuMTExIiwgInBvcnQiOiAiMzIwMDAiLCAiaWQiOiAiMTM4NmY4NWUtNjU3Yi00ZDZlLTlkNTYtNzhiYWRiNzVlMWZkIiwgImFpZCI6ICIxMDAiLCAibmV0IjogInRjcCIsICJ0eXBlIjogIm5vbmUiLCAiaG9zdCI6ICJ3d3cuYmJiLmNvbSIsICJwYXRoIjogIi8iLCAidGxzIjogInRscyIgfQ==")
                 .First();
 
             Assert.AreEqual(server.Remark, "备注别名");
             Assert.AreEqual(server.Hostname, "111.111.111.111");
-            Assert.AreEqual(server.Port, (ushort) 32000);
+            Assert.AreEqual(server.Port, (ushort)32000);
             Assert.AreEqual(server.UserID, "1386f85e-657b-4d6e-9d56-78badb75e1fd");
             Assert.AreEqual(server.AlterID, 100);
             Assert.AreEqual(server.TransferProtocol, "tcp");

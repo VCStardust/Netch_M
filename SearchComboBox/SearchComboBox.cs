@@ -69,7 +69,7 @@ namespace System.Windows.Forms
                     Tag = Items.Cast<object>().ToArray();
                 }
 
-                return (object[]) Tag;
+                return (object[])Tag;
             }
         }
 
