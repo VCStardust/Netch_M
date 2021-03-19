@@ -6,9 +6,6 @@ namespace UnitTest
     {
         protected TestBase()
         {
-#if DEBUG
-            Global.Testing = true;
-#endif
         }
     }
 }

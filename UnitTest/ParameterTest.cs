@@ -73,6 +73,13 @@ namespace UnitTest
             public string? udp { get; set; } = null;
         }
 
+        private class Number : ParameterBase
+        {
+            public ushort a { get; set; } = 1;
+
+            public int b { get; set; } = 1;
+        }
+
         [TestMethod]
         public void Test()
         {
@@ -84,6 +91,7 @@ namespace UnitTest
             Assert.AreEqual(new FlagAndOptional().ToString(), "--a");
             Assert.ThrowsException<RequiredArgumentValueInvalidException>(() => { _ = new RequiredEmpty().ToString(); });
             Assert.ThrowsException<RequiredArgumentValueInvalidException>(() => { _ = new RequiredNull().ToString(); });
+            Assert.AreEqual(new Number().ToString(), "--a 1 --b 1");
         }
     }
 }
