@@ -1,11 +1,5 @@
 name: Netch CI
-on:
-  push:
-    branches:
-      - master
-    paths:
-      - '!*.md'
-  pull_request:
+on: [push, pull_request]
 jobs:
   build:
     name: Build
