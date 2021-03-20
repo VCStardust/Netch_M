@@ -16,18 +16,8 @@ namespace Netch.Controllers
     {
         private static readonly ServiceController NFService = new("netfilter2");
 
-        private static readonly string BinDriver;
+        private const string BinDriver = "bin\\nfdriver.sys";
         private static readonly string SystemDriver = $"{Environment.SystemDirectory}\\drivers\\netfilter2.sys";
-
-        static NFController()
-        {
-            var fileName = $"{Environment.OSVersion.Version.Major}.{Environment.OSVersion.Version.Minor}" switch
-            {
-                "10.0" or "6.3" or "6.2" or "6.1" or "6.0" => "nfdriver.sys",
-                _ => throw new MessageException($"不支持的系统版本：{Environment.OSVersion.Version}"),
-            };
-            BinDriver = "bin\\" + fileName;
-        }
 
         public string Name { get; } = "Redirector";
 
@@ -44,10 +34,9 @@ namespace Netch.Controllers
             aio_dial((int)NameList.TYPE_FILTERTCP, (Global.Settings.ProcessProxyProtocol != PortType.UDP).ToString().ToLower());
             SetServer(Global.Settings.ProcessProxyProtocol);
 
-            if (!CheckRule(mode.FullRule, out var list))
-            {
-                throw new MessageException($"\"{string.Join("", list.Select(s => s + "\n"))}\" does not conform to C++ regular expression syntax");
-            }
+            var result = CheckRuleMessageResult(mode.FullRule);
+            if (result != null)
+                throw new MessageException(result);
 
             SetName(mode);
 
@@ -63,7 +52,7 @@ namespace Netch.Controllers
                 aio_dial((int)NameList.TYPE_REDIRCTOR_ICMP, Global.Settings.RedirectICMPAddr);
             }
 
-            aio_dial((int)NameList.TYPE_FILTERCHILDPROC, Global.Settings.ChildProcessHandle.ToString());
+            aio_dial((int)NameList.TYPE_FILTERCHILDPROC, Global.Settings.ChildProcessHandle.ToString().ToLower());
 
             if (!aio_init())
             {
@@ -87,7 +76,13 @@ namespace Netch.Controllers
             aio_dial((int)NameList.TYPE_CLRNAME, "");
             return !incompatibleRule.Any();
         }
+        public static string? CheckRuleMessageResult(IEnumerable<string> rules)
+        {
+            if (CheckRule(rules, out var list))
+                return null;
 
+            return ($"{string.Join("\n", list)}\nAbove rules does not conform to C++ regular expression syntax");
+        }
         /// <summary>
         /// </summary>
         /// <param name="r"></param>
