@@ -135,7 +135,6 @@ namespace Netch.Forms
             // 
             // TabControl
             // 
-            this.TabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             this.TabControl.Controls.Add(this.GeneralTabPage);
             this.TabControl.Controls.Add(this.NFTabPage);
             this.TabControl.Controls.Add(this.TAPTabPage);
@@ -168,10 +167,10 @@ namespace Netch.Forms
             this.GeneralTabPage.Controls.Add(this.AclAddrTextBox);
             this.GeneralTabPage.Controls.Add(this.LanguageLabel);
             this.GeneralTabPage.Controls.Add(this.LanguageComboBox);
-            this.GeneralTabPage.Location = new System.Drawing.Point(4, 25);
+            this.GeneralTabPage.Location = new System.Drawing.Point(4, 22);
             this.GeneralTabPage.Name = "GeneralTabPage";
             this.GeneralTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.GeneralTabPage.Size = new System.Drawing.Size(461, 325);
+            this.GeneralTabPage.Size = new System.Drawing.Size(461, 328);
             this.GeneralTabPage.TabIndex = 0;
             this.GeneralTabPage.Text = "General";
             // 
@@ -403,10 +402,10 @@ namespace Netch.Forms
             this.NFTabPage.Controls.Add(this.groupBox1);
             this.NFTabPage.Controls.Add(this.RedirectorSSCheckBox);
             this.NFTabPage.Controls.Add(this.ChildProcessHandleCheckBox);
-            this.NFTabPage.Location = new System.Drawing.Point(4, 25);
+            this.NFTabPage.Location = new System.Drawing.Point(4, 22);
             this.NFTabPage.Name = "NFTabPage";
             this.NFTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.NFTabPage.Size = new System.Drawing.Size(461, 325);
+            this.NFTabPage.Size = new System.Drawing.Size(461, 328);
             this.NFTabPage.TabIndex = 1;
             this.NFTabPage.Text = "Process Mode";
             // 
@@ -525,10 +524,10 @@ namespace Netch.Forms
             this.TAPTabPage.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.TAPTabPage.Controls.Add(this.TUNTAPGroupBox);
             this.TAPTabPage.Controls.Add(this.GlobalBypassIPsButton);
-            this.TAPTabPage.Location = new System.Drawing.Point(4, 25);
+            this.TAPTabPage.Location = new System.Drawing.Point(4, 22);
             this.TAPTabPage.Name = "TAPTabPage";
             this.TAPTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.TAPTabPage.Size = new System.Drawing.Size(461, 325);
+            this.TAPTabPage.Size = new System.Drawing.Size(461, 328);
             this.TAPTabPage.TabIndex = 2;
             this.TAPTabPage.Text = "TUN/TAP";
             // 
@@ -670,10 +669,10 @@ namespace Netch.Forms
             this.v2rayTabPage.Controls.Add(this.TLSAllowInsecureCheckBox);
             this.v2rayTabPage.Controls.Add(this.UseMuxCheckBox);
             this.v2rayTabPage.Controls.Add(this.KCPGroupBox);
-            this.v2rayTabPage.Location = new System.Drawing.Point(4, 25);
+            this.v2rayTabPage.Location = new System.Drawing.Point(4, 22);
             this.v2rayTabPage.Name = "v2rayTabPage";
             this.v2rayTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.v2rayTabPage.Size = new System.Drawing.Size(461, 325);
+            this.v2rayTabPage.Size = new System.Drawing.Size(461, 328);
             this.v2rayTabPage.TabIndex = 3;
             this.v2rayTabPage.Text = "V2Ray";
             // 
@@ -852,10 +851,10 @@ namespace Netch.Forms
             this.OtherTabPage.Controls.Add(this.CheckUpdateWhenOpenedCheckBox);
             this.OtherTabPage.Controls.Add(this.CheckBetaUpdateCheckBox);
             this.OtherTabPage.Controls.Add(this.UpdateServersWhenOpenedCheckBox);
-            this.OtherTabPage.Location = new System.Drawing.Point(4, 25);
+            this.OtherTabPage.Location = new System.Drawing.Point(4, 22);
             this.OtherTabPage.Name = "OtherTabPage";
             this.OtherTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.OtherTabPage.Size = new System.Drawing.Size(461, 325);
+            this.OtherTabPage.Size = new System.Drawing.Size(461, 328);
             this.OtherTabPage.TabIndex = 4;
             this.OtherTabPage.Text = "Others";
             // 
@@ -953,10 +952,10 @@ namespace Netch.Forms
             this.AioDNSTabPage.Controls.Add(this.ChinaDNSTextBox);
             this.AioDNSTabPage.Controls.Add(this.OtherDNSLabel);
             this.AioDNSTabPage.Controls.Add(this.OtherDNSTextBox);
-            this.AioDNSTabPage.Location = new System.Drawing.Point(4, 25);
+            this.AioDNSTabPage.Location = new System.Drawing.Point(4, 22);
             this.AioDNSTabPage.Name = "AioDNSTabPage";
             this.AioDNSTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.AioDNSTabPage.Size = new System.Drawing.Size(461, 325);
+            this.AioDNSTabPage.Size = new System.Drawing.Size(461, 328);
             this.AioDNSTabPage.TabIndex = 5;
             this.AioDNSTabPage.Text = "AioDNS";
             this.AioDNSTabPage.UseVisualStyleBackColor = true;
