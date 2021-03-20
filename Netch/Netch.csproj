@@ -14,7 +14,9 @@
         <LangVersion>latest</LangVersion>
         <IsPackable>false</IsPackable>
         <Nullable>enable</Nullable>
-        <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+        <!--        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+                <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+                <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>-->
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -50,7 +52,6 @@
         </PackageReference>
         <PackageReference Include="System.Collections.Immutable" Version="6.0.0-preview.2.21154.6" />
         <PackageReference Include="System.Reflection.Metadata" Version="6.0.0-preview.2.21154.6" />
-        <PackageReference Include="System.Resources.Extensions" Version="6.0.0-preview.2.21154.6" />
         <PackageReference Include="System.Text.Json" Version="6.0.0-preview.2.21154.6" />
         <PackageReference Include="TaskScheduler" Version="2.9.1" />
         <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="3.3.6" />
@@ -99,7 +100,7 @@
             <DependentUpon>Settings.settings</DependentUpon>
         </Compile>
         <Compile Update="Forms\Mode\Route.cs">
-          <SubType>Form</SubType>
+            <SubType>Form</SubType>
         </Compile>
     </ItemGroup>
 
