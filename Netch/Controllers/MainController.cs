@@ -3,9 +3,9 @@ using Netch.Servers.Socks5;
 using Netch.Utils;
 using System;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using static Netch.Utils.PortHelper;
+using System.Diagnostics;
 
 namespace Netch.Controllers
 {
@@ -105,20 +105,11 @@ namespace Netch.Controllers
         {
             controller = ServerHelper.GetUtilByTypeName(server.Type).GetController();
 
-            if (controller is Guard instanceController)
-                Utils.Utils.KillProcessByName(instanceController.MainFile);
-
-            PortCheck(controller.Socks5LocalPort(), "Socks5");
+            TryReleaseTcpPort(controller.Socks5LocalPort(), "Socks5");
 
             Global.MainForm.StatusText(i18N.TranslateFormat("Starting {0}", controller.Name));
 
             controller.Start(in server, mode);
-            if (controller is Guard { Instance: { } } guard)
-                Task.Run(() =>
-                {
-                    Thread.Sleep(1000);
-                    Global.Job.AddProcess(guard.Instance!);
-                });
 
             if (server is Socks5 socks5)
             {
@@ -133,19 +124,17 @@ namespace Netch.Controllers
 
         private static void StartMode(Mode mode)
         {
-            ModeController = ModeHelper.GetModeControllerByType(mode.Type, out var port, out var portName, out var portType);
+            ModeController = ModeHelper.GetModeControllerByType(mode.Type, out var port, out var portName);
 
             if (ModeController == null)
                 return;
 
             if (port != null)
-                PortCheck((ushort)port, portName, portType);
+                TryReleaseTcpPort((ushort)port, portName);
 
             Global.MainForm.StatusText(i18N.TranslateFormat("Starting {0}", ModeController.Name));
 
             ModeController.Start(mode);
-            if (ModeController is Guard { Instance: { } } guard)
-                Global.Job.AddProcess(guard.Instance!);
         }
 
         public static async Task StopAsync()
@@ -189,7 +178,7 @@ namespace Netch.Controllers
         {
             try
             {
-                CheckPort(port, portType);
+                PortHelper.CheckPort(port, portType);
             }
             catch (PortInUseException)
             {
@@ -200,7 +189,28 @@ namespace Netch.Controllers
                 throw new MessageException(i18N.TranslateFormat("The {0} port is reserved by system.", $"{portName} ({port})"));
             }
         }
+        public static void TryReleaseTcpPort(ushort port, string portName)
+        {
+            Process? p;
+            if ((p = PortHelper.GetProcessByUsedTcpPort(port)) != null)
+            {
+                if (p.MainModule!.FileName.StartsWith(Global.NetchDir))
+                {
+                    p.Kill();
+                    p.WaitForExit();
+                }
+                else
+                {
+                    throw new MessageException(i18N.TranslateFormat("The {0} port is used by {1}.",
+                        $"{portName} ({port})",
+                        $"({p.Id}){p.MainModule.FileName}"));
+                }
+            }
+
+            PortCheck(port, portName, PortType.TCP);
+        }
     }
+}
 
     public class MessageException : Exception
     {
@@ -212,4 +222,3 @@ namespace Netch.Controllers
         {
         }
     }
-}

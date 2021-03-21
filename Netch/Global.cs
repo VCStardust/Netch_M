@@ -7,7 +7,6 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
-using WindowsJobAPI;
 
 namespace Netch
 {
@@ -44,10 +43,6 @@ namespace Netch
         /// </summary>
         public static readonly List<Mode> Modes = new();
 
-        /// <summary>
-        ///     Windows Job API
-        /// </summary>
-        public static readonly JobObject Job = new();
 
         public static class Flags
         {

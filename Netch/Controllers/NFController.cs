@@ -25,32 +25,21 @@ namespace Netch.Controllers
         {
             CheckDriver();
 
-            #region aio_dial
-
+         
             aio_dial((int)NameList.TYPE_FILTERLOOPBACK, "false");
             aio_dial((int)NameList.TYPE_TCPLISN, Global.Settings.RedirectorTCPPort.ToString());
 
+            // Server
             aio_dial((int)NameList.TYPE_FILTERUDP, (Global.Settings.ProcessProxyProtocol != PortType.TCP).ToString().ToLower());
             aio_dial((int)NameList.TYPE_FILTERTCP, (Global.Settings.ProcessProxyProtocol != PortType.UDP).ToString().ToLower());
-            SetServer(Global.Settings.ProcessProxyProtocol);
+            dial_Server(Global.Settings.ProcessProxyProtocol);
 
-            var result = CheckRuleMessageResult(mode.FullRule);
-            if (result != null)
-                throw new MessageException(result);
+            // Mode Rule
+            dial_Name(mode);
 
-            SetName(mode);
-
-            #endregion
-
-            if (Global.Settings.RedirectDNS)
-            {
-                aio_dial((int)NameList.TYPE_REDIRCTOR_DNS, Global.Settings.RedirectDNSAddr);
-            }
-
-            if (Global.Settings.RedirectICMP)
-            {
-                aio_dial((int)NameList.TYPE_REDIRCTOR_ICMP, Global.Settings.RedirectICMPAddr);
-            }
+            // Features
+            aio_dial((int)NameList.TYPE_REDIRCTOR_DNS, Global.Settings.RedirectDNS ? Global.Settings.RedirectDNSAddr : "");
+            aio_dial((int)NameList.TYPE_REDIRCTOR_ICMP, Global.Settings.RedirectICMP ? Global.Settings.RedirectICMPAddr : "");
 
             aio_dial((int)NameList.TYPE_FILTERCHILDPROC, Global.Settings.ChildProcessHandle.ToString().ToLower());
 
@@ -65,101 +54,55 @@ namespace Netch.Controllers
             aio_free();
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="rules"></param>
-        /// <param name="incompatibleRule"></param>
-        /// <returns>No Problem true</returns>
-        public static bool CheckRule(IEnumerable<string> rules, out IEnumerable<string> incompatibleRule)
-        {
-            incompatibleRule = rules.Where(r => !CheckCppRegex(r, false));
-            aio_dial((int)NameList.TYPE_CLRNAME, "");
-            return !incompatibleRule.Any();
-        }
-        public static string? CheckRuleMessageResult(IEnumerable<string> rules)
-        {
-            if (CheckRule(rules, out var list))
-                return null;
+        #region CheckRule
 
-            return ($"{string.Join("\n", list)}\nAbove rules does not conform to C++ regular expression syntax");
-        }
         /// <summary>
         /// </summary>
         /// <param name="r"></param>
         /// <param name="clear"></param>
         /// <returns>No Problem true</returns>
-        public static bool CheckCppRegex(string r, bool clear = true)
+        private static bool CheckCppRegex(string r, bool clear = true)
         {
             try
             {
                 if (r.StartsWith("!"))
-                {
                     return aio_dial((int)NameList.TYPE_ADDNAME, r.Substring(1));
-                }
 
                 return aio_dial((int)NameList.TYPE_ADDNAME, r);
             }
             finally
             {
                 if (clear)
-                {
                     aio_dial((int)NameList.TYPE_CLRNAME, "");
-                }
             }
         }
 
-        private static void CheckDriver()
+        /// <summary>
+        /// </summary>
+        /// <param name="rules"></param>
+        /// <param name="results"></param>
+        /// <returns>No Problem true</returns>
+        public static bool CheckRules(IEnumerable<string> rules, out IEnumerable<string> results)
         {
-            var binFileVersion = Utils.Utils.GetFileVersion(BinDriver);
-            var systemFileVersion = Utils.Utils.GetFileVersion(SystemDriver);
-
-            Logging.Info("内置驱动版本: " + binFileVersion);
-            Logging.Info("系统驱动版本: " + systemFileVersion);
-
-            if (!File.Exists(SystemDriver))
-            {
-                InstallDriver();
-                return;
-            }
-
-            var reinstallFlag = false;
-            if (Version.TryParse(binFileVersion, out var binResult) && Version.TryParse(systemFileVersion, out var systemResult))
-            {
-                if (binResult.CompareTo(systemResult) > 0)
-                {
-                    // Bin greater than Installed
-                    reinstallFlag = true;
-                }
-                else if (systemResult.Major != binResult.Major)
-                {
-                    // Installed greater than Bin but Major Version Difference (has breaking changes), do downgrade
-                    reinstallFlag = true;
-                }
-            }
-            else
-            {
-                if (!systemFileVersion.Equals(binFileVersion))
-                {
-                    reinstallFlag = true;
-                }
-            }
-
-            if (!reinstallFlag)
-            {
-                return;
-            }
-
-            Logging.Info("更新驱动");
-            UninstallDriver();
-            InstallDriver();
+            results = rules.Where(r => !CheckCppRegex(r, false));
+            aio_dial((int)NameList.TYPE_CLRNAME, "");
+            return !results.Any();
         }
 
-        private void SetServer(in PortType portType)
+        public static string GenerateInvalidRulesMessage(IEnumerable<string> rules)
+        {
+            return $"{string.Join("\n", rules)}\nAbove rules does not conform to C++ regular expression syntax";
+        }
+
+        #endregion
+
+
+        private void dial_Server(in PortType portType)
         {
             if (portType == PortType.Both)
             {
-                SetServer(PortType.TCP);
-                SetServer(PortType.UDP);
+                dial_Server(PortType.TCP);
+                dial_Server(PortType.UDP);
                 return;
             }
 
@@ -205,19 +148,26 @@ namespace Netch.Controllers
             }
         }
 
-        private void SetName(Mode mode)
+        private void dial_Name(Mode mode)
         {
             aio_dial((int)NameList.TYPE_CLRNAME, "");
-            foreach (var rule in mode.FullRule)
+            var list = new List<string>();
+            foreach (var s in mode.FullRule)
             {
-                if (rule.StartsWith("!"))
+                if (s.StartsWith("!"))
                 {
-                    aio_dial((int)NameList.TYPE_BYPNAME, rule.Substring(1));
+                    if (!aio_dial((int)NameList.TYPE_BYPNAME, s.Substring(1)))
+                        list.Add(s);
+
                     continue;
                 }
 
-                aio_dial((int)NameList.TYPE_ADDNAME, rule);
+                if (!aio_dial((int)NameList.TYPE_ADDNAME, s))
+                    list.Add(s);
             }
+
+            if (list.Any())
+                throw new MessageException(GenerateInvalidRulesMessage(list));
 
             aio_dial((int)NameList.TYPE_ADDNAME, @"NTT\.exe");
             aio_dial((int)NameList.TYPE_BYPNAME, "^" + Global.NetchDir.ToRegexString() + @"((?!NTT\.exe).)*$");
@@ -249,7 +199,7 @@ namespace Netch.Controllers
             TYPE_FILTERTCP,
             TYPE_FILTERUDP,
             TYPE_FILTERIP,
-            TYPE_FILTERCHILDPROC,//子进程捕获
+            TYPE_FILTERCHILDPROC, //子进程捕获
 
             TYPE_TCPLISN,
             TYPE_TCPTYPE,
@@ -279,7 +229,48 @@ namespace Netch.Controllers
 
         #endregion
 
-        #region Utils
+        #region DriverUtil
+
+        private static void CheckDriver()
+        {
+            var binFileVersion = Utils.Utils.GetFileVersion(BinDriver);
+            var systemFileVersion = Utils.Utils.GetFileVersion(SystemDriver);
+
+            Logging.Info("内置驱动版本: " + binFileVersion);
+            Logging.Info("系统驱动版本: " + systemFileVersion);
+
+            if (!File.Exists(SystemDriver))
+            {
+                // Install
+                InstallDriver();
+                return;
+            }
+
+            var reinstall = false;
+            if (Version.TryParse(binFileVersion, out var binResult) && Version.TryParse(systemFileVersion, out var systemResult))
+            {
+                if (binResult.CompareTo(systemResult) > 0)
+                    // Update
+                    reinstall = true;
+                else if (systemResult.Major != binResult.Major)
+                    // Downgrade when Major version different (may have breaking changes)
+                    reinstall = true;
+            }
+            else
+            {
+                // Parse File versionName to Version failed
+                if (!systemFileVersion.Equals(binFileVersion))
+                    // versionNames are different, Reinstall
+                    reinstall = true;
+            }
+
+            if (!reinstall)
+                return;
+
+            Logging.Info("更新驱动");
+            UninstallDriver();
+            InstallDriver();
+        }
 
         /// <summary>
         ///     安装 NF 驱动
@@ -290,9 +281,7 @@ namespace Netch.Controllers
             Logging.Info("安装 NF 驱动");
 
             if (!File.Exists(BinDriver))
-            {
                 throw new MessageException(i18N.Translate("builtin driver files missing, can't install NF driver"));
-            }
 
             try
             {
@@ -339,9 +328,7 @@ namespace Netch.Controllers
             }
 
             if (!File.Exists(SystemDriver))
-            {
                 return true;
-            }
 
             NFAPI.nf_unRegisterDriver("netfilter2");
             File.Delete(SystemDriver);
