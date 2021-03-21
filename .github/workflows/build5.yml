@@ -1,11 +1,11 @@
-name: Netch CI 48
+name: Netch CI 5
 on:
   push:
     branches:
-      - master
+      - NET-5
   pull_request:
     branches:
-      - master
+      - NET-5
 jobs:
   build:
     name: Build

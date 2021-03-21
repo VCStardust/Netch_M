@@ -958,7 +958,6 @@ namespace Netch.Forms
             this.AioDNSTabPage.Size = new System.Drawing.Size(461, 328);
             this.AioDNSTabPage.TabIndex = 5;
             this.AioDNSTabPage.Text = "AioDNS";
-            this.AioDNSTabPage.UseVisualStyleBackColor = true;
             // 
             // AioDNSRuleRuleLabel
             // 
