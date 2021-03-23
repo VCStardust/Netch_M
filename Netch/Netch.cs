@@ -16,6 +16,27 @@ namespace Netch
 {
     public static class Netch
     {
+        private static readonly Stopwatch Stopwatch = new();
+
+        public static void StartStopwatch(string name)
+        {
+            if (Stopwatch.IsRunning)
+                throw new Exception();
+
+            Stopwatch.Start();
+            Console.WriteLine($"Start {name} Stopwatch");
+        }
+
+        public static void TimePoint(string name, bool restart = true)
+        {
+            if (!Stopwatch.IsRunning)
+                throw new Exception();
+
+            Stopwatch.Stop();
+            Console.WriteLine($"{name} Stopwatch: {Stopwatch.ElapsedMilliseconds}");
+            if (restart)
+                Stopwatch.Restart();
+        }
         /// <summary>
         ///     应用程序的主入口点
         /// </summary>
@@ -28,6 +49,8 @@ namespace Netch
             if (args.Contains("-console"))
                 AttachConsole();
 #endif
+
+            StartStopwatch("Netch");
 
             // 设置当前目录
             Directory.SetCurrentDirectory(Global.NetchDir);
@@ -43,8 +66,12 @@ namespace Netch
                 if (!Directory.Exists(item))
                     Directory.CreateDirectory(item);
 
+            TimePoint("Clean Old, Create Directory");
+
             // 加载配置
             Configuration.Load();
+
+            TimePoint("Load Configuration");
 
             // 检查是否已经运行
             if (!Global.Mutex.WaitOne(0, false))
@@ -79,6 +106,8 @@ namespace Netch
             Logging.Info($"版本: {UpdateChecker.Owner}/{UpdateChecker.Repo}@{UpdateChecker.Version}");
             Task.Run(() => { Logging.Info($"主程序 SHA256: {Utils.Utils.SHA256CheckSum(Global.NetchExecutable)}"); });
 
+            TimePoint("Get Info, Pre-Form");
+
             // 绑定错误捕获
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.ThreadException += Application_OnException;
@@ -102,7 +131,7 @@ namespace Netch
 
         private static void ShowOpened()
         {
-            HWND GetWindowHandleByPidAndTitle(int process, string title)
+            static HWND GetWindowHandleByPidAndTitle(int process, string title)
             {
                 var sb = new StringBuilder(256);
                 HWND pLast = IntPtr.Zero;
