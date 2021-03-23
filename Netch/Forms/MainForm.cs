@@ -577,10 +577,10 @@ namespace Netch.Forms
                 return;
             }
 
-            if (MessageBoxX.Show(i18N.Translate("Download and install now?"), confirm: true) != DialogResult.OK)
-                return;
+            if (MessageBoxX.Show(i18N.Translate($"Download and install now?\n\n{UpdateChecker.GetLatestReleaseContent()}"), confirm: true) !=
+                DialogResult.OK)
 
-            NotifyTip(i18N.Translate("Start downloading new version"));
+                NotifyTip(i18N.Translate("Start downloading new version"));
             NewVersionLabel.Enabled = false;
             NewVersionLabel.Text = "...";
 

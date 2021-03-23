@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace Netch.Controllers
         public const string Copyright = @"Copyright © 2019 - 2021";
 
         public const string AssemblyVersion = @"1.8.3";
-        private const string Suffix = @"b1";
+        private const string Suffix = @"b2";
 
         public static readonly string Version = $"{AssemblyVersion}{(string.IsNullOrEmpty(Suffix) ? "" : $"-{Suffix}")}";
 
@@ -88,6 +89,19 @@ namespace Netch.Controllers
 
             fileName = match.Groups["filename"].Value;
             sha256 = match.Groups["sha256"].Value;
+        }
+        public static string GetLatestReleaseContent()
+        {
+            var sb = new StringBuilder();
+            foreach (string l in LatestRelease.body.GetLines(false).SkipWhile(l => l.FirstOrDefault() != '#'))
+            {
+                if (l.Contains("校验和"))
+                    break;
+
+                sb.AppendLine(l);
+            }
+
+            return sb.ToString();
         }
     }
 }
