@@ -84,7 +84,7 @@ namespace Netch.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Netch.TimePoint("MainForm ctor (Pre MainForm Load)");
+            Global.LogStopwatch.Log("MainForm ctor (Pre MainForm Load)");
             // 计算 ComboBox绘制 目标宽度
             RecordSize();
 
@@ -120,7 +120,7 @@ namespace Netch.Forms
                 if (Global.Settings.StartWhenOpened)
                     ControlButton_Click(null, null);
             });
-            Netch.TimePoint("Post Form Load", false);
+            Global.LogStopwatch.Log("Post Form Load", true);
         }
 
         private void RecordSize()
@@ -1459,8 +1459,14 @@ namespace Netch.Forms
 
         #region NotifyIcon
 
-        private void ShowMainFormToolStripButton_Click(object sender, EventArgs e)
+        public void ShowMainFormToolStripButton_Click(object sender, EventArgs e)
         {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => ShowMainFormToolStripButton_Click(sender, e)));
+                return;
+            }
+
             if (WindowState == FormWindowState.Minimized)
             {
                 Visible = true;

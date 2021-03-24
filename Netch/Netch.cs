@@ -2,6 +2,7 @@
 using Netch.Forms;
 using Netch.Utils;
 using System;
+using Netch.Models;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,32 +12,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.User32;
+using System.Collections.Generic;
 
 namespace Netch
 {
     public static class Netch
     {
-        private static readonly Stopwatch Stopwatch = new();
-
-        public static void StartStopwatch(string name)
-        {
-            if (Stopwatch.IsRunning)
-                throw new Exception();
-
-            Stopwatch.Start();
-            Console.WriteLine($"Start {name} Stopwatch");
-        }
-
-        public static void TimePoint(string name, bool restart = true)
-        {
-            if (!Stopwatch.IsRunning)
-                throw new Exception();
-
-            Stopwatch.Stop();
-            Console.WriteLine($"{name} Stopwatch: {Stopwatch.ElapsedMilliseconds}");
-            if (restart)
-                Stopwatch.Restart();
-        }
         /// <summary>
         ///     应用程序的主入口点
         /// </summary>
@@ -50,7 +31,7 @@ namespace Netch
                 AttachConsole();
 #endif
 
-            StartStopwatch("Netch");
+            Global.LogStopwatch = new LogStopwatch("Netch");
 
             // 设置当前目录
             Directory.SetCurrentDirectory(Global.NetchDir);
@@ -66,21 +47,22 @@ namespace Netch
                 if (!Directory.Exists(item))
                     Directory.CreateDirectory(item);
 
-            TimePoint("Clean Old, Create Directory");
+            Global.LogStopwatch.Log("Clean Old, Create Directory");
 
             // 加载配置
             Configuration.Load();
 
-            TimePoint("Load Configuration");
+            Global.LogStopwatch.Log("Load Configuration");
 
-            // 检查是否已经运行
-            if (!Global.Mutex.WaitOne(0, false))
+            if (!Global.SingleInstance.IsFirstInstance)
             {
-                ShowOpened();
-
-                // 退出进程
-                Environment.Exit(1);
+                Global.SingleInstance.PassArgumentsToFirstInstance(args.Append(Global.ParameterShow));
+                Environment.Exit(0);
+                return;
             }
+
+            Global.SingleInstance.ArgumentsReceived.Subscribe(SingleInstance_ArgumentsReceived);
+            Global.SingleInstance.ListenForArgumentsFromSuccessiveInstances();
 
             // 清理上一次的日志文件，防止淤积占用磁盘空间
             if (Directory.Exists("logging"))
@@ -106,7 +88,7 @@ namespace Netch
             Logging.Info($"版本: {UpdateChecker.Owner}/{UpdateChecker.Repo}@{UpdateChecker.Version}");
             Task.Run(() => { Logging.Info($"主程序 SHA256: {Utils.Utils.SHA256CheckSum(Global.NetchExecutable)}"); });
 
-            TimePoint("Get Info, Pre-Form");
+            Global.LogStopwatch.Log("Get Info, Pre-Form");
 
             // 绑定错误捕获
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
@@ -129,40 +111,12 @@ namespace Netch
             Utils.Utils.Open(Logging.LogFile);
         }
 
-        private static void ShowOpened()
+        private static void SingleInstance_ArgumentsReceived(IEnumerable<string> args)
         {
-            static HWND GetWindowHandleByPidAndTitle(int process, string title)
+            if (args.Contains(Global.ParameterShow))
             {
-                var sb = new StringBuilder(256);
-                HWND pLast = IntPtr.Zero;
-                do
-                {
-                    pLast = FindWindowEx(HWND.NULL, pLast, null, null);
-                    GetWindowThreadProcessId(pLast, out var id);
-                    if (id != process)
-                        continue;
-
-                    if (GetWindowText(pLast, sb, sb.Capacity) <= 0)
-                        continue;
-
-                    if (sb.ToString().Equals(title))
-                        return pLast;
-                } while (pLast != IntPtr.Zero);
-
-                return HWND.NULL;
+                Global.MainForm.ShowMainFormToolStripButton_Click(null!, null!);
             }
-
-            var self = Process.GetCurrentProcess();
-            var activeProcess = Process.GetProcessesByName("Netch").Single(p => p.Id != self.Id);
-            HWND handle = activeProcess.MainWindowHandle;
-            if (handle.IsNull)
-                handle = GetWindowHandleByPidAndTitle(activeProcess.Id, "Netch");
-
-            if (handle.IsNull)
-                return;
-
-            ShowWindow(handle, ShowWindowCommand.SW_NORMAL);
-            SwitchToThisWindow(handle, true);
         }
     }
 }

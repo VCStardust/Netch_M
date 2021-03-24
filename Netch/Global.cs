@@ -29,9 +29,9 @@ namespace Netch
         /// </summary>
         private static readonly Lazy<MainForm> LazyMainForm = new(() => new MainForm());
 
-        private static readonly Lazy<Mutex> LazyMutex = new(() => new Mutex(false, "Global\\Netch"));
+        public static SingleInstance.SingleInstance SingleInstance = new($"Global\\{nameof(Netch)}");
 
-        public static Mutex Mutex => LazyMutex.Value;
+        public static LogStopwatch LogStopwatch = null!;
 
         /// <summary>
         ///     用于读取和写入的配置
@@ -64,5 +64,6 @@ namespace Netch
             IgnoreNullValues = true,
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
+        public const string ParameterShow = "-show";
     }
 }
