@@ -25,7 +25,7 @@ namespace Netch.Controllers
         {
             CheckDriver();
 
-         
+
             aio_dial((int)NameList.TYPE_FILTERLOOPBACK, "false");
             aio_dial((int)NameList.TYPE_TCPLISN, Global.Settings.RedirectorTCPPort.ToString());
 

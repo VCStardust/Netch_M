@@ -4,8 +4,6 @@ using Netch.Utils;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using static Netch.Utils.PortHelper;
-using System.Diagnostics;
 
 namespace Netch.Controllers
 {
@@ -220,13 +218,13 @@ namespace Netch.Controllers
     }
 }
 
-    public class MessageException : Exception
+public class MessageException : Exception
+{
+    public MessageException()
     {
-        public MessageException()
-        {
-        }
-
-        public MessageException(string message) : base(message)
-        {
-        }
     }
+
+    public MessageException(string message) : base(message)
+    {
+    }
+}

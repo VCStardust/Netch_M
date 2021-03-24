@@ -62,7 +62,7 @@ namespace Netch.Models.GitHubRelease
             if (Suffix == string.Empty)
                 return other.Suffix == string.Empty ? 0 : 1;
 
-            if (other.Suffix == string.Empty) 
+            if (other.Suffix == string.Empty)
                 return -1;
 
             var suffixComparison = string.Compare(Suffix, other.Suffix, StringComparison.OrdinalIgnoreCase);

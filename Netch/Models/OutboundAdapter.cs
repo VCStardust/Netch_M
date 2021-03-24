@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using Netch.Controllers;
 using Netch.Utils;
 using System;
 using System.Linq;

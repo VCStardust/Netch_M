@@ -1,5 +1,4 @@
-﻿using Netch.Controllers;
-using Netch.Utils;
+﻿using Netch.Utils;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;

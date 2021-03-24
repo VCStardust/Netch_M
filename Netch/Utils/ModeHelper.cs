@@ -74,7 +74,7 @@ namespace Netch.Utils
                     return;
 
                 foreach (var file in Directory.GetFiles(modeDirectory).Where(f => f.EndsWith(".txt")))
-                    
+
                     try
                     {
                         Global.Modes.Add(new Mode(file));

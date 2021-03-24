@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using Netch.Controllers;
 using System;
 using System.Diagnostics;
 using System.IO;

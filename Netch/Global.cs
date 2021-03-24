@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Netch

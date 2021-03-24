@@ -1,14 +1,13 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using Netch.Controllers;
+using Netch.Models;
 using Netch.Properties;
 using Netch.Utils;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Collections.Generic;
-using Netch.Models;
 
 namespace Netch.Forms.Mode
 {
@@ -93,7 +92,7 @@ namespace Netch.Forms.Mode
                 }
             }
         }
-        
+
         public void ControlButton_Click(object sender, EventArgs e)
         {
             if (!RuleRichTextBox.Lines.Any())
