@@ -84,7 +84,6 @@ namespace Netch.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Global.LogStopwatch.Log("MainForm ctor (Pre MainForm Load)");
             // 计算 ComboBox绘制 目标宽度
             RecordSize();
 
@@ -120,7 +119,6 @@ namespace Netch.Forms
                 if (Global.Settings.StartWhenOpened)
                     ControlButton_Click(null, null);
             });
-            Global.LogStopwatch.Log("Post Form Load", true);
         }
 
         private void RecordSize()
@@ -446,7 +444,7 @@ namespace Netch.Forms
                 if (useProxy)
                     req.Proxy = new WebProxy($"http://127.0.0.1:{Global.Settings.HTTPLocalPort}");
 
-                await WebUtil.DownloadFileAsync(req, Path.Combine(Global.NetchDir, Global.UserACL));
+                await WebUtil.DownloadFileAsync(req, Path.Combine(Global.NetchDir, Constants.UserACL));
                 NotifyTip(i18N.Translate("ACL updated successfully"));
             }
             catch (Exception e)
@@ -612,9 +610,7 @@ namespace Netch.Forms
             if (!IsWaiting())
             {
                 // 停止
-                State = State.Stopping;
-                await MainController.StopAsync();
-                State = State.Stopped;
+                await StopAsyncCore();
                 return;
             }
 
@@ -1156,6 +1152,27 @@ namespace Netch.Forms
             }
         }
 
+        private async Task StopAsyncCore()
+        {
+            State = State.Stopping;
+            await MainController.StopAsync();
+            State = State.Stopped;
+        }
+
+        public void Stop()
+        {
+            if (IsWaiting())
+                return;
+
+            if (InvokeRequired)
+            {
+                Invoke(new Action(Stop));
+                return;
+            }
+
+            StopAsyncCore().Wait();
+        }
+
         private bool IsWaiting()
         {
             return State == State.Waiting || State == State.Stopped;
@@ -1235,7 +1252,7 @@ namespace Netch.Forms
         {
             if (natType > 0 && natType < 5)
             {
-                NatTypeStatusLightLabel.Visible = Global.Flags.IsWindows10Upper;
+                NatTypeStatusLightLabel.Visible = Flags.IsWindows10Upper;
                 var c = natType switch
                 {
                     1 => Color.LimeGreen,
@@ -1365,8 +1382,8 @@ namespace Netch.Forms
                 if (File.Exists(file))
                     File.Delete(file);
 
-            if (!IsWaiting())
-                await MainController.StopAsync();
+            if (IsWaiting())
+                await StopAsyncCore();
 
             Dispose();
             Environment.Exit(Environment.ExitCode);
@@ -1402,6 +1419,8 @@ namespace Netch.Forms
             {
                 UpdateChecker.NewVersionFound += OnUpdateCheckerOnNewVersionFound;
                 UpdateChecker.Check(Global.Settings.CheckBetaUpdate).Wait();
+                if (Flags.AlwaysShowNewVersionFound)
+                    OnUpdateCheckerOnNewVersionFound(null!, null!);
             }
             finally
             {
@@ -1499,7 +1518,7 @@ namespace Netch.Forms
 
         public void NotifyTip(string text, int timeout = 0, bool info = true)
         {
-            // 会阻塞线程 timeout 秒
+            // 会阻塞线程 timeout 秒 (?)
             NotifyIcon.ShowBalloonTip(timeout, UpdateChecker.Name, text, info ? ToolTipIcon.Info : ToolTipIcon.Error);
         }
 

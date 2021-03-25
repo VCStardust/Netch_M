@@ -9,6 +9,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Windows.Threading;
+using Netch.Forms;
+using Netch.Services;
+
 
 namespace Netch.Updater
 {
@@ -95,7 +99,17 @@ namespace Netch.Updater
 
         private void ApplyUpdate()
         {
-            // Pre Update
+            var dispatcher = Dispatcher.CurrentDispatcher;
+            var mainForm = DependencyInjection.GetService<MainForm>(); // this is the dispatcher xD
+
+            #region PreUpdate
+
+            ModeHelper.SuspendWatcher = true;
+            // Stop and Save
+            mainForm.Stop();
+            Configuration.Save();
+
+            // Backup Configuration file
             try
             {
                 // Backup Configuration file
@@ -105,6 +119,9 @@ namespace Netch.Updater
             {
                 // ignored
             }
+
+            #endregion
+
             // extract Update file to {tempDirectory}\extract
             var extractPath = Path.Combine(_tempDirectory, "extract");
             int exitCode;
@@ -117,11 +134,10 @@ namespace Netch.Updater
             // move {tempDirectory}\extract\Netch to install folder
             MoveAllFilesOver(Path.Combine(extractPath, "Netch"), _installDirectory);
 
-            // save, release mutex, then exit
-            Configuration.Save();
-            Global.MainForm.Invoke(new Action(() => { Global.SingleInstance.Dispose(); }));
+            // release mutex, exit
+            dispatcher.Invoke(Netch.SingleInstance.Dispose);
             Process.Start(Global.NetchExecutable);
-            Global.MainForm.Exit(true, false);
+            Environment.Exit(0);
         }
 
         private void MarkFilesOld()

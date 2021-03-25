@@ -1,4 +1,3 @@
-using Netch.Controllers;
 using Netch.Forms;
 using Netch.Models;
 using System;
@@ -6,31 +5,16 @@ using System.Collections.Generic;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Windows.Forms;
+using Netch.Services;
 
 namespace Netch
 {
     public static class Global
     {
         /// <summary>
-        ///     换行
-        /// </summary>
-        public const string EOF = "\r\n";
-
-        public const string UserACL = "data\\user.acl";
-        public const string BuiltinACL = "bin\\default.acl";
-
-        public static readonly string NetchDir = Application.StartupPath;
-
-        public static readonly string NetchExecutable = Application.ExecutablePath;
-
-        /// <summary>
         ///     主窗体的静态实例
         /// </summary>
         private static readonly Lazy<MainForm> LazyMainForm = new(() => new MainForm());
-
-        public static SingleInstance.SingleInstance SingleInstance = new($"Global\\{nameof(Netch)}");
-
-        public static LogStopwatch LogStopwatch = null!;
 
         /// <summary>
         ///     用于读取和写入的配置
@@ -42,20 +26,10 @@ namespace Netch
         /// </summary>
         public static readonly List<Mode> Modes = new();
 
-
-        public static class Flags
-        {
-            public static readonly bool IsWindows10Upper = Environment.OSVersion.Version.Major >= 10;
-
-            private static readonly Lazy<bool> LazySupportFakeDns = new(() => new TUNTAPController().TestFakeDNS());
-
-            public static bool SupportFakeDns => LazySupportFakeDns.Value;
-        }
-
         /// <summary>
         ///     主窗体的静态实例
         /// </summary>
-        public static MainForm MainForm => LazyMainForm.Value;
+        public static MainForm MainForm => DependencyInjection.GetService<MainForm>();
 
         public static JsonSerializerOptions NewDefaultJsonSerializerOptions => new()
         {
@@ -63,6 +37,7 @@ namespace Netch
             IgnoreNullValues = true,
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
-        public const string ParameterShow = "-show";
+        public static readonly string NetchDir = Application.StartupPath;
+        public static readonly string NetchExecutable = Application.ExecutablePath;
     }
 }
