@@ -8,25 +8,6 @@ namespace Netch.Forms.Mode
 {
     public partial class Route : Form
     {
-        class Item
-        {
-            private string _text;
-
-            public Item(int value, string text)
-            {
-                _text = text;
-                Value = value;
-            }
-
-            public string Text
-            {
-                get => i18N.Translate(_text);
-                set => _text = value;
-            }
-
-            public int Value { get; set; }
-        }
-
         private readonly Item[] _items = { new(1, "Proxy Rule IPs"), new(2, "Bypass Rule IPs") };
 
         private readonly Models.Mode? _mode;
@@ -112,10 +93,26 @@ namespace Netch.Forms.Mode
 
         private void RemarkTextBox_TextChanged(object sender, EventArgs e)
         {
-            BeginInvoke(new Action(() =>
+            BeginInvoke(new Action(() => { FilenameTextBox.Text = ModeEditorUtils.GetCustomModeRelativePath(RemarkTextBox.Text); }));
+        }
+
+        private class Item
+        {
+            private string _text;
+
+            public Item(int value, string text)
             {
-                FilenameTextBox.Text = ModeEditorUtils.GetCustomModeRelativePath(RemarkTextBox.Text);
-            }));
+                _text = text;
+                Value = value;
+            }
+
+            public string Text
+            {
+                get => i18N.Translate(_text);
+                set => _text = value;
+            }
+
+            public int Value { get; }
         }
     }
 }

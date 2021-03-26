@@ -34,25 +34,6 @@ namespace Netch.Forms.Mode
             _mode = mode;
         }
 
-        #region Model
-
-        public IEnumerable<string> Rules => RuleRichTextBox.Lines;
-
-        private void RuleAdd(string value)
-        {
-            RuleRichTextBox.AppendText($"{value}\n");
-        }
-
-        private void RuleAddRange(IEnumerable<string> value)
-        {
-            foreach (var s in value)
-            {
-                RuleAdd(s);
-            }
-        }
-
-        #endregion
-
         public void ModeForm_Load(object sender, EventArgs e)
         {
             if (_mode != null)
@@ -81,7 +62,6 @@ namespace Netch.Forms.Mode
             };
 
             if (dialog.ShowDialog(Handle) == CommonFileDialogResult.Ok)
-            {
                 foreach (var p in dialog.FileNames)
                 {
                     var path = p;
@@ -90,7 +70,6 @@ namespace Netch.Forms.Mode
 
                     RuleAdd($"^{path.ToRegexString()}");
                 }
-            }
         }
 
         public void ControlButton_Click(object sender, EventArgs e)
@@ -207,5 +186,22 @@ namespace Netch.Forms.Mode
             else
                 MessageBoxX.Show("Fine");
         }
+
+        #region Model
+
+        public IEnumerable<string> Rules => RuleRichTextBox.Lines;
+
+        private void RuleAdd(string value)
+        {
+            RuleRichTextBox.AppendText($"{value}\n");
+        }
+
+        private void RuleAddRange(IEnumerable<string> value)
+        {
+            foreach (var s in value)
+                RuleAdd(s);
+        }
+
+        #endregion
     }
 }

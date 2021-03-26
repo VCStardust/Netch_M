@@ -45,8 +45,13 @@ namespace Netch.Servers.ShadowsocksR
             StartInstanceAuto(command.ToString());
         }
 
+        public override void Stop()
+        {
+            StopInstance();
+        }
+
         [Verb]
-        class SSRParameter : ParameterBase
+        private class SSRParameter : ParameterBase
         {
             public string? s { get; set; }
 
@@ -81,11 +86,6 @@ namespace Netch.Servers.ShadowsocksR
             [Quote]
             [Optional]
             public string? acl { get; set; }
-        }
-
-        public override void Stop()
-        {
-            StopInstance();
         }
     }
 }

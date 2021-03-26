@@ -2,7 +2,6 @@
 using System;
 using System.Runtime.InteropServices;
 
-
 // ReSharper disable All
 
 namespace nfapinet
@@ -35,7 +34,7 @@ namespace nfapinet
         NF_PEND_CONNECT_REQUEST = 64,        // Pend outgoing connect request to complete it later using nf_complete(TCP|UDP)ConnectRequest
         NF_FILTER_AS_IP_PACKETS = 128,       // Indicate the traffic as IP packets via ipSend/ipReceive
         NF_READONLY = 256,                   // Don't block the IP packets and indicate them to ipSend/ipReceive only for monitoring
-        NF_CONTROL_FLOW = 512,               // Use the flow limit rules even without NF_FILTER flag
+        NF_CONTROL_FLOW = 512                // Use the flow limit rules even without NF_FILTER flag
     };
 
     public enum NF_FLAGS
@@ -59,8 +58,8 @@ namespace nfapinet
     };
 
     /**
-	*	Filtering rule
-	**/
+     * Filtering rule
+     */
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct NF_RULE
     {
@@ -91,8 +90,8 @@ namespace nfapinet
     };
 
     /**
-    *	Filtering rule with additional fields
-    **/
+     * Filtering rule with additional fields
+     */
     [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
     public struct NF_RULE_EX
     {
@@ -127,8 +126,8 @@ namespace nfapinet
     };
 
     /**
-	*	TCP connection properties
-	**/
+     * TCP connection properties
+     */
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct NF_TCP_CONN_INFO
     {
@@ -147,8 +146,8 @@ namespace nfapinet
     };
 
     /**
-	*	UDP endpoint properties
-	**/
+     * UDP endpoint properties
+     */
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct NF_UDP_CONN_INFO
     {
@@ -161,8 +160,8 @@ namespace nfapinet
     };
 
     /**
-    *	UDP options
-    **/
+     * UDP options
+     */
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct NF_UDP_OPTIONS
     {
@@ -173,8 +172,8 @@ namespace nfapinet
     };
 
     /**
-	*	UDP connect request properties
-	**/
+     * UDP connect request properties
+     */
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct NF_UDP_CONN_REQUEST
     {
@@ -193,8 +192,8 @@ namespace nfapinet
 
     public enum NF_IP_FLAG
     {
-        NFIF_NONE = 0,     // No flags
-        NFIF_READONLY = 1, // The packet was not blocked and indicated only for monitoring in read-only mode 
+        NFIF_NONE = 0,    // No flags
+        NFIF_READONLY = 1 // The packet was not blocked and indicated only for monitoring in read-only mode 
         // (see NF_READ_ONLY flags from NF_FILTERING_FLAG).
     };
 
@@ -238,8 +237,8 @@ namespace nfapinet
     };
 
     /**
-    *	Binding rule
-    **/
+     * Binding rule
+     */
     [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
     public struct NF_BINDING_RULE
     {
@@ -525,16 +524,26 @@ namespace nfapinet
     // Managed wrapper over API 
     public class NFAPI
     {
+        public enum NF_SOCKET_OPTIONS
+        {
+            TCP_SOCKET_NODELAY = 1,
+            TCP_SOCKET_KEEPALIVE = 2,
+            TCP_SOCKET_OOBINLINE = 3,
+            TCP_SOCKET_BSDURGENT = 4,
+            TCP_SOCKET_ATMARK = 5,
+            TCP_SOCKET_WINDOW = 6
+        }
+
         private static IntPtr m_pEventHandlerRaw = (IntPtr)null;
         private static NF_EventHandlerInternal m_pEventHandler;
         private static IntPtr m_pIPEventHandlerRaw = (IntPtr)null;
         private static NF_IPEventHandlerInternal m_pIPEventHandler;
 
         /**
-		* Initializes the internal data structures and starts the filtering thread.
-		* @param driverName The name of hooking driver, without ".sys" extension.
-		* @param pHandler Pointer to event handling object
-		**/
+         * Initializes the internal data structures and starts the filtering thread.
+         * @param driverName The name of hooking driver, without ".sys" extension.
+         * @param pHandler Pointer to event handling object
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_init(String driverName, IntPtr pHandler);
 
@@ -570,23 +579,23 @@ namespace nfapinet
         }
 
         /**
-		* Stops the filtering thread, breaks all filtered connections and closes
-		* a connection with the hooking driver.
-		**/
+         * Stops the filtering thread, breaks all filtered connections and closes
+         * a connection with the hooking driver.
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern void nf_free();
 
         /**
-		* Registers and starts a driver with specified name (without ".sys" extension)
-		* @param driverName 
-		**/
+         * Registers and starts a driver with specified name (without ".sys" extension)
+         * @param driverName
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_registerDriver(String driverName);
 
         /**
-		* Unregisters a driver with specified name (without ".sys" extension)
-		* @param driverName 
-		**/
+         * Unregisters a driver with specified name (without ".sys" extension)
+         * @param driverName
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_unRegisterDriver(String driverName);
 
@@ -595,35 +604,35 @@ namespace nfapinet
         //
 
         /**
-		* Suspends or resumes indicating of sends and receives for specified connection.
-		* @param id Connection identifier
-		* @param suspended true for suspend, false for resume 
-		**/
+         * Suspends or resumes indicating of sends and receives for specified connection.
+         * @param id Connection identifier
+         * @param suspended true for suspend, false for resume
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_tcpSetConnectionState(ulong id, int suspended);
 
         /**
-		* Sends the buffer to remote server via specified connection.
-		* @param id Connection identifier
-		* @param buf Pointer to data buffer
-		* @param len Buffer length
-		**/
+         * Sends the buffer to remote server via specified connection.
+         * @param id Connection identifier
+         * @param buf Pointer to data buffer
+         * @param len Buffer length
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_tcpPostSend(ulong id, IntPtr buf, int len);
 
         /**
-		* Indicates the buffer to local process via specified connection.
-		* @param id Unique connection identifier
-		* @param buf Pointer to data buffer
-		* @param len Buffer length
-		**/
+         * Indicates the buffer to local process via specified connection.
+         * @param id Unique connection identifier
+         * @param buf Pointer to data buffer
+         * @param len Buffer length
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_tcpPostReceive(ulong id, IntPtr buf, int len);
 
         /**
-		* Breaks the connection with given id.
-		* @param id Connection identifier
-		**/
+         * Breaks the connection with given id.
+         * @param id Connection identifier
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_tcpClose(ulong id);
 
@@ -632,48 +641,48 @@ namespace nfapinet
         //
 
         /**
-		* Suspends or resumes indicating of sends and receives for specified socket.
-		* @param id Socket identifier
-		* @param suspended true for suspend, false for resume 
-		**/
+         * Suspends or resumes indicating of sends and receives for specified socket.
+         * @param id Socket identifier
+         * @param suspended true for suspend, false for resume
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_udpSetConnectionState(ulong id, int suspended);
 
         /**
-		* Sends the buffer to remote server via specified socket.
-		* @param id Socket identifier
-		* @param remoteAddress Destination address
-		* @param buf Pointer to data buffer
-		* @param len Buffer length
-		**/
+         * Sends the buffer to remote server via specified socket.
+         * @param id Socket identifier
+         * @param remoteAddress Destination address
+         * @param buf Pointer to data buffer
+         * @param len Buffer length
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_udpPostSend(ulong id, IntPtr remoteAddress, IntPtr buf, int len, IntPtr options);
 
         /**
-        * Indicates the buffer to local process via specified socket.
-        * @param id Unique connection identifier
-        * @param remoteAddress Source address
-        * @param buf Pointer to data buffer
-        * @param len Buffer length
-        **/
+         * Indicates the buffer to local process via specified socket.
+         * @param id Unique connection identifier
+         * @param remoteAddress Source address
+         * @param buf Pointer to data buffer
+         * @param len Buffer length
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_udpPostReceive(ulong id, IntPtr remoteAddress, IntPtr buf, int len, IntPtr options);
 
         /**
-		* Indicates a packet to TCP/IP stack
-		* @param buf Pointer to IP packet
-		* @param len Buffer length
-		* @param options IP options
-		**/
+         * Indicates a packet to TCP/IP stack
+         * @param buf Pointer to IP packet
+         * @param len Buffer length
+         * @param options IP options
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_ipPostReceive(IntPtr buf, int len, ref NF_IP_PACKET_OPTIONS options);
 
         /**
-		* Sends a packet to remote IP
-		* @param buf Pointer to IP packet
-		* @param len Buffer length
-		* @param options IP options
-		**/
+         * Sends a packet to remote IP
+         * @param buf Pointer to IP packet
+         * @param len Buffer length
+         * @param options IP options
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_ipPostSend(IntPtr buf, int len, ref NF_IP_PACKET_OPTIONS options);
 
@@ -682,10 +691,11 @@ namespace nfapinet
         //
 
         /**
-		* Add a rule to the head of rules list in driver.
-		* @param pRule See <tt>NF_RULE</tt>
-		* @param toHead TRUE (1) - add rule to list head, FALSE (0) - add rule to tail
-		**/
+         * Add a rule to the head of rules list in driver.
+         * @param pRule See
+         * <tt>NF_RULE</tt>
+         * @param toHead TRUE (1) - add rule to list head, FALSE (0) - add rule to tail
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         private static extern NF_STATUS nf_addRule(ref NF_RULE pRule, int toHead);
 
@@ -715,10 +725,11 @@ namespace nfapinet
         }
 
         /**
-        * Add a rule to the head of rules list in driver.
-        * @param pRule See <tt>NF_RULE</tt>
-        * @param toHead TRUE (1) - add rule to list head, FALSE (0) - add rule to tail
-        **/
+         * Add a rule to the head of rules list in driver.
+         * @param pRule See
+         * <tt>NF_RULE</tt>
+         * @param toHead TRUE (1) - add rule to list head, FALSE (0) - add rule to tail
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         private static extern NF_STATUS nf_addRuleEx(ref NF_RULE_EX pRule, int toHead);
 
@@ -733,10 +744,12 @@ namespace nfapinet
         }
 
         /**
-        * Replace the rules in driver with the specified array.
-        * @param pRules Array of <tt>NF_RULE</tt> structures
-        * @param count Number of items in array
-        **/
+         * Replace the rules in driver with the specified array.
+         * @param pRules Array of
+         * <tt>NF_RULE</tt>
+         * structures
+         * @param count Number of items in array
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         private static extern NF_STATUS nf_setRules(IntPtr pRules, int count);
 
@@ -765,10 +778,12 @@ namespace nfapinet
         }
 
         /**
-        * Replace the rules in driver with the specified array.
-        * @param pRules Array of <tt>NF_RULE</tt> structures
-        * @param count Number of items in array
-        **/
+         * Replace the rules in driver with the specified array.
+         * @param pRules Array of
+         * <tt>NF_RULE</tt>
+         * structures
+         * @param count Number of items in array
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         private static extern NF_STATUS nf_setRulesEx(IntPtr pRules, int count);
 
@@ -797,69 +812,70 @@ namespace nfapinet
         }
 
         /**
-        * Removes all rules from driver.
-        **/
+         * Removes all rules from driver.
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_deleteRules();
 
         /**
-		 *	Sets the timeout for TCP connections and returns old timeout.
-		 *	@param timeout Timeout value in milliseconds. Specify zero value to disable timeouts.
-		 */
+         * Sets the timeout for TCP connections and returns old timeout.
+         * @param timeout Timeout value in milliseconds. Specify zero value to disable timeouts.
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern UInt32 nf_setTCPTimeout(UInt32 timeout);
 
         /**
-		 *	Disables indicating TCP packets to user mode for the specified endpoint
-		 *  @param id Socket identifier
-		 */
+         * Disables indicating TCP packets to user mode for the specified endpoint
+         * @param id Socket identifier
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_tcpDisableFiltering(ulong id);
 
         /**
-		 *	Disables indicating UDP packets to user mode for the specified endpoint
-		 *  @param id Socket identifier
-		 */
+         * Disables indicating UDP packets to user mode for the specified endpoint
+         * @param id Socket identifier
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_udpDisableFiltering(ulong id);
 
         /**
-        * Returns TRUE if the specified process acts as a local proxy, accepting the redirected TCP connections.
-        **/
+         * Returns TRUE if the specified process acts as a local proxy, accepting the redirected TCP connections.
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         private static extern bool nf_tcpIsProxy(uint processId);
 
         /**
-        * Set the number of worker threads and initialization flags.
-        * The function should be called before nf_init. 
-        * By default nThreads = 1 and flags = 0
-        * @param nThreads Number of worker threads for NF_EventHandler events 
-        * @param flags A combination of flags from <tt>NF_FLAGS</tt>
-        **/
+         * Set the number of worker threads and initialization flags.
+         * The function should be called before nf_init. 
+         * By default nThreads = 1 and flags = 0
+         * @param nThreads Number of worker threads for NF_EventHandler events 
+         * @param flags A combination of flags from
+         * <tt>NF_FLAGS</tt>
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern void nf_setOptions(uint nThreads, uint flags);
 
         /**
-        * Complete TCP connect request pended using flag NF_PEND_CONNECT_REQUEST.
-        **/
+         * Complete TCP connect request pended using flag NF_PEND_CONNECT_REQUEST.
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_completeTCPConnectRequest(ulong id, ref NF_TCP_CONN_INFO pConnInfo);
 
         /**
-        * Complete UDP connect request pended using flag NF_PEND_CONNECT_REQUEST.
-        **/
+         * Complete UDP connect request pended using flag NF_PEND_CONNECT_REQUEST.
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_completeUDPConnectRequest(ulong id, ref NF_UDP_CONN_REQUEST pConnInfo);
 
         /**
-        * Returns in pConnInfo the properties of TCP connection with specified id.
-        **/
+         * Returns in pConnInfo the properties of TCP connection with specified id.
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_getTCPConnInfo(ulong id, ref NF_TCP_CONN_INFO pConnInfo);
 
         /**
-        * Returns in pConnInfo the properties of UDP socket with specified id.
-        **/
+         * Returns in pConnInfo the properties of UDP socket with specified id.
+         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_getUDPConnInfo(ulong id, ref NF_UDP_CONN_INFO pConnInfo);
 
@@ -870,8 +886,8 @@ namespace nfapinet
         private static extern bool nf_getProcessNameFromKernel(uint processId, IntPtr buf, int len);
 
         /**
-        * Returns the process name for given process id
-        **/
+         * Returns the process name for given process id
+         */
         public static unsafe String nf_getProcessNameFromKernel(UInt32 processId)
         {
             char[] buf = new char[1024];
@@ -888,8 +904,8 @@ namespace nfapinet
         }
 
         /**
-        * Returns the process name for given process id
-        **/
+         * Returns the process name for given process id
+         */
         public static unsafe String nf_getProcessName(UInt32 processId)
         {
             char[] buf = new char[256];
@@ -981,16 +997,6 @@ namespace nfapinet
         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_getUDPStat(ulong id, ref NF_FLOWCTL_STAT pStat);
-
-        public enum NF_SOCKET_OPTIONS
-        {
-            TCP_SOCKET_NODELAY = 1,
-            TCP_SOCKET_KEEPALIVE = 2,
-            TCP_SOCKET_OOBINLINE = 3,
-            TCP_SOCKET_BSDURGENT = 4,
-            TCP_SOCKET_ATMARK = 5,
-            TCP_SOCKET_WINDOW = 6
-        }
 
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
         public static extern NF_STATUS nf_tcpSetSockOpt(ulong id, NF_SOCKET_OPTIONS optname, ref int optval, int optlen);

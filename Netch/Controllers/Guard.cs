@@ -177,6 +177,45 @@ namespace Netch.Controllers
             throw new MessageException($"{Name} 控制器启动超时");
         }
 
+        protected void ReadOutput(TextReader reader)
+        {
+            string? line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                WriteLog(line);
+                OnReadNewLine(line);
+
+                // State == State.Started if !StartedKeywords.Any() 
+                if (State == State.Starting)
+                {
+                    if (StartedKeywords.Any(s => line.Contains(s)))
+                        State = State.Started;
+                    else if (StoppedKeywords.Any(s => line.Contains(s)))
+                        State = State.Stopped;
+                }
+            }
+
+            CloseLogFile();
+            State = State.Stopped;
+        }
+
+        /// <summary>
+        ///     计时器存储日志
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FlushFileStreamTimerEvent(object sender, EventArgs e)
+        {
+            try
+            {
+                _logStreamWriter!.Flush();
+            }
+            catch (Exception exception)
+            {
+                Logging.Warning($"写入 {Name} 日志错误：\n" + exception.Message);
+            }
+        }
+
         #region FileStream
 
         private void OpenLogFile()
@@ -232,44 +271,5 @@ namespace Netch.Controllers
         }
 
         #endregion
-
-        protected void ReadOutput(TextReader reader)
-        {
-            string? line;
-            while ((line = reader.ReadLine()) != null)
-            {
-                WriteLog(line);
-                OnReadNewLine(line);
-
-                // State == State.Started if !StartedKeywords.Any() 
-                if (State == State.Starting)
-                {
-                    if (StartedKeywords.Any(s => line.Contains(s)))
-                        State = State.Started;
-                    else if (StoppedKeywords.Any(s => line.Contains(s)))
-                        State = State.Stopped;
-                }
-            }
-
-            CloseLogFile();
-            State = State.Stopped;
-        }
-
-        /// <summary>
-        ///     计时器存储日志
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FlushFileStreamTimerEvent(object sender, EventArgs e)
-        {
-            try
-            {
-                _logStreamWriter!.Flush();
-            }
-            catch (Exception exception)
-            {
-                Logging.Warning($"写入 {Name} 日志错误：\n" + exception.Message);
-            }
-        }
     }
 }

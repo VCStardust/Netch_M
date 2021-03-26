@@ -12,11 +12,7 @@ namespace Netch.Utils
     {
         public const string DisableModeDirectoryFileName = "disabled";
 
-        public static string ModeDirectoryFullName => Path.Combine(Global.NetchDir, "mode");
-
         private static readonly FileSystemWatcher FileSystemWatcher;
-
-        public static bool SuspendWatcher { get; set; } = false;
 
         static ModeHelper()
         {
@@ -32,6 +28,10 @@ namespace Netch.Utils
             FileSystemWatcher.Deleted += OnModeChanged;
             FileSystemWatcher.Renamed += OnModeChanged;
         }
+
+        public static string ModeDirectoryFullName => Path.Combine(Global.NetchDir, "mode");
+
+        public static bool SuspendWatcher { get; set; } = false;
 
         private static void OnModeChanged(object sender, FileSystemEventArgs e)
         {

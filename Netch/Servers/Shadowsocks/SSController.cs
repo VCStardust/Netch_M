@@ -11,7 +11,8 @@ namespace Netch.Servers.Shadowsocks
 
         protected override IEnumerable<string> StartedKeywords { get; set; } = new[] { "listening at" };
 
-        protected override IEnumerable<string> StoppedKeywords { get; set; } = new[] { "Invalid config path", "usage", "plugin service exit unexpectedly" };
+        protected override IEnumerable<string> StoppedKeywords { get; set; } =
+            new[] { "Invalid config path", "usage", "plugin service exit unexpectedly" };
 
         public override string Name { get; } = "Shadowsocks";
 
@@ -40,6 +41,11 @@ namespace Netch.Servers.Shadowsocks
                 command.acl = $"{Path.GetFullPath(File.Exists(Constants.UserACL) ? Constants.UserACL : Constants.BuiltinACL)}";
 
             StartInstanceAuto(command.ToString());
+        }
+
+        public override void Stop()
+        {
+            StopInstance();
         }
 
         [Verb]
@@ -72,11 +78,6 @@ namespace Netch.Servers.Shadowsocks
             [Quote]
             [Optional]
             public string? acl { get; set; }
-        }
-
-        public override void Stop()
-        {
-            StopInstance();
         }
     }
 }

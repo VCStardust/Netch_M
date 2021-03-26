@@ -14,9 +14,8 @@ namespace Netch.Controllers
 {
     public class NFController : IModeController
     {
-        private static readonly ServiceController NFService = new("netfilter2");
-
         private const string BinDriver = "bin\\nfdriver.sys";
+        private static readonly ServiceController NFService = new("netfilter2");
         private static readonly string SystemDriver = $"{Environment.SystemDirectory}\\drivers\\netfilter2.sys";
 
         public string Name { get; } = "Redirector";
@@ -44,58 +43,13 @@ namespace Netch.Controllers
             aio_dial((int)NameList.TYPE_FILTERCHILDPROC, Global.Settings.ChildProcessHandle.ToString().ToLower());
 
             if (!aio_init())
-            {
                 throw new MessageException("Redirector Start failed, run Netch with \"-console\" argument");
-            }
         }
 
         public void Stop()
         {
             aio_free();
         }
-
-        #region CheckRule
-
-        /// <summary>
-        /// </summary>
-        /// <param name="r"></param>
-        /// <param name="clear"></param>
-        /// <returns>No Problem true</returns>
-        private static bool CheckCppRegex(string r, bool clear = true)
-        {
-            try
-            {
-                if (r.StartsWith("!"))
-                    return aio_dial((int)NameList.TYPE_ADDNAME, r.Substring(1));
-
-                return aio_dial((int)NameList.TYPE_ADDNAME, r);
-            }
-            finally
-            {
-                if (clear)
-                    aio_dial((int)NameList.TYPE_CLRNAME, "");
-            }
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="rules"></param>
-        /// <param name="results"></param>
-        /// <returns>No Problem true</returns>
-        public static bool CheckRules(IEnumerable<string> rules, out IEnumerable<string> results)
-        {
-            results = rules.Where(r => !CheckCppRegex(r, false));
-            aio_dial((int)NameList.TYPE_CLRNAME, "");
-            return !results.Any();
-        }
-
-        public static string GenerateInvalidRulesMessage(IEnumerable<string> rules)
-        {
-            return $"{string.Join("\n", rules)}\nAbove rules does not conform to C++ regular expression syntax";
-        }
-
-        #endregion
-
 
         private void dial_Server(in PortType portType)
         {
@@ -172,6 +126,48 @@ namespace Netch.Controllers
             aio_dial((int)NameList.TYPE_ADDNAME, @"NTT\.exe");
             aio_dial((int)NameList.TYPE_BYPNAME, "^" + Global.NetchDir.ToRegexString() + @"((?!NTT\.exe).)*$");
         }
+
+        #region CheckRule
+
+        /// <summary>
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="clear"></param>
+        /// <returns>No Problem true</returns>
+        private static bool CheckCppRegex(string r, bool clear = true)
+        {
+            try
+            {
+                if (r.StartsWith("!"))
+                    return aio_dial((int)NameList.TYPE_ADDNAME, r.Substring(1));
+
+                return aio_dial((int)NameList.TYPE_ADDNAME, r);
+            }
+            finally
+            {
+                if (clear)
+                    aio_dial((int)NameList.TYPE_CLRNAME, "");
+            }
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="rules"></param>
+        /// <param name="results"></param>
+        /// <returns>No Problem true</returns>
+        public static bool CheckRules(IEnumerable<string> rules, out IEnumerable<string> results)
+        {
+            results = rules.Where(r => !CheckCppRegex(r, false));
+            aio_dial((int)NameList.TYPE_CLRNAME, "");
+            return !results.Any();
+        }
+
+        public static string GenerateInvalidRulesMessage(IEnumerable<string> rules)
+        {
+            return $"{string.Join("\n", rules)}\nAbove rules does not conform to C++ regular expression syntax";
+        }
+
+        #endregion
 
         #region NativeMethods
 

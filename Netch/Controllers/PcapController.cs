@@ -13,17 +13,17 @@ namespace Netch.Controllers
 {
     public class PcapController : Guard, IModeController
     {
-        public override string Name { get; } = "pcap2socks";
+        private readonly OutboundAdapter _outbound = new();
+
+        private LogForm? _form;
 
         public override string MainFile { get; protected set; } = "pcap2socks.exe";
 
         protected override IEnumerable<string> StartedKeywords { get; set; } = new[] { "└" };
 
-        private readonly OutboundAdapter _outbound = new();
-
         protected override Encoding? InstanceOutputEncoding { get; } = Encoding.UTF8;
 
-        private LogForm? _form;
+        public override string Name { get; } = "pcap2socks";
 
         public void Start(in Mode mode)
         {
@@ -40,6 +40,12 @@ namespace Netch.Controllers
 
             argument.Append($" {mode.FullRule.FirstOrDefault() ?? "-P n"}");
             StartInstanceAuto(argument.ToString());
+        }
+
+        public override void Stop()
+        {
+            _form!.Close();
+            StopInstance();
         }
 
         protected override void OnReadNewLine(string line)
@@ -70,12 +76,6 @@ namespace Netch.Controllers
             }
 
             Utils.Utils.Open(LogPath);
-        }
-
-        public override void Stop()
-        {
-            _form!.Close();
-            StopInstance();
         }
     }
 }

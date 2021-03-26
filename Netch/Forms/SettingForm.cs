@@ -110,11 +110,17 @@ namespace Netch.Forms
 
             BindCheckBox(DNSRedirectorCheckBox, b => Global.Settings.RedirectDNS = b, Global.Settings.RedirectDNS);
 
-            BindTextBox(RDRDNSTextBox, s => DnsUtils.TrySplit(s, out _, 2), s => Global.Settings.RedirectDNSAddr = s, Global.Settings.RedirectDNSAddr);
+            BindTextBox(RDRDNSTextBox,
+                s => DnsUtils.TrySplit(s, out _, 2),
+                s => Global.Settings.RedirectDNSAddr = s,
+                Global.Settings.RedirectDNSAddr);
 
             BindCheckBox(ICMPRedirectorCheckBox, b => Global.Settings.RedirectICMP = b, Global.Settings.RedirectICMP);
 
-            BindTextBox(ModifiedICMPTextBox, s => DnsUtils.TrySplit(s, out _, 2), s => Global.Settings.RedirectICMPAddr = s, Global.Settings.RedirectICMPAddr);
+            BindTextBox(ModifiedICMPTextBox,
+                s => DnsUtils.TrySplit(s, out _, 2),
+                s => Global.Settings.RedirectICMPAddr = s,
+                Global.Settings.RedirectICMPAddr);
 
             BindCheckBox(RedirectorSSCheckBox, s => Global.Settings.RedirectorSS = s, Global.Settings.RedirectorSS);
 

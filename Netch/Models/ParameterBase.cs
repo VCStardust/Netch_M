@@ -10,11 +10,11 @@ namespace Netch.Models
         //     null value par
 
         private readonly bool _full;
+        protected readonly string FullPrefix = "--";
 
         protected readonly string ParametersSeparate = " ";
         protected readonly string Separate = " ";
         protected readonly string VerbPrefix = "-";
-        protected readonly string FullPrefix = "--";
 
         protected ParameterBase()
         {
@@ -23,7 +23,7 @@ namespace Netch.Models
 
         public override string ToString()
         {
-            var parameters = GetType().GetProperties().Select(PropToParameter).Where(s => s != null).Cast<string>();
+            var parameters = GetType().GetProperties().Select(PropToParameter).Where(s => s != null);
             return string.Join(ParametersSeparate, parameters).Trim();
         }
 
@@ -85,26 +85,20 @@ namespace Netch.Models
     [AttributeUsage(AttributeTargets.Property)]
     public class RealNameAttribute : Attribute
     {
-        public string Name { get; }
-
         public RealNameAttribute(string name)
         {
             Name = name;
         }
+
+        public string Name { get; }
     }
 
     [Serializable]
     public class RequiredArgumentValueInvalidException : Exception
     {
-        public string? ArgumentName { get; }
-
-        public object? ArgumentObject { get; }
-
-        private readonly string? _message;
-
         private const string DefaultMessage = "{0}'s Argument \"{1}\" value invalid. A required argument's value can't be null or empty.";
 
-        public override string Message => _message ?? string.Format(DefaultMessage, ArgumentObject!.GetType(), ArgumentName);
+        private readonly string? _message;
 
         public RequiredArgumentValueInvalidException()
         {
@@ -117,5 +111,11 @@ namespace Netch.Models
             ArgumentObject = argumentObject;
             _message = message;
         }
+
+        public string? ArgumentName { get; }
+
+        public object? ArgumentObject { get; }
+
+        public override string Message => _message ?? string.Format(DefaultMessage, ArgumentObject!.GetType(), ArgumentName);
     }
 }

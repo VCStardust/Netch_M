@@ -11,8 +11,6 @@ namespace Netch.Models
     {
         private readonly Lazy<List<string>> _lazyRule;
 
-        public string? FullName { get; private set; }
-
         public Mode(string? fullName = default)
         {
             _lazyRule = new Lazy<List<string>>(ReadRules);
@@ -39,6 +37,8 @@ namespace Netch.Models
             var bypassChinaResult = int.TryParse(split.ElementAtOrDefault(2), out var bypassChina);
             BypassChina = this.ClientRouting() && bypassChinaResult && bypassChina == 1;
         }
+
+        public string? FullName { get; }
 
         /// <summary>
         ///     规则
@@ -71,8 +71,7 @@ namespace Netch.Models
         ///     5. Socks5 + HTTP 代理（不设置到系统代理）
         ///     <para />
         /// </summary>
-        public int Type { get; set; } = 0;
-
+        public int Type { get; set; }
 
         /// <summary>
         ///     文件相对路径(必须是存在的文件)

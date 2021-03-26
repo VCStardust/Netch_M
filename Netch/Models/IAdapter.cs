@@ -10,6 +10,5 @@ namespace Netch.Models
         public abstract IPAddress Gateway { get; }
 
         public abstract NetworkInterface NetworkInterface { get; }
-
     }
 }

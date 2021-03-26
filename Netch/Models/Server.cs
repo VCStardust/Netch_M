@@ -66,13 +66,9 @@ namespace Netch.Models
 
             string shortName;
             if (Type == string.Empty)
-            {
                 shortName = "WTF";
-            }
             else
-            {
                 shortName = ServerHelper.GetUtilByTypeName(Type).ShortName;
-            }
 
             return $"[{shortName}][{Group}] {remark}";
         }

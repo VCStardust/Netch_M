@@ -10,13 +10,13 @@ namespace Netch.Models
 {
     public class OutboundAdapter : IAdapter
     {
+        private readonly RegistryKey _parametersRegistry;
+
         public OutboundAdapter(bool logging = true)
         {
             // 寻找出口适配器
             if (IpHlpApi.GetBestRoute(BitConverter.ToUInt32(IPAddress.Parse("114.114.114.114").GetAddressBytes(), 0), 0, out var pRoute) != 0)
-            {
                 throw new MessageException("GetBestRoute 搜索失败");
-            }
 
             NetworkInterface = NetworkInterface.GetAllNetworkInterfaces()
                 .First(ni => ni.Supports(NetworkInterfaceComponent.IPv4) &&
@@ -34,19 +34,6 @@ namespace Netch.Models
             }
         }
 
-        /// <summary>
-        ///     索引
-        /// </summary>
-        public int Index { get; }
-
-        /// <summary>
-        ///     网关
-        /// </summary>
-        public IPAddress Gateway { get; }
-
-        public NetworkInterface NetworkInterface { get; }
-
-
         public string DNS
         {
             get
@@ -63,6 +50,16 @@ namespace Netch.Models
             set => _parametersRegistry.SetValue("NameServer", value, RegistryValueKind.String);
         }
 
-        private readonly RegistryKey _parametersRegistry;
+        /// <summary>
+        ///     索引
+        /// </summary>
+        public int Index { get; }
+
+        /// <summary>
+        ///     网关
+        /// </summary>
+        public IPAddress Gateway { get; }
+
+        public NetworkInterface NetworkInterface { get; }
     }
 }

@@ -51,7 +51,7 @@ namespace Netch.Forms
                 SetWindowPosFlags.SWP_NOACTIVATE | SetWindowPosFlags.SWP_NOMOVE | SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_SHOWWINDOW);
         }
 
-        private void richTextBox1_TextChanged(object sender, System.EventArgs e)
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
             if (!checkBox1.Checked)
                 return;

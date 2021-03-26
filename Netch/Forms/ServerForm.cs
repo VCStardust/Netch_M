@@ -21,11 +21,11 @@ namespace Netch.Forms
 
         private readonly Dictionary<Control, Action<object>> _saveActions = new();
 
+        private readonly IContainer components = null;
+
         private int _controlLines = 2;
         private Label AddressLabel;
         protected TextBox AddressTextBox;
-
-        private readonly IContainer components = null;
 
         private GroupBox ConfigurationGroupBox;
         private Label PortLabel;

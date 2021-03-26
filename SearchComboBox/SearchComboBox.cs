@@ -1,17 +1,21 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
 
 namespace System.Windows.Forms
 {
-    [System.ComponentModel.DesignerCategory(@"Code")]
+    [DesignerCategory(@"Code")]
     public class SearchComboBox : ComboBox
     {
+        private string _keyword;
+
+        private object[] _newList;
+
+        private string prevKeyword;
+
         public SearchComboBox()
         {
             AutoCompleteMode = AutoCompleteMode.Suggest;
         }
-
-
-        private string prevKeyword;
 
         private string Keyword
         {
@@ -26,14 +30,25 @@ namespace System.Windows.Forms
                 }
 
                 if (_keyword == value)
-                {
                     return;
-                }
 
                 _keyword = value;
                 ReevaluateCompletionList();
             }
         }
+
+        private object[] AutoFillTag
+        {
+            get
+            {
+                if (Tag == null)
+                    Tag = Items.Cast<object>().ToArray();
+
+                return (object[])Tag;
+            }
+        }
+
+        private bool IsOriginalItems => Items.Count == AutoFillTag.Length;
 
         protected override void OnTextChanged(EventArgs e)
         {
@@ -43,14 +58,13 @@ namespace System.Windows.Forms
                 {
                     if (!IsOriginalItems)
                         ResetCompletionList();
+
                     Keyword = null;
                 }
                 else
                 {
                     if (AutoFillTag.All(o => o.ToString() != Text))
-                    {
                         Keyword = Text;
-                    }
                 }
             }
             finally
@@ -58,22 +72,6 @@ namespace System.Windows.Forms
                 base.OnTextChanged(e);
             }
         }
-
-
-        private object[] AutoFillTag
-        {
-            get
-            {
-                if (Tag == null)
-                {
-                    Tag = Items.Cast<object>().ToArray();
-                }
-
-                return (object[])Tag;
-            }
-        }
-
-        private bool IsOriginalItems => Items.Count == AutoFillTag.Length;
 
         public void ResetCompletionList()
         {
@@ -103,9 +101,6 @@ namespace System.Windows.Forms
             return -1;
         }
 
-        private object[] _newList;
-        private string _keyword;
-
         private void ReevaluateCompletionList()
         {
             SuspendLayout();
@@ -113,21 +108,15 @@ namespace System.Windows.Forms
 
             var selectionStart = SelectionStart;
             if (selectionStart == Text.Length)
-            {
                 selectionStart = -1;
-            }
             else
-            {
                 selectionStart = findFirstDifIndex(prevKeyword, Keyword);
-            }
 
             try
             {
                 var originalList = AutoFillTag;
                 if (originalList == null)
-                {
                     Tag = originalList = Items.Cast<object>().ToArray();
-                }
 
                 if (string.IsNullOrEmpty(Keyword))
                 {
@@ -145,13 +134,7 @@ namespace System.Windows.Forms
                     Items.AddRange(_newList.ToArray());
 
                     if (!DroppedDown)
-                    {
                         DroppedDown = true;
-                    }
-                    else
-                    {
-                        // TODO 预期下拉框高度变长则重新打开下拉框
-                    }
 
                     Cursor.Current = Cursors.Default;
                 }
@@ -162,13 +145,9 @@ namespace System.Windows.Forms
                 }
 
                 if (selectionStart == -1)
-                {
                     Select(Text.Length, 0);
-                }
                 else
-                {
                     Select(selectionStart + 1, 0);
-                }
             }
             finally
             {

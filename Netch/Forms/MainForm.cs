@@ -295,13 +295,11 @@ namespace Netch.Forms
 
             var server = ServerComboBox.SelectedItem as Server;
             if (useProxy)
-            {
                 if (server == null)
                 {
                     MessageBoxX.Show(i18N.Translate("Please select a server first"));
                     return;
                 }
-            }
 
             if (Global.Settings.SubscribeLink.Count <= 0)
             {
@@ -560,6 +558,7 @@ namespace Netch.Forms
                 DialogResult.OK)
 
                 NotifyTip(i18N.Translate("Start downloading new version"));
+
             NewVersionLabel.Enabled = false;
             NewVersionLabel.Text = "...";
 
@@ -1374,9 +1373,7 @@ namespace Netch.Forms
             Hide();
 
             if (saveConfiguration)
-            {
                 Configuration.Save();
-            }
 
             foreach (var file in new[] { "data\\last.json", "data\\privoxy.conf" })
                 if (File.Exists(file))

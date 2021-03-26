@@ -106,9 +106,7 @@ namespace Netch
         private static void SingleInstance_ArgumentsReceived(IEnumerable<string> args)
         {
             if (args.Contains(Constants.Parameter.Show))
-            {
                 Global.MainForm.ShowMainFormToolStripButton_Click(null!, null!);
-            }
         }
     }
 }

@@ -15,11 +15,14 @@ namespace Netch.Controllers
     {
         private readonly List<string> _directIPs = new();
 
+        private readonly OutboundAdapter _outbound = new();
+
         private readonly List<string> _proxyIPs = new();
         /// <summary>
         ///     服务器 IP 地址
         /// </summary>
         private IPAddress _serverAddresses = null!;
+        private TapAdapter _tap = null!;
 
         /// <summary>
         ///     本地 DNS 服务控制器
@@ -35,9 +38,6 @@ namespace Netch.Controllers
         protected override Encoding InstanceOutputEncoding { get; } = Encoding.UTF8;
 
         public override string Name { get; } = "tun2socks";
-
-        private readonly OutboundAdapter _outbound = new();
-        private TapAdapter _tap = null!;
 
         public void Start(in Mode mode)
         {
@@ -79,24 +79,6 @@ namespace Netch.Controllers
             StartInstanceAuto(parameter.ToString(), ProcessPriorityClass.RealTime);
 
             SetupRouteTable(mode);
-        }
-
-        [Verb]
-        public class Tun2SocksParameter : ParameterBase
-        {
-            public string proxyServer { get; set; }
-
-            public string tunAddr { get; set; }
-
-            public string tunMask { get; set; }
-
-            public string tunGw { get; set; }
-
-            public string tunDns { get; set; }
-
-            public string tunName { get; set; }
-
-            public bool fakeDns { get; set; }
         }
 
         /// <summary>
@@ -273,6 +255,24 @@ namespace Netch.Controllers
                 Logging.Warning($"Failed to {action} Route on {routeType} Adapter: {ipNetwork} metric {metric}");
 
             return result;
+        }
+
+        [Verb]
+        public class Tun2SocksParameter : ParameterBase
+        {
+            public string proxyServer { get; set; }
+
+            public string tunAddr { get; set; }
+
+            public string tunMask { get; set; }
+
+            public string tunGw { get; set; }
+
+            public string tunDns { get; set; }
+
+            public string tunName { get; set; }
+
+            public bool fakeDns { get; set; }
         }
 
         private enum RouteType

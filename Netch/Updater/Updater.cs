@@ -15,6 +15,37 @@ namespace Netch.Updater
 {
     public class Updater
     {
+        private readonly string _installDirectory;
+        private readonly string _tempDirectory;
+
+        private readonly string _updateFile;
+
+        private Updater(string updateFile, string installDirectory)
+        {
+            _updateFile = updateFile;
+            _installDirectory = installDirectory;
+            _tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+
+            Directory.CreateDirectory(_tempDirectory);
+        }
+
+        #region Clean files marked as old when start
+
+        public static void CleanOld(string targetPath)
+        {
+            foreach (var f in Directory.GetFiles(targetPath, "*.old", SearchOption.AllDirectories))
+                try
+                {
+                    File.Delete(f);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+        }
+
+        #endregion
+
         #region Download Update and apply update
 
         /// <summary>
@@ -77,19 +108,6 @@ namespace Netch.Updater
 
         #endregion
 
-        private readonly string _updateFile;
-        private readonly string _installDirectory;
-        private readonly string _tempDirectory;
-
-        private Updater(string updateFile, string installDirectory)
-        {
-            _updateFile = updateFile;
-            _installDirectory = installDirectory;
-            _tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-
-            Directory.CreateDirectory(_tempDirectory);
-        }
-
         #region Apply Update
 
         private static readonly ImmutableArray<string> KeepDirectories = new List<string> { "data", "mode\\Custom" }.ToImmutableArray();
@@ -116,6 +134,7 @@ namespace Netch.Updater
             {
                 // ignored
             }
+
             #endregion
 
             // extract Update file to {tempDirectory}\extract
@@ -202,23 +221,6 @@ namespace Netch.Updater
                 File.Delete(destFile);
                 File.Move(file, destFile);
             }
-        }
-
-        #endregion
-
-        #region Clean files marked as old when start
-
-        public static void CleanOld(string targetPath)
-        {
-            foreach (var f in Directory.GetFiles(targetPath, "*.old", SearchOption.AllDirectories))
-                try
-                {
-                    File.Delete(f);
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
         }
 
         #endregion

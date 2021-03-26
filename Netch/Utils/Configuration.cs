@@ -9,13 +9,6 @@ namespace Netch.Utils
 {
     public static class Configuration
     {
-        /// <summary>
-        ///     数据目录
-        /// </summary>
-        public static string DataDirectoryFullName => Path.Combine(Global.NetchDir, "data");
-
-        public static string SettingFileFullName => $"{DataDirectoryFullName}\\settings.json";
-
         private static readonly JsonSerializerOptions JsonSerializerOptions = Global.NewDefaultJsonSerializerOptions;
 
         static Configuration()
@@ -25,12 +18,18 @@ namespace Netch.Utils
         }
 
         /// <summary>
+        ///     数据目录
+        /// </summary>
+        public static string DataDirectoryFullName => Path.Combine(Global.NetchDir, "data");
+
+        public static string SettingFileFullName => $"{DataDirectoryFullName}\\settings.json";
+
+        /// <summary>
         ///     加载配置
         /// </summary>
         public static void Load()
         {
             if (File.Exists(SettingFileFullName))
-            {
                 try
                 {
                     using var fileStream = File.OpenRead(SettingFileFullName);
@@ -47,12 +46,9 @@ namespace Netch.Utils
                     Environment.Exit(-1);
                     Global.Settings = null!;
                 }
-            }
             else
-            {
                 // 保存默认设置
                 Save();
-            }
         }
 
         private static void CheckSetting(Setting settings)

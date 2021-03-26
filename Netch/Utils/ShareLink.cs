@@ -48,7 +48,6 @@ namespace Netch.Utils
             {
                 var errorFlag = false;
                 foreach (var line in text.GetLines())
-                {
                     try
                     {
                         list.AddRange(ParseUri(line));
@@ -58,7 +57,6 @@ namespace Netch.Utils
                         errorFlag = true;
                         Logging.Error(e.ToString());
                     }
-                }
 
                 if (errorFlag)
                     Utils.Open(Logging.LogFile);

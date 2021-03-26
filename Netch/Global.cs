@@ -13,7 +13,6 @@ namespace Netch
         /// <summary>
         ///     主窗体的静态实例
         /// </summary>
-        
         private static readonly Lazy<MainForm> LazyMainForm = new(() => new MainForm());
 
         /// <summary>
@@ -25,7 +24,8 @@ namespace Netch
         ///     用于存储模式
         /// </summary>
         public static readonly List<Mode> Modes = new();
-
+        public static readonly string NetchDir = Application.StartupPath;
+        public static readonly string NetchExecutable = Application.ExecutablePath;
 
         /// <summary>
         ///     主窗体的静态实例
@@ -38,7 +38,5 @@ namespace Netch
             IgnoreNullValues = true,
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
-        public static readonly string NetchDir = Application.StartupPath;
-        public static readonly string NetchExecutable = Application.ExecutablePath;
     }
 }

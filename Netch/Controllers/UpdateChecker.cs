@@ -90,6 +90,7 @@ namespace Netch.Controllers
             fileName = match.Groups["filename"].Value;
             sha256 = match.Groups["sha256"].Value;
         }
+
         public static string GetLatestReleaseContent()
         {
             var sb = new StringBuilder();
