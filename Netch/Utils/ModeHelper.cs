@@ -84,9 +84,9 @@ namespace Netch.Utils
                     {
                         Global.Modes.Add(new Mode(file));
                     }
-                    catch
+                    catch(Exception e)
                     {
-                        // ignored
+                        Logging.Warning($"Load mode \"{file}\" failed: {e.Message}");
                     }
             }
             catch
@@ -110,19 +110,26 @@ namespace Netch.Utils
 
         public static bool SkipServerController(Server server, Mode mode)
         {
-            return mode.Type switch
+            switch (mode.Type)
             {
-                0 => server switch
-                {
-                    Socks5 => true,
-                    Shadowsocks shadowsocks when !shadowsocks.HasPlugin() && Global.Settings.RedirectorSS => true,
-                    _ => false
-                },
-                _ => false
-            };
+                case 0:
+                    return server switch
+                           {
+                               Socks5 => true,
+                               Shadowsocks shadowsocks when !shadowsocks.HasPlugin() && Global.Settings.RedirectorSS => true,
+                               _ => false
+                           };
+                case 1:
+                case 2:
+                    return server is Socks5;
+                default:
+                    return false;
+            }
         }
 
-        public static IModeController? GetModeControllerByType(int type, out ushort? port, out string portName)
+        public static readonly int[] ModeTypes = { 0, 1, 2, 6 };
+
+        public static IModeController GetModeControllerByType(int type, out ushort? port, out string portName)
         {
             port = null;
             portName = string.Empty;
@@ -134,15 +141,7 @@ namespace Netch.Utils
                     return new NFController();
                 case 1:
                 case 2:
-                    return new TUNTAPController();
-                case 3:
-                case 5:
-                    port = Global.Settings.HTTPLocalPort;
-                    portName = "HTTP";
-                    StatusPortInfoText.HttpPort = (ushort)port;
-                    return new HTTPController();
-                case 4:
-                    return null;
+                    return new TUNController();
                 case 6:
                     return new PcapController();
                 default:

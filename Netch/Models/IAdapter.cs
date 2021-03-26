@@ -5,10 +5,10 @@ namespace Netch.Models
 {
     public interface IAdapter
     {
-        public abstract int Index { get; }
+        int InterfaceIndex { get; }
 
-        public abstract IPAddress Gateway { get; }
+        IPAddress Gateway { get; }
 
-        public abstract NetworkInterface NetworkInterface { get; }
+        NetworkInterface NetworkInterface { get; }
     }
 }

@@ -38,15 +38,11 @@
             this.SubscribeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ManageSubscribeLinksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.UpdateServersFromSubscribeLinksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.UpdateServersFromSubscribeLinksWithProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CleanDNSCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.UpdateACLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.updateACLWithProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.updatePACToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.UninstallServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.UninstallTapDriverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeNetchFirewallRulesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CheckForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -171,8 +167,7 @@
             // 
             this.SubscribeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ManageSubscribeLinksToolStripMenuItem,
-            this.UpdateServersFromSubscribeLinksToolStripMenuItem,
-            this.UpdateServersFromSubscribeLinksWithProxyToolStripMenuItem});
+            this.UpdateServersFromSubscribeLinksToolStripMenuItem});
             this.SubscribeToolStripMenuItem.Margin = new System.Windows.Forms.Padding(0, 0, 0, 1);
             this.SubscribeToolStripMenuItem.Name = "SubscribeToolStripMenuItem";
             this.SubscribeToolStripMenuItem.Size = new System.Drawing.Size(77, 21);
@@ -192,23 +187,13 @@
             this.UpdateServersFromSubscribeLinksToolStripMenuItem.Text = "Update Servers From Subscribe Links";
             this.UpdateServersFromSubscribeLinksToolStripMenuItem.Click += new System.EventHandler(this.UpdateServersFromSubscribeLinksToolStripMenuItem_Click);
             // 
-            // UpdateServersFromSubscribeLinksWithProxyToolStripMenuItem
-            // 
-            this.UpdateServersFromSubscribeLinksWithProxyToolStripMenuItem.Name = "UpdateServersFromSubscribeLinksWithProxyToolStripMenuItem";
-            this.UpdateServersFromSubscribeLinksWithProxyToolStripMenuItem.Size = new System.Drawing.Size(360, 22);
-            this.UpdateServersFromSubscribeLinksWithProxyToolStripMenuItem.Text = "Update Servers From Subscribe Links With Proxy";
-            this.UpdateServersFromSubscribeLinksWithProxyToolStripMenuItem.Click += new System.EventHandler(this.UpdateServersFromSubscribeLinksWithProxyToolStripMenuItem_Click);
-            // 
             // OptionsToolStripMenuItem
             // 
             this.OptionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenDirectoryToolStripMenuItem,
             this.CleanDNSCacheToolStripMenuItem,
             this.UpdateACLToolStripMenuItem,
-            this.updateACLWithProxyToolStripMenuItem,
-            this.updatePACToolStripMenuItem,
             this.UninstallServiceToolStripMenuItem,
-            this.UninstallTapDriverToolStripMenuItem,
             this.removeNetchFirewallRulesToolStripMenuItem});
             this.OptionsToolStripMenuItem.Margin = new System.Windows.Forms.Padding(0, 0, 0, 1);
             this.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem";
@@ -236,33 +221,12 @@
             this.UpdateACLToolStripMenuItem.Text = "Update ACL";
             this.UpdateACLToolStripMenuItem.Click += new System.EventHandler(this.updateACLToolStripMenuItem_Click);
             // 
-            // updateACLWithProxyToolStripMenuItem
-            // 
-            this.updateACLWithProxyToolStripMenuItem.Name = "updateACLWithProxyToolStripMenuItem";
-            this.updateACLWithProxyToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
-            this.updateACLWithProxyToolStripMenuItem.Text = "Update ACL with proxy";
-            this.updateACLWithProxyToolStripMenuItem.Click += new System.EventHandler(this.updateACLWithProxyToolStripMenuItem_Click);
-            // 
-            // updatePACToolStripMenuItem
-            // 
-            this.updatePACToolStripMenuItem.Name = "updatePACToolStripMenuItem";
-            this.updatePACToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
-            this.updatePACToolStripMenuItem.Text = "Update PAC";
-            this.updatePACToolStripMenuItem.Click += new System.EventHandler(this.updatePACToolStripMenuItem_Click);
-            // 
             // UninstallServiceToolStripMenuItem
             // 
             this.UninstallServiceToolStripMenuItem.Name = "UninstallServiceToolStripMenuItem";
             this.UninstallServiceToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.UninstallServiceToolStripMenuItem.Text = "Uninstall NF Service";
             this.UninstallServiceToolStripMenuItem.Click += new System.EventHandler(this.UninstallServiceToolStripMenuItem_Click);
-            // 
-            // UninstallTapDriverToolStripMenuItem
-            // 
-            this.UninstallTapDriverToolStripMenuItem.Name = "UninstallTapDriverToolStripMenuItem";
-            this.UninstallTapDriverToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
-            this.UninstallTapDriverToolStripMenuItem.Text = "Uninstall TUN/TAP driver";
-            this.UninstallTapDriverToolStripMenuItem.Click += new System.EventHandler(this.UninstallTapDriverToolStripMenuItem_Click);
             // 
             // removeNetchFirewallRulesToolStripMenuItem
             // 
@@ -801,7 +765,6 @@
         private System.Windows.Forms.Label ProfileLabel;
         private System.Windows.Forms.TextBox ProfileNameText;
         private System.Windows.Forms.TableLayoutPanel ProfileTable;
-        private System.Windows.Forms.ToolStripMenuItem UninstallTapDriverToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CheckForUpdatesToolStripMenuItem;
         private System.Windows.Forms.ComboBox ServerComboBox;
         private System.Windows.Forms.Label ServerLabel;
@@ -816,9 +779,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.ToolStripMenuItem UninstallServiceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem UpdateACLToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem updateACLWithProxyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem UpdateServersFromSubscribeLinksToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem UpdateServersFromSubscribeLinksWithProxyToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel UploadSpeedLabel;
         private System.Windows.Forms.ToolStripStatusLabel UsedBandwidthLabel;
         private System.Windows.Forms.ToolStripLabel NewVersionLabel;
@@ -831,6 +792,5 @@
 
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.ContainerControl ButtomControlContainerControl;
-        private System.Windows.Forms.ToolStripMenuItem updatePACToolStripMenuItem;
     }
 }

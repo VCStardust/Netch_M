@@ -22,7 +22,7 @@ namespace Netch.Models
                 .First(ni => ni.Supports(NetworkInterfaceComponent.IPv4) &&
                              ni.GetIPProperties().GetIPv4Properties().Index == pRoute.dwForwardIfIndex);
 
-            Index = (int)pRoute.dwForwardIfIndex;
+            InterfaceIndex = (int)pRoute.dwForwardIfIndex;
             Gateway = new IPAddress(pRoute.dwForwardNextHop.S_un_b);
             _parametersRegistry =
                 Registry.LocalMachine.OpenSubKey($@"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\{NetworkInterface.Id}", true)!;
@@ -30,7 +30,7 @@ namespace Netch.Models
             if (logging)
             {
                 Logging.Info($"出口 网关 地址：{Gateway}");
-                Logging.Info($"出口适配器：{NetworkInterface.Name} {NetworkInterface.Id} {NetworkInterface.Description}, index: {Index}");
+                Logging.Info($"出口适配器：{NetworkInterface.Name} {NetworkInterface.Id} {NetworkInterface.Description}, index: {InterfaceIndex}");
             }
         }
 
@@ -53,7 +53,7 @@ namespace Netch.Models
         /// <summary>
         ///     索引
         /// </summary>
-        public int Index { get; }
+        public int InterfaceIndex { get; }
 
         /// <summary>
         ///     网关

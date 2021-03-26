@@ -137,32 +137,31 @@ namespace Netch.Forms
 
             BindTextBox(TUNTAPAddressTextBox,
                 s => IPAddress.TryParse(s, out _),
-                s => Global.Settings.TUNTAP.Address = s,
-                Global.Settings.TUNTAP.Address);
+                s => Global.Settings.WinTUN.Address = s,
+                Global.Settings.WinTUN.Address);
 
             BindTextBox(TUNTAPNetmaskTextBox,
                 s => IPAddress.TryParse(s, out _),
-                s => Global.Settings.TUNTAP.Netmask = s,
-                Global.Settings.TUNTAP.Netmask);
+                s => Global.Settings.WinTUN.Netmask = s,
+                Global.Settings.WinTUN.Netmask);
 
             BindTextBox(TUNTAPGatewayTextBox,
                 s => IPAddress.TryParse(s, out _),
-                s => Global.Settings.TUNTAP.Gateway = s,
-                Global.Settings.TUNTAP.Gateway);
+                s => Global.Settings.WinTUN.Gateway = s,
+                Global.Settings.WinTUN.Gateway);
 
-            BindCheckBox(UseCustomDNSCheckBox, b => { Global.Settings.TUNTAP.UseCustomDNS = b; }, Global.Settings.TUNTAP.UseCustomDNS);
+            BindCheckBox(UseCustomDNSCheckBox, b => { Global.Settings.WinTUN.UseCustomDNS = b; }, Global.Settings.WinTUN.UseCustomDNS);
 
             BindTextBox(TUNTAPDNSTextBox,
                 s => !UseCustomDNSCheckBox.Checked || DnsUtils.TrySplit(s, out _, 2),
                 s =>
                 {
                     if (UseCustomDNSCheckBox.Checked)
-                        Global.Settings.TUNTAP.DNS = DnsUtils.Split(s).ToList();
+                        Global.Settings.WinTUN.DNS = DnsUtils.Split(s).ToList();
                 },
-                DnsUtils.Join(Global.Settings.TUNTAP.DNS));
+                DnsUtils.Join(Global.Settings.WinTUN.DNS));
 
-            BindCheckBox(ProxyDNSCheckBox, b => Global.Settings.TUNTAP.ProxyDNS = b, Global.Settings.TUNTAP.ProxyDNS);
-            BindCheckBox(UseFakeDNSCheckBox, b => Global.Settings.TUNTAP.UseFakeDNS = b, Global.Settings.TUNTAP.UseFakeDNS);
+            BindCheckBox(ProxyDNSCheckBox, b => Global.Settings.WinTUN.ProxyDNS = b, Global.Settings.WinTUN.ProxyDNS);
 
             #endregion
 
@@ -241,13 +240,12 @@ namespace Netch.Forms
         private void SettingForm_Load(object sender, EventArgs e)
         {
             TUNTAPUseCustomDNSCheckBox_CheckedChanged(null, null);
-            Task.Run(() => BeginInvoke(new Action(() => UseFakeDNSCheckBox.Visible = Flags.SupportFakeDns)));
         }
 
         private void TUNTAPUseCustomDNSCheckBox_CheckedChanged(object? sender, EventArgs? e)
         {
             if (UseCustomDNSCheckBox.Checked)
-                TUNTAPDNSTextBox.Text = Global.Settings.TUNTAP.DNS.Any() ? DnsUtils.Join(Global.Settings.TUNTAP.DNS) : "1.1.1.1";
+                TUNTAPDNSTextBox.Text = Global.Settings.WinTUN.DNS.Any() ? DnsUtils.Join(Global.Settings.WinTUN.DNS) : "1.1.1.1";
             else
                 TUNTAPDNSTextBox.Text = "AioDNS";
         }

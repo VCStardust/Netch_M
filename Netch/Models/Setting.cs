@@ -6,7 +6,7 @@ namespace Netch.Models
     /// <summary>
     ///     TUN/TAP 适配器配置类
     /// </summary>
-    public class TUNTAPConfig
+    public class TUNConfig
     {
         /// <summary>
         ///     地址
@@ -37,11 +37,6 @@ namespace Netch.Models
         ///     使用自定义 DNS 设置
         /// </summary>
         public bool UseCustomDNS { get; set; } = false;
-
-        /// <summary>
-        ///     使用Fake DNS
-        /// </summary>
-        public bool UseFakeDNS { get; set; } = false;
     }
 
     public class KcpConfig
@@ -82,7 +77,7 @@ namespace Netch.Models
 
         public string Protocol { get; set; } = "tcp";
 
-        public string RulePath { get; set; } = "bin\\china_site_list";
+        public string RulePath { get; set; } = "bin\\aiodns.conf";
     }
 
     /// <summary>
@@ -280,17 +275,12 @@ namespace Netch.Models
         /// <summary>
         ///     TUNTAP 适配器配置
         /// </summary>
-        public TUNTAPConfig TUNTAP { get; set; } = new();
+        public TUNConfig WinTUN { get; set; } = new();
 
         /// <summary>
         ///     是否打开软件时更新订阅
         /// </summary>
         public bool UpdateServersWhenOpened { get; set; } = false;
-
-        /// <summary>
-        ///     使用代理更新订阅
-        /// </summary>
-        public bool UseProxyToUpdateSubscription { get; set; } = false;
 
         public V2rayConfig V2RayConfig { get; set; } = new();
 

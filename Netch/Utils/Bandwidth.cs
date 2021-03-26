@@ -68,9 +68,6 @@ namespace Netch.Utils
                 {
                     case null:
                         break;
-                    case HTTPController httpController:
-                        instances.Add(httpController.PrivoxyController.Instance!);
-                        break;
                     case NFController _:
                         instances.Add(Process.GetCurrentProcess());
                         break;
