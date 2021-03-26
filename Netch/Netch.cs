@@ -1,5 +1,6 @@
 ﻿using Netch.Controllers;
 using Netch.Forms;
+using Netch.Models;
 using Netch.Utils;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Netch.Services;
 
 namespace Netch
 {
     public static class Netch
     {
-        public static readonly SingleInstance.SingleInstance SingleInstance = new($"Global\\{nameof(Netch)}");
-
         /// <summary>
         ///     应用程序的主入口点
         /// </summary>
@@ -25,9 +23,11 @@ namespace Netch
 #if DEBUG
             AttachConsole();
 #else
-            if (args.Contains(Constants.Parameter.Console))
+            if (args.Contains("-console"))
                 AttachConsole();
 #endif
+
+            Global.LogStopwatch = new LogStopwatch("Netch");
 
             // 设置当前目录
             Directory.SetCurrentDirectory(Global.NetchDir);
@@ -43,18 +43,22 @@ namespace Netch
                 if (!Directory.Exists(item))
                     Directory.CreateDirectory(item);
 
+            Global.LogStopwatch.Log("Clean Old, Create Directory");
+
             // 加载配置
             Configuration.Load();
 
-            if (!SingleInstance.IsFirstInstance)
+            Global.LogStopwatch.Log("Load Configuration");
+
+            if (!Global.SingleInstance.IsFirstInstance)
             {
-                SingleInstance.PassArgumentsToFirstInstance(args.Append(Constants.Parameter.Show));
+                Global.SingleInstance.PassArgumentsToFirstInstance(args.Append(Global.ParameterShow));
                 Environment.Exit(0);
                 return;
             }
 
-            SingleInstance.ArgumentsReceived.Subscribe(SingleInstance_ArgumentsReceived);
-            SingleInstance.ListenForArgumentsFromSuccessiveInstances();
+            Global.SingleInstance.ArgumentsReceived.Subscribe(SingleInstance_ArgumentsReceived);
+            Global.SingleInstance.ListenForArgumentsFromSuccessiveInstances();
 
             // 清理上一次的日志文件，防止淤积占用磁盘空间
             if (Directory.Exists("logging"))
@@ -80,14 +84,15 @@ namespace Netch
             Logging.Info($"版本: {UpdateChecker.Owner}/{UpdateChecker.Repo}@{UpdateChecker.Version}");
             Task.Run(() => { Logging.Info($"主程序 SHA256: {Utils.Utils.SHA256CheckSum(Global.NetchExecutable)}"); });
 
+            Global.LogStopwatch.Log("Get Info, Pre-Form");
+
             // 绑定错误捕获
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.ThreadException += Application_OnException;
 
-            DependencyInjection.Register();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(DependencyInjection.GetService<MainForm>());
+            Application.Run(Global.MainForm);
         }
 
         private static void AttachConsole()
@@ -104,7 +109,7 @@ namespace Netch
 
         private static void SingleInstance_ArgumentsReceived(IEnumerable<string> args)
         {
-            if (args.Contains(Constants.Parameter.Show))
+            if (args.Contains(Global.ParameterShow))
             {
                 Global.MainForm.ShowMainFormToolStripButton_Click(null!, null!);
             }

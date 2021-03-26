@@ -44,17 +44,13 @@
 
     <ItemGroup>
         <PackageReference Include="HMBSbige.SingleInstance" Version="5.0.0" />
-        <PackageReference Include="ILMerge" Version="3.0.41" />
         <PackageReference Include="MaxMind.GeoIP2" Version="4.0.1" />
         <PackageReference Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="2.0.66" GeneratePathProperty="true" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0-preview.2.21154.6" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0-preview.2.21154.6" />
         <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.2.21154.6" />
         <PackageReference Include="Nullable.Extended.Analyzer" Version="1.2.4089">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="ReactiveUI" Version="13.2.2" />
         <PackageReference Include="System.Collections.Immutable" Version="6.0.0-preview.2.21154.6" />
         <PackageReference Include="System.Reflection.Metadata" Version="6.0.0-preview.2.21154.6" />
         <PackageReference Include="System.Text.Json" Version="6.0.0-preview.2.21154.6" />
@@ -68,6 +64,7 @@
 
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
         <!--    .NET Framework    -->
+        <PackageReference Include="ILMerge" Version="3.0.41" />
         <Reference Include="System.Management" />
         <Reference Include="System.ServiceProcess" />
         <Reference Include="System.Web" />
@@ -81,7 +78,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Interop.nfapinet\Interop.nfapinet.csproj" />
         <ProjectReference Include="..\SearchComboBox\SearchComboBox.csproj" />
     </ItemGroup>
 
@@ -128,7 +124,7 @@
         </VisualStudio>
     </ProjectExtensions>
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="set TargetFramework=$(TargetFramework)&#xD;&#xA;set Configuration=$(Configuration)&#xD;&#xA;set ILMergeConsolePath=$(ILMergeConsolePath)&#xD;&#xA;set TargetDir=$(TargetDir)&#xD;&#xA;set SolutionDir=$(SolutionDir)&#xD;&#xA;call $(ProjectDir)PostBuild.bat" />
+        <Exec Command="set TargetFramework=$(TargetFramework)&#xD;&#xA;set Configuration=$(Configuration)&#xD;&#xA;set ILMergeConsolePath=$(ILMergeConsolePath)&#xD;&#xA;set TargetDir=$(TargetDir)&#xD;&#xA;set SolutionDir=$(SolutionDir)&#xD;&#xA;$(ProjectDir)PostBuild.bat" />
     </Target>
 
     <Target Condition="'$(PublishSingleFile)' == 'true'" AfterTargets="_ComputeFilesToBundle" Name="RemoveDupeAssemblies">

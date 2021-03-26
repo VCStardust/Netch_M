@@ -2,8 +2,6 @@
 using System;
 using System.Runtime.InteropServices;
 
-// ReSharper disable All
-
 namespace nfapinet
 {
     public enum NF_STATUS

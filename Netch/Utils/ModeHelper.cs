@@ -16,8 +16,6 @@ namespace Netch.Utils
 
         private static readonly FileSystemWatcher FileSystemWatcher;
 
-        public static bool SuspendWatcher { get; set; } = false;
-
         static ModeHelper()
         {
             FileSystemWatcher = new FileSystemWatcher(ModeDirectoryFullName)
@@ -35,9 +33,6 @@ namespace Netch.Utils
 
         private static void OnModeChanged(object sender, FileSystemEventArgs e)
         {
-            if (SuspendWatcher)
-                return;
-
             Load();
             Global.MainForm.LoadModes();
         }
