@@ -30,7 +30,9 @@ namespace Netch.Utils
             while ((size ?? d) > step)
             {
                 if (level >= 6) // Suffix.Length - 1
+                {
                     break;
+                }
 
                 level++;
                 size = (size ?? d) / step;
@@ -45,7 +47,9 @@ namespace Netch.Utils
         public static void NetTraffic()
         {
             if (!Flags.IsWindows10Upper)
+            {
                 return;
+            }
 
             var counterLock = new object();
             //int sent = 0;
@@ -58,12 +62,15 @@ namespace Netch.Utils
                     break;
                 case Guard instanceController:
                     if (instanceController.Instance != null)
+                    {
                         instances.Add(instanceController.Instance);
+                    }
 
                     break;
             }
 
             if (!instances.Any())
+            {
                 switch (MainController.ModeController)
                 {
                     case null:
@@ -75,6 +82,7 @@ namespace Netch.Utils
                         instances.Add(instanceController.Instance!);
                         break;
                 }
+            }
 
             var processList = instances.Select(instance => instance.Id).ToList();
 
@@ -83,7 +91,9 @@ namespace Netch.Utils
             received = 0;
 
             if (!instances.Any())
+            {
                 return;
+            }
 
             Global.MainForm.BandwidthState(true);
 
@@ -97,8 +107,12 @@ namespace Netch.Utils
                 tSession.Source.Kernel.TcpIpRecv += data =>
                 {
                     if (processList.Contains(data.ProcessID))
+                    {
                         lock (counterLock)
+                        {
                             received += (ulong)data.size;
+                        }
+                    }
 
                     // Debug.WriteLine($"TcpIpRecv: {ToByteSize(data.size)}");
                 };
@@ -106,8 +120,12 @@ namespace Netch.Utils
                 tSession.Source.Kernel.UdpIpRecv += data =>
                 {
                     if (processList.Contains(data.ProcessID))
+                    {
                         lock (counterLock)
+                        {
                             received += (ulong)data.size;
+                        }
+                    }
 
                     // Debug.WriteLine($"UdpIpRecv: {ToByteSize(data.size)}");
                 };
@@ -119,7 +137,9 @@ namespace Netch.Utils
             {
                 Task.Delay(1000).Wait();
                 lock (counterLock)
+                {
                     Global.MainForm.OnBandwidthUpdated(received);
+                }
             }
         }
 

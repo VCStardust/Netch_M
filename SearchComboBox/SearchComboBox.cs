@@ -30,7 +30,9 @@ namespace System.Windows.Forms
                 }
 
                 if (_keyword == value)
+                {
                     return;
+                }
 
                 _keyword = value;
                 ReevaluateCompletionList();
@@ -42,7 +44,9 @@ namespace System.Windows.Forms
             get
             {
                 if (Tag == null)
+                {
                     Tag = Items.Cast<object>().ToArray();
+                }
 
                 return (object[])Tag;
             }
@@ -57,14 +61,18 @@ namespace System.Windows.Forms
                 if (string.IsNullOrEmpty(Text))
                 {
                     if (!IsOriginalItems)
+                    {
                         ResetCompletionList();
+                    }
 
                     Keyword = null;
                 }
                 else
                 {
                     if (AutoFillTag.All(o => o.ToString() != Text))
+                    {
                         Keyword = Text;
+                    }
                 }
             }
             finally
@@ -81,7 +89,9 @@ namespace System.Windows.Forms
                 SuspendLayout();
 
                 if (IsOriginalItems)
+                {
                     return;
+                }
 
                 Items.Clear();
                 Items.AddRange(AutoFillTag);
@@ -95,8 +105,12 @@ namespace System.Windows.Forms
         private static int findFirstDifIndex(string s1, string s2)
         {
             for (var i = 0; i < Math.Min(s1.Length, s2.Length); i++)
+            {
                 if (s1[i] != s2[i])
+                {
                     return i;
+                }
+            }
 
             return -1;
         }
@@ -108,15 +122,21 @@ namespace System.Windows.Forms
 
             var selectionStart = SelectionStart;
             if (selectionStart == Text.Length)
+            {
                 selectionStart = -1;
+            }
             else
+            {
                 selectionStart = findFirstDifIndex(prevKeyword, Keyword);
+            }
 
             try
             {
                 var originalList = AutoFillTag;
                 if (originalList == null)
+                {
                     Tag = originalList = Items.Cast<object>().ToArray();
+                }
 
                 if (string.IsNullOrEmpty(Keyword))
                 {
@@ -134,7 +154,9 @@ namespace System.Windows.Forms
                     Items.AddRange(_newList.ToArray());
 
                     if (!DroppedDown)
+                    {
                         DroppedDown = true;
+                    }
 
                     Cursor.Current = Cursors.Default;
                 }
@@ -145,9 +167,13 @@ namespace System.Windows.Forms
                 }
 
                 if (selectionStart == -1)
+                {
                     Select(Text.Length, 0);
+                }
                 else
+                {
                     Select(selectionStart + 1, 0);
+                }
             }
             finally
             {

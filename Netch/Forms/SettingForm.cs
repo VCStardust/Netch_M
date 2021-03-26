@@ -6,7 +6,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Netch.Forms
@@ -77,12 +76,18 @@ namespace Netch.Forms
                 {
                     var split = s.SplitRemoveEmptyEntriesAndTrimEntries(':');
                     if (!split.Any())
+                    {
                         return false;
+                    }
 
                     var port = split.ElementAtOrDefault(1);
                     if (port != null)
+                    {
                         if (!ushort.TryParse(split[1], out _))
+                        {
                             return false;
+                        }
+                    }
 
                     return true;
                 },
@@ -157,7 +162,9 @@ namespace Netch.Forms
                 s =>
                 {
                     if (UseCustomDNSCheckBox.Checked)
+                    {
                         Global.Settings.WinTUN.DNS = DnsUtils.Split(s).ToList();
+                    }
                 },
                 DnsUtils.Join(Global.Settings.WinTUN.DNS));
 
@@ -245,9 +252,13 @@ namespace Netch.Forms
         private void TUNTAPUseCustomDNSCheckBox_CheckedChanged(object? sender, EventArgs? e)
         {
             if (UseCustomDNSCheckBox.Checked)
+            {
                 TUNTAPDNSTextBox.Text = Global.Settings.WinTUN.DNS.Any() ? DnsUtils.Join(Global.Settings.WinTUN.DNS) : "1.1.1.1";
+            }
             else
+            {
                 TUNTAPDNSTextBox.Text = "AioDNS";
+            }
         }
 
         private void GlobalBypassIPsButton_Click(object sender, EventArgs e)
@@ -264,18 +275,24 @@ namespace Netch.Forms
             #region Check
 
             var checkNotPassControl = _checkActions.Where(pair => !pair.Value.Invoke(pair.Key.Text)).Select(pair => pair.Key).ToList();
-            foreach (Control control in checkNotPassControl)
+            foreach (var control in checkNotPassControl)
+            {
                 Utils.Utils.ChangeControlForeColor(control, Color.Red);
+            }
 
             if (checkNotPassControl.Any())
+            {
                 return;
+            }
 
             #endregion
 
             #region Save
 
             foreach (var pair in _saveActions)
+            {
                 pair.Value.Invoke(pair.Key);
+            }
 
             #endregion
 
@@ -327,7 +344,9 @@ namespace Netch.Forms
         private void BindListComboBox(ComboBox control, Action<object> save, object[] values, object value, string propertyName = "SelectedItem")
         {
             if (control.DropDownStyle != ComboBoxStyle.DropDownList)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             control.Items.AddRange(values);
             _saveActions.Add(control, c => save.Invoke(((ComboBox)c).SelectedItem));
@@ -337,7 +356,9 @@ namespace Netch.Forms
         private void BindComboBox(ComboBox control, Func<string, bool> check, Action<string> save, string value, object[]? values = null)
         {
             if (values != null)
+            {
                 control.Items.AddRange(values);
+            }
 
             _saveActions.Add(control, c => save.Invoke(((ComboBox)c).Text));
             _checkActions.Add(control, check.Invoke);

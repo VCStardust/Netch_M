@@ -65,7 +65,9 @@ namespace Netch.Servers.ShadowsocksR
             // ssr://host:port:protocol:method:obfs:base64pass/?obfsparam=base64&remarks=base64&group=base64&udpport=0&uot=1
             var ssr = Regex.Match(text, "ssr://([A-Za-z0-9_-]+)", RegexOptions.IgnoreCase);
             if (!ssr.Success)
+            {
                 throw new FormatException();
+            }
 
             var data = ShareLink.URLSafeBase64Decode(ssr.Groups[1].Value);
             var paramsDict = new Dictionary<string, string>();
@@ -78,13 +80,17 @@ namespace Netch.Servers.ShadowsocksR
             }
 
             if (data.IndexOf("/", StringComparison.Ordinal) >= 0)
+            {
                 data = data.Substring(0, data.LastIndexOf("/", StringComparison.Ordinal));
+            }
 
             var urlFinder = new Regex("^(.+):([^:]+):([^:]*):([^:]+):([^:]*):([^:]+)");
             var match = urlFinder.Match(data);
 
             if (match == null || !match.Success)
+            {
                 throw new FormatException();
+            }
 
             var serverAddr = match.Groups[1].Value;
             var serverPort = ushort.Parse(match.Groups[2].Value);
@@ -99,17 +105,24 @@ namespace Netch.Servers.ShadowsocksR
             var remarks = "";
 
             if (paramsDict.ContainsKey("protoparam"))
+            {
                 protocolParam = ShareLink.URLSafeBase64Decode(paramsDict["protoparam"]);
+            }
 
             if (paramsDict.ContainsKey("obfsparam"))
+            {
                 obfsParam = ShareLink.URLSafeBase64Decode(paramsDict["obfsparam"]);
+            }
 
             if (paramsDict.ContainsKey("remarks"))
+            {
                 remarks = ShareLink.URLSafeBase64Decode(paramsDict["remarks"]);
+            }
 
             var group = paramsDict.ContainsKey("group") ? ShareLink.URLSafeBase64Decode(paramsDict["group"]) : string.Empty;
 
             if (SSGlobal.EncryptMethods.Contains(method) && protocol == "origin" && obfs == "plain")
+            {
                 return new[]
                 {
                     new Shadowsocks.Shadowsocks
@@ -122,6 +135,7 @@ namespace Netch.Servers.ShadowsocksR
                         Group = group
                     }
                 };
+            }
 
             return new[]
             {

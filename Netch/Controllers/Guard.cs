@@ -77,7 +77,9 @@ namespace Netch.Controllers
             try
             {
                 if (Instance == null || Instance.HasExited)
+                {
                     return;
+                }
 
                 Instance.Kill();
                 Instance.WaitForExit();
@@ -116,7 +118,9 @@ namespace Netch.Controllers
             };
 
             if (!File.Exists(Instance.StartInfo.FileName))
+            {
                 throw new MessageException(i18N.Translate($"bin\\{MainFile} file not found!"));
+            }
         }
 
         /// <summary>
@@ -132,12 +136,16 @@ namespace Netch.Controllers
             InitInstance(argument);
 
             if (RedirectToFile)
+            {
                 OpenLogFile();
+            }
 
             // 启动程序
             Instance!.Start();
             if (priority != ProcessPriorityClass.Normal)
+            {
                 Instance.PriorityClass = priority;
+            }
 
             if (RedirectStd)
             {
@@ -189,9 +197,13 @@ namespace Netch.Controllers
                 if (State == State.Starting)
                 {
                     if (StartedKeywords.Any(s => line.Contains(s)))
+                    {
                         State = State.Started;
+                    }
                     else if (StoppedKeywords.Any(s => line.Contains(s)))
+                    {
                         State = State.Stopped;
+                    }
                 }
             }
 
@@ -221,7 +233,9 @@ namespace Netch.Controllers
         private void OpenLogFile()
         {
             if (!RedirectToFile)
+            {
                 return;
+            }
 
             _logFileStream = File.Open(LogPath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
             _logStreamWriter = new StreamWriter(_logFileStream);
@@ -233,7 +247,9 @@ namespace Netch.Controllers
         private void WriteLog(string line)
         {
             if (!RedirectToFile)
+            {
                 return;
+            }
 
             _logStreamWriter!.WriteLine(line);
         }
@@ -241,7 +257,9 @@ namespace Netch.Controllers
         private void CloseLogFile()
         {
             if (!RedirectToFile)
+            {
                 return;
+            }
 
             _flushFileStreamTimer.Enabled = false;
             _logStreamWriter?.Close();

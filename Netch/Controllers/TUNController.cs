@@ -3,16 +3,11 @@ using Netch.Servers.Socks5;
 using Netch.Utils;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using System.Threading;
-using Vanara.PInvoke;
-using static Vanara.PInvoke.IpHlpApi;
-using static Vanara.PInvoke.Ws2_32;
-using System.Net.Sockets;
 
 namespace Netch.Controllers
 {
@@ -61,8 +56,10 @@ namespace Netch.Controllers
                 }
             }
             else
-            
+
+            {
                 parameter.hostname = $"127.0.0.1:{Global.Settings.Socks5LocalPort}";
+            }
 
             MainFile = "tun2socks.exe";
             StartInstanceAuto(parameter.ToString());
@@ -99,7 +96,9 @@ namespace Netch.Controllers
 
             Logging.Info("绕行 → 服务器 IP");
             if (!IPAddress.IsLoopback(_serverAddresses))
+            {
                 RouteAction(Action.Create, $"{_serverAddresses}/32", RouteType.Outbound);
+            }
 
             Logging.Info("绕行 → 全局绕过 IP");
             RouteAction(Action.Create, Global.Settings.BypassIPs, RouteType.Outbound);
@@ -117,9 +116,13 @@ namespace Netch.Controllers
                     {
                         Logging.Info("代理 → 自定义 DNS");
                         if (Global.Settings.WinTUN.UseCustomDNS)
+                        {
                             RouteAction(Action.Create, Global.Settings.WinTUN.DNS.Select(ip => $"{ip}/32"), RouteType.TUNTAP);
+                        }
                         else
+                        {
                             RouteAction(Action.Create, $"{Global.Settings.AioDNS.OtherDNS}/32", RouteType.TUNTAP);
+                        }
                     }
 
                     break;
@@ -135,7 +138,9 @@ namespace Netch.Controllers
 
             Logging.Info("绕行 → 服务器 IP");
             if (!IPAddress.IsLoopback(_serverAddresses))
+            {
                 RouteAction(Action.Create, $"{_serverAddresses}/32", RouteType.Outbound);
+            }
 
             Logging.Info("绕行 → 全局绕过 IP");
             RouteAction(Action.Create, Global.Settings.BypassIPs, RouteType.Outbound);
@@ -154,7 +159,9 @@ namespace Netch.Controllers
 
             var arguments = $"interface ip set interface {adapter.InterfaceIndex} ";
             if (metric != null)
+            {
                 arguments += $"metric={metric} ";
+            }
 
             Utils.Utils.ProcessRunHiddenAsync("netsh", arguments).Wait();
         }
@@ -173,6 +180,7 @@ namespace Netch.Controllers
             {
                 SetInterface(RouteType.Outbound);
             }
+
             return true;
         }
 
@@ -195,7 +203,9 @@ namespace Netch.Controllers
         private void RouteAction(Action action, in IEnumerable<string> ipNetworks, RouteType routeType, int metric = 0)
         {
             foreach (var address in ipNetworks)
+            {
                 RouteAction(action, address, routeType, metric);
+            }
         }
 
         private bool RouteAction(Action action, in string ipNetwork, RouteType routeType, int metric = 0)
@@ -224,9 +234,9 @@ namespace Netch.Controllers
                     throw new ArgumentOutOfRangeException(nameof(routeType), routeType, null);
             }
 
-            string network = s[0];
+            var network = s[0];
             var cidr = ushort.Parse(s[1]);
-            string gateway = adapter.Gateway.ToString();
+            var gateway = adapter.Gateway.ToString();
             var index = adapter.InterfaceIndex;
 
             bool result;
@@ -244,7 +254,9 @@ namespace Netch.Controllers
             }
 
             if (!result)
+            {
                 Logging.Warning($"Failed to {action} Route on {routeType} Adapter: {ipNetwork} metric {metric}");
+            }
 #if DEBUG
                     Console.WriteLine($"CreateRoute(\"{network}\", {cidr}, \"{gateway}\", {index}, {metric})");
 #endif
@@ -263,6 +275,7 @@ namespace Netch.Controllers
             Create,
             Delete
         }
+
         [Verb]
         public class Tap2SocksParameter : ParameterBase
         {
@@ -282,7 +295,7 @@ namespace Netch.Controllers
         }
 
         [Verb]
-        class WinTun2socksParameter : ParameterBase
+        private class WinTun2socksParameter : ParameterBase
         {
             public string? bind { get; set; } = "10.0.0.100";
 

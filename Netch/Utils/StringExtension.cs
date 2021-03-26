@@ -21,7 +21,9 @@ namespace Netch.Utils
         public static bool BeginWithAny(this string s, IEnumerable<char> chars)
         {
             if (s.IsNullOrEmpty())
+            {
                 return false;
+            }
 
             return chars.Contains(s[0]);
         }
@@ -37,7 +39,9 @@ namespace Netch.Utils
             while ((line = reader.ReadLine()) != null)
             {
                 if (line.IsWhiteSpace())
+                {
                     continue;
+                }
 
                 yield return line;
             }
@@ -50,7 +54,9 @@ namespace Netch.Utils
             {
                 var escapeCharacters = new[] { '\\', '*', '+', '?', '|', '{', '}', '[', ']', '(', ')', '^', '$', '.' };
                 if (escapeCharacters.Any(s => s == t))
+                {
                     sb.Append('\\');
+                }
 
                 sb.Append(t);
             }

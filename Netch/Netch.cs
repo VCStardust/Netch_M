@@ -25,11 +25,15 @@ namespace Netch
             AttachConsole();
 #else
             if (args.Contains(Constants.Parameter.Console))
+            {
                 AttachConsole();
+            }
 #endif
 
             if (args.Contains(Constants.Parameter.ForceUpdate))
+            {
                 Flags.AlwaysShowNewVersionFound = true;
+            }
 
             // 设置当前目录
             Directory.SetCurrentDirectory(Global.NetchDir);
@@ -42,8 +46,12 @@ namespace Netch
             // 预创建目录
             var directories = new[] { "mode\\Custom", "data", "i18n", "logging" };
             foreach (var item in directories)
+            {
                 if (!Directory.Exists(item))
+                {
                     Directory.CreateDirectory(item);
+                }
+            }
 
             // 加载配置
             Configuration.Load();
@@ -64,10 +72,14 @@ namespace Netch
                 var directory = new DirectoryInfo("logging");
 
                 foreach (var file in directory.GetFiles())
+                {
                     file.Delete();
+                }
 
                 foreach (var dir in directory.GetDirectories())
+                {
                     dir.Delete(true);
+                }
             }
 
             // 加载语言
@@ -94,7 +106,9 @@ namespace Netch
         private static void AttachConsole()
         {
             if (!NativeMethods.AttachConsole(-1))
+            {
                 NativeMethods.AllocConsole();
+            }
         }
 
         public static void Application_OnException(object sender, ThreadExceptionEventArgs e)
@@ -106,7 +120,9 @@ namespace Netch
         private static void SingleInstance_ArgumentsReceived(IEnumerable<string> args)
         {
             if (args.Contains(Constants.Parameter.Show))
+            {
                 Global.MainForm.ShowMainFormToolStripButton_Click(null!, null!);
+            }
         }
     }
 }

@@ -27,13 +27,19 @@ namespace Netch.Models
                 var strings = new List<string>();
 
                 if (_socks5Port != null)
+                {
                     strings.Add($"Socks5 {i18N.Translate("Local Port", ": ")}{_socks5Port}");
+                }
 
                 if (_httpPort != null)
+                {
                     strings.Add($"HTTP {i18N.Translate("Local Port", ": ")}{_httpPort}");
+                }
 
                 if (!strings.Any())
+                {
                     return string.Empty;
+                }
 
                 return $" ({(_shareLan ? i18N.Translate("Allow other Devices to connect") + " " : "")}{string.Join(" | ", strings)})";
             }

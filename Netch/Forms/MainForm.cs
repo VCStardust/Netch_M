@@ -10,7 +10,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -105,18 +104,24 @@ namespace Netch.Forms
             {
                 // 检查更新
                 if (Global.Settings.CheckUpdateWhenOpened)
+                {
                     CheckUpdate();
+                }
             });
 
             Task.Run(() =>
             {
                 // 检查订阅更新
                 if (Global.Settings.UpdateServersWhenOpened)
+                {
                     UpdateServersFromSubscribe().Wait();
+                }
 
                 // 打开软件时启动加速，产生开始按钮点击事件
                 if (Global.Settings.StartWhenOpened)
+                {
                     ControlButton_Click(null, null);
+                }
             });
         }
 
@@ -179,12 +184,16 @@ namespace Netch.Forms
                         break;
                     case Control c:
                         if (_mainFormText.ContainsKey(c.Name))
+                        {
                             c.Text = ControlText(c.Name);
+                        }
 
                         break;
                     case ToolStripItem c:
                         if (_mainFormText.ContainsKey(c.Name))
+                        {
                             c.Text = ControlText(c.Name);
+                        }
 
                         break;
                 }
@@ -193,10 +202,14 @@ namespace Netch.Forms
                 {
                     var value = _mainFormText[name];
                     if (value.Equals(string.Empty))
+                    {
                         return string.Empty;
+                    }
 
                     if (value is object[] values)
+                    {
                         return i18N.TranslateFormat((string)values.First(), values.Skip(1).ToArray());
+                    }
 
                     return i18N.Translate(value);
                 }
@@ -381,7 +394,7 @@ namespace Netch.Forms
             Enabled = false;
             StatusText(i18N.TranslateFormat("Updating {0}", "ACL"));
             try
-            { 
+            {
                 var req = WebUtil.CreateRequest(Global.Settings.ACL);
                 await WebUtil.DownloadFileAsync(req, Path.Combine(Global.NetchDir, Constants.UserACL));
                 NotifyTip(i18N.Translate("ACL updated successfully"));
@@ -407,7 +420,9 @@ namespace Netch.Forms
                 await Task.Run(() =>
                 {
                     if (NFController.UninstallDriver())
+                    {
                         NotifyTip(i18N.TranslateFormat("{0} has been uninstalled", "NF Service"));
+                    }
                 });
             }
             finally
@@ -447,8 +462,9 @@ namespace Netch.Forms
 
             if (MessageBoxX.Show(i18N.Translate($"Download and install now?\n\n{UpdateChecker.GetLatestReleaseContent()}"), confirm: true) !=
                 DialogResult.OK)
-
+            {
                 NotifyTip(i18N.Translate("Start downloading new version"));
+            }
 
             NewVersionLabel.Enabled = false;
             NewVersionLabel.Text = "...";
@@ -542,7 +558,9 @@ namespace Netch.Forms
             _ = Task.Run(NatTest);
 
             if (Global.Settings.MinimizeWhenStarted)
+            {
                 Minimize();
+            }
 
             // 自动检测延迟
             _ = Task.Run(() =>
@@ -561,9 +579,13 @@ namespace Netch.Forms
                     }
 
                     if (StartedPingEnabled())
+                    {
                         Thread.Sleep(Global.Settings.StartedPingInterval * 1000);
+                    }
                     else
+                    {
                         Thread.Sleep(5000);
+                    }
                 }
             });
         }
@@ -588,10 +610,14 @@ namespace Netch.Forms
             }
 
             if (oldSettings.DetectionTick != Global.Settings.DetectionTick)
+            {
                 ServerHelper.DelayTestHelper.UpdateInterval();
+            }
 
             if (oldSettings.ProfileCount != Global.Settings.ProfileCount)
+            {
                 LoadProfiles();
+            }
 
             Show();
         }
@@ -611,10 +637,14 @@ namespace Netch.Forms
         {
             // 如果值合法，选中该位置
             if (Global.Settings.ServerComboBoxSelectedIndex > 0 && Global.Settings.ServerComboBoxSelectedIndex < ServerComboBox.Items.Count)
+            {
                 ServerComboBox.SelectedIndex = Global.Settings.ServerComboBoxSelectedIndex;
+            }
             // 如果值非法，且当前 ServerComboBox 中有元素，选择第一个位置
             else if (ServerComboBox.Items.Count > 0)
+            {
                 ServerComboBox.SelectedIndex = 0;
+            }
 
             // 如果当前 ServerComboBox 中没元素，不做处理
         }
@@ -634,7 +664,9 @@ namespace Netch.Forms
             }
 
             if (!server.Valid())
+            {
                 return;
+            }
 
             Hide();
             ServerHelper.GetUtilByTypeName(server.Type).Edit(server);
@@ -681,16 +713,22 @@ namespace Netch.Forms
             }
 
             if (!server.Valid())
+            {
                 return;
+            }
 
             try
             {
                 //听说巨硬BUG经常会炸，所以Catch一下 :D
                 string text;
                 if (ModifierKeys == Keys.Control)
+                {
                     text = ShareLink.GetNetchLink(server);
+                }
                 else
+                {
                     text = ShareLink.GetShareLink(server);
+                }
 
                 Clipboard.SetText(text);
             }
@@ -729,10 +767,14 @@ namespace Netch.Forms
         {
             // 如果值合法，选中该位置
             if (Global.Settings.ModeComboBoxSelectedIndex > 0 && Global.Settings.ModeComboBoxSelectedIndex < ModeComboBox.Items.Count)
+            {
                 ModeComboBox.SelectedIndex = Global.Settings.ModeComboBoxSelectedIndex;
+            }
             // 如果值非法，且当前 ModeComboBox 中有元素，选择第一个位置
             else if (ModeComboBox.Items.Count > 0)
+            {
                 ModeComboBox.SelectedIndex = 0;
+            }
 
             // 如果当前 ModeComboBox 中没元素，不做处理
         }
@@ -810,7 +852,9 @@ namespace Netch.Forms
         {
             // Clear
             foreach (var button in ProfileTable.Controls)
+            {
                 ((Button)button).Dispose();
+            }
 
             ProfileTable.Controls.Clear();
             ProfileTable.ColumnStyles.Clear();
@@ -831,7 +875,9 @@ namespace Netch.Forms
                 // Load Profiles
 
                 if (Global.Settings.ProfileTableColumnCount == 0)
+                {
                     Global.Settings.ProfileTableColumnCount = 5;
+                }
 
                 var columnCount = Global.Settings.ProfileTableColumnCount;
 
@@ -854,10 +900,14 @@ namespace Netch.Forms
 
                 // equal column
                 for (var i = 1; i <= ProfileTable.RowCount; i++)
+                {
                     ProfileTable.RowStyles.Add(new RowStyle(SizeType.Percent, 1));
+                }
 
                 for (var i = 1; i <= ProfileTable.ColumnCount; i++)
+                {
                     ProfileTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 1));
+                }
 
                 configLayoutPanel.RowStyles[2].SizeType = SizeType.AutoSize;
                 ProfileGroupBox.Visible = true;
@@ -875,10 +925,14 @@ namespace Netch.Forms
             var mode = ModeComboBox.Items.Cast<Models.Mode>().FirstOrDefault(m => m.Remark.Equals(profile.ModeRemark));
 
             if (server == null)
+            {
                 throw new Exception("Server not found.");
+            }
 
             if (mode == null)
+            {
                 throw new Exception("Mode not found.");
+            }
 
             ServerComboBox.SelectedItem = server;
             ModeComboBox.SelectedItem = mode;
@@ -892,7 +946,9 @@ namespace Netch.Forms
 
             Profile? profile;
             if ((profile = Global.Settings.Profiles.SingleOrDefault(p => p.Index == index)) != null)
+            {
                 Global.Settings.Profiles.Remove(profile);
+            }
 
             profile = new Profile(server, mode, name, index);
             Global.Settings.Profiles.Add(profile);
@@ -933,7 +989,9 @@ namespace Netch.Forms
                     return;
                 case Keys.Shift:
                     if (profile == null)
+                    {
                         return;
+                    }
 
                     Global.Settings.Profiles.Remove(profile);
                     profileButton.Tag = null;
@@ -962,7 +1020,9 @@ namespace Netch.Forms
             if (State == State.Stopping || State == State.Stopped)
             {
                 while (State != State.Stopped)
+                {
                     await Task.Delay(250);
+                }
 
                 ControlButton_Click(null, null);
             }
@@ -1051,7 +1111,9 @@ namespace Netch.Forms
         public void Stop()
         {
             if (IsWaiting())
+            {
                 return;
+            }
 
             if (InvokeRequired)
             {
@@ -1087,7 +1149,9 @@ namespace Netch.Forms
             text ??= i18N.Translate(StateExtension.GetStatusString(State));
             StatusLabel.Text = i18N.Translate("Status", ": ") + text;
             if (_state == State.Started)
+            {
                 StatusLabel.Text += StatusPortInfoText.Value;
+            }
         }
 
         public void BandwidthState(bool state)
@@ -1099,7 +1163,9 @@ namespace Netch.Forms
             }
 
             if (IsWaiting())
+            {
                 return;
+            }
 
             UsedBandwidthLabel.Visible /*= UploadSpeedLabel.Visible*/ = DownloadSpeedLabel.Visible = state;
         }
@@ -1162,7 +1228,9 @@ namespace Netch.Forms
         private void NatTypeStatusLabel_Click(object sender, EventArgs e)
         {
             if (_state == State.Started && NttTested)
+            {
                 NatTest();
+            }
         }
 
         private static bool NttTested;
@@ -1173,7 +1241,9 @@ namespace Netch.Forms
         public void NatTest()
         {
             if (!MainController.Mode!.TestNatRequired())
+            {
                 return;
+            }
 
             NttTested = false;
             Task.Run(() =>
@@ -1263,14 +1333,22 @@ namespace Netch.Forms
             Hide();
 
             if (saveConfiguration)
+            {
                 Configuration.Save();
+            }
 
             foreach (var file in new[] { "data\\last.json", "data\\privoxy.conf" })
+            {
                 if (File.Exists(file))
+                {
                     File.Delete(file);
+                }
+            }
 
             if (IsWaiting())
+            {
                 await StopAsyncCore();
+            }
 
             Dispose();
             Environment.Exit(Environment.ExitCode);
@@ -1289,10 +1367,14 @@ namespace Netch.Forms
 
                 // 如果未勾选关闭窗口时退出，隐藏至右下角托盘图标
                 if (!Global.Settings.ExitWhenClosed)
+                {
                     Minimize();
+                }
                 // 如果勾选了关闭时退出，自动点击退出按钮
                 else
+                {
                     Exit();
+                }
             }
         }
 
@@ -1307,7 +1389,9 @@ namespace Netch.Forms
                 UpdateChecker.NewVersionFound += OnUpdateCheckerOnNewVersionFound;
                 UpdateChecker.Check(Global.Settings.CheckBetaUpdate).Wait();
                 if (Flags.AlwaysShowNewVersionFound)
+                {
                     OnUpdateCheckerOnNewVersionFound(null!, null!);
+                }
             }
             finally
             {
@@ -1421,13 +1505,17 @@ namespace Netch.Forms
         private void ComboBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (!(sender is ComboBox cbx))
+            {
                 return;
+            }
 
             // 绘制背景颜色
             e.Graphics.FillRectangle(Brushes.White, e.Bounds);
 
             if (e.Index < 0)
+            {
                 return;
+            }
 
             // 绘制 备注/名称 字符串
             TextRenderer.DrawText(e.Graphics, cbx.Items[e.Index].ToString(), cbx.Font, e.Bounds, Color.Black, TextFormatFlags.Left);

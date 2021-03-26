@@ -27,13 +27,17 @@ namespace Netch.Utils
                 if (rule != null)
                 {
                     if (rule.ApplicationName.StartsWith(Global.NetchDir))
+                    {
                         return;
+                    }
 
                     RemoveNetchFwRules();
                 }
 
                 foreach (var path in Directory.GetFiles(Global.NetchDir, "*.exe", SearchOption.AllDirectories))
+                {
                     AddFwRule(Netch, path);
+                }
             }
             catch (Exception e)
             {
@@ -47,13 +51,17 @@ namespace Netch.Utils
         public static void RemoveNetchFwRules()
         {
             if (!FirewallWAS.IsSupported)
+            {
                 return;
+            }
 
             try
             {
                 foreach (var rule in FirewallManager.Instance.Rules.Where(r
                     => r.ApplicationName?.StartsWith(Global.NetchDir, StringComparison.OrdinalIgnoreCase) ?? r.Name == Netch))
+                {
                     FirewallManager.Instance.Rules.Remove(rule);
+                }
             }
             catch (Exception e)
             {

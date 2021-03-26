@@ -54,7 +54,9 @@ namespace Netch.Servers.Socks5
                 .ToDictionary(splited => splited[0], splited => splited[1]);
 
             if (!dict.ContainsKey("server") || !dict.ContainsKey("port"))
+            {
                 throw new FormatException();
+            }
 
             var data = new Socks5
             {
@@ -63,10 +65,14 @@ namespace Netch.Servers.Socks5
             };
 
             if (dict.ContainsKey("user") && !string.IsNullOrWhiteSpace(dict["user"]))
+            {
                 data.Username = dict["user"];
+            }
 
             if (dict.ContainsKey("pass") && !string.IsNullOrWhiteSpace(dict["pass"]))
+            {
                 data.Password = dict["pass"];
+            }
 
             return new[] { data };
         }

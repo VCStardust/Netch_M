@@ -8,7 +8,9 @@ namespace Netch.Models.GitHubRelease
         public static Release GetLatestRelease(IEnumerable<Release> releases, bool isPreRelease)
         {
             if (!isPreRelease)
+            {
                 releases = releases.Where(release => !release.prerelease);
+            }
 
             releases = releases.Where(release => IsVersionString(release.tag_name));
             var ordered = releases.OrderByDescending(release => release.tag_name, new VersionComparer());

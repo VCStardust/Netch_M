@@ -48,6 +48,7 @@ namespace Netch.Utils
             {
                 var errorFlag = false;
                 foreach (var line in text.GetLines())
+                {
                     try
                     {
                         list.AddRange(ParseUri(line));
@@ -57,9 +58,12 @@ namespace Netch.Utils
                         errorFlag = true;
                         Logging.Error(e.ToString());
                     }
+                }
 
                 if (errorFlag)
+                {
                     Utils.Open(Logging.LogFile);
+                }
             }
             catch (Exception e)
             {
@@ -86,13 +90,19 @@ namespace Netch.Utils
                 var scheme = GetUriScheme(text);
                 var util = ServerHelper.GetUtilByUriScheme(scheme);
                 if (util != null)
+                {
                     list.AddRange(util.ParseUri(text));
+                }
                 else
+                {
                     Logging.Warning($"无法处理 {scheme} 协议订阅链接");
+                }
             }
 
             foreach (var node in list.Where(node => !node.Remark.IsNullOrWhiteSpace()))
+            {
                 node.Remark = RemoveEmoji(node.Remark);
+            }
 
             return list;
         }
@@ -101,7 +111,9 @@ namespace Netch.Utils
         {
             var endIndex = text.IndexOf("://", StringComparison.Ordinal);
             if (endIndex == -1)
+            {
                 throw new UriFormatException("Text is not a URI");
+            }
 
             return text.Substring(0, endIndex);
         }
@@ -113,10 +125,14 @@ namespace Netch.Utils
             var NetchLink = JsonSerializer.Deserialize<JsonElement>(text);
 
             if (string.IsNullOrEmpty(NetchLink.GetProperty("Hostname").GetString()))
+            {
                 throw new FormatException();
+            }
 
             if (!ushort.TryParse(NetchLink.GetProperty("Port").GetString(), out _))
+            {
                 throw new FormatException();
+            }
 
             return JsonSerializer.Deserialize<Server>(text,
                 new JsonSerializerOptions
@@ -161,7 +177,9 @@ namespace Netch.Utils
             var remark = Encoding.UTF8.GetBytes(text);
             var startIndex = 0;
             while (remark.Length > startIndex + 1 && remark[startIndex] == emojiBytes[0] && remark[startIndex + 1] == emojiBytes[1])
+            {
                 startIndex += 4;
+            }
 
             return Encoding.UTF8.GetString(remark.Skip(startIndex).ToArray()).Trim();
         }
@@ -169,7 +187,9 @@ namespace Netch.Utils
         public static string UnBase64String(string value)
         {
             if (string.IsNullOrEmpty(value))
+            {
                 return "";
+            }
 
             var bytes = Convert.FromBase64String(value);
             return Encoding.UTF8.GetString(bytes);
@@ -178,7 +198,9 @@ namespace Netch.Utils
         public static string ToBase64String(string value)
         {
             if (string.IsNullOrEmpty(value))
+            {
                 return "";
+            }
 
             var bytes = Encoding.UTF8.GetBytes(value);
             return Convert.ToBase64String(bytes);
@@ -189,6 +211,7 @@ namespace Netch.Utils
             var paramsDict = new Dictionary<string, string>();
             var obfsParams = paramStr.Split('&');
             foreach (var p in obfsParams)
+            {
                 if (p.IndexOf('=') > 0)
                 {
                     var index = p.IndexOf('=');
@@ -196,6 +219,7 @@ namespace Netch.Utils
                     var val = p.Substring(index + 1);
                     paramsDict[key] = val;
                 }
+            }
 
             return paramsDict;
         }
@@ -207,7 +231,9 @@ namespace Netch.Utils
             while ((line = sr.ReadLine()) != null)
             {
                 if (removeEmptyLines && string.IsNullOrWhiteSpace(line))
+                {
                     continue;
+                }
 
                 yield return line;
             }

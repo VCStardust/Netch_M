@@ -35,7 +35,9 @@ namespace Netch.Servers.V2ray
         {
             base.InitInstance(argument);
             if (!Global.Settings.V2RayConfig.XrayCone)
+            {
                 Instance!.StartInfo.Environment["XRAY_CONE_DISABLED"] = "true";
+            }
         }
     }
 }

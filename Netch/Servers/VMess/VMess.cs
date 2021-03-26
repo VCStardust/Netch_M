@@ -63,7 +63,9 @@ namespace Netch.Servers.VMess
             set
             {
                 if (value == "")
+                {
                     value = "none";
+                }
 
                 _tlsSecureType = value;
             }

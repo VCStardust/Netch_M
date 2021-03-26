@@ -60,12 +60,16 @@ namespace Netch.Servers.Trojan
                 var regmatch = reg.Match(text);
 
                 if (!regmatch.Success)
+                {
                     throw new FormatException();
+                }
 
                 var peer = HttpUtility.UrlDecode(HttpUtility.ParseQueryString(new Uri(text).Query).Get("peer"));
 
                 if (peer != null)
+                {
                     data.Host = peer;
+                }
 
                 text = regmatch.Groups["data"].Value;
             }
@@ -73,7 +77,9 @@ namespace Netch.Servers.Trojan
             var finder = new Regex(@"^trojan://(?<psk>.+?)@(?<server>.+):(?<port>\d+)");
             var match = finder.Match(text);
             if (!match.Success)
+            {
                 throw new FormatException();
+            }
 
             data.Password = match.Groups["psk"].Value;
             data.Hostname = match.Groups["server"].Value;

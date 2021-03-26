@@ -21,26 +21,38 @@ namespace Netch.Utils
             try
             {
                 if (!item.Enable)
+                {
                     return;
+                }
 
                 var request = WebUtil.CreateRequest(item.Link);
 
                 if (!string.IsNullOrEmpty(item.UserAgent))
+                {
                     request.UserAgent = item.UserAgent;
+                }
 
                 if (!string.IsNullOrEmpty(proxyServer))
+                {
                     request.Proxy = new WebProxy(proxyServer);
+                }
 
                 List<Server> servers;
 
                 var result = WebUtil.DownloadString(request, out var rep);
                 if (rep.StatusCode == HttpStatusCode.OK)
+                {
                     servers = ShareLink.ParseText(result);
+                }
                 else
+                {
                     throw new Exception($"{item.Remark} Response Status Code: {rep.StatusCode}");
+                }
 
                 foreach (var server in servers)
+                {
                     server.Group = item.Remark;
+                }
 
                 lock (ServerLock)
                 {

@@ -11,7 +11,9 @@ namespace Netch.Servers.Socks5
         {
             var server = (Socks5)s;
             if (server.Auth())
+            {
                 base.Start(s, mode);
+            }
         }
     }
 }

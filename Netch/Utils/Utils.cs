@@ -63,7 +63,9 @@ namespace Netch.Utils
             var reply = new Ping().Send(ip, timeout);
 
             if (reply?.Status == IPStatus.Success)
+            {
                 return Convert.ToInt32(reply.RoundtripTime);
+            }
 
             return timeout;
         }
@@ -71,7 +73,9 @@ namespace Netch.Utils
         public static string GetCityCode(string Hostname)
         {
             if (Hostname.Contains(":"))
+            {
                 Hostname = Hostname.Split(':')[0];
+            }
 
             string? country = null;
             try
@@ -87,7 +91,9 @@ namespace Netch.Utils
                     var dnsResult = DnsUtils.Lookup(Hostname);
 
                     if (dnsResult != null)
+                    {
                         country = databaseReader.Country(dnsResult).Country.IsoCode;
+                    }
                 }
             }
             catch
@@ -126,7 +132,9 @@ namespace Netch.Utils
                 e.DrawBackground();
 
                 if (e.Index < 0)
+                {
                     return;
+                }
 
                 TextRenderer.DrawText(e.Graphics,
                     cbx.Items[e.Index].ToString(),
@@ -145,32 +153,44 @@ namespace Netch.Utils
                 case ListView listView:
                     // ListView sub item
                     foreach (var item in listView.Columns.Cast<ColumnHeader>())
+                    {
                         ComponentIterator(item, func);
+                    }
 
                     break;
                 case ToolStripMenuItem toolStripMenuItem:
                     // Iterator Menu strip sub item
                     foreach (var item in toolStripMenuItem.DropDownItems.Cast<ToolStripItem>())
+                    {
                         ComponentIterator(item, func);
+                    }
 
                     break;
                 case MenuStrip menuStrip:
                     // Menu Strip
                     foreach (var item in menuStrip.Items.Cast<ToolStripItem>())
+                    {
                         ComponentIterator(item, func);
+                    }
 
                     break;
                 case ContextMenuStrip contextMenuStrip:
                     foreach (var item in contextMenuStrip.Items.Cast<ToolStripItem>())
+                    {
                         ComponentIterator(item, func);
+                    }
 
                     break;
                 case Control control:
                     foreach (var c in control.Controls.Cast<Control>())
+                    {
                         ComponentIterator(c, func);
+                    }
 
                     if (control.ContextMenuStrip != null)
+                    {
                         ComponentIterator(control.ContextMenuStrip, func);
+                    }
 
                     break;
             }
@@ -185,7 +205,9 @@ namespace Netch.Utils
             if (Global.Settings.RunAtStartup)
             {
                 if (taskIsExists)
+                {
                     folder.DeleteTask(TaskName, false);
+                }
 
                 var td = TaskService.Instance.NewTask();
 
@@ -206,7 +228,9 @@ namespace Netch.Utils
             else
             {
                 if (taskIsExists)
+                {
                     folder.DeleteTask(TaskName, false);
+                }
             }
         }
 
@@ -217,11 +241,14 @@ namespace Netch.Utils
                 case TextBox _:
                 case ComboBox _:
                     if (((Control)component).ForeColor != color)
+                    {
                         ((Control)component).ForeColor = color;
+                    }
 
                     break;
             }
         }
+
         public static async Task ProcessRunHiddenAsync(string fileName, string? arguments = null, bool print = true)
         {
             var p = new Process

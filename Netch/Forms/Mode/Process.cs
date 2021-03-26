@@ -25,7 +25,9 @@ namespace Netch.Forms.Mode
         public Process(Models.Mode? mode = null)
         {
             if (mode != null && mode.Type is not 0)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             InitializeComponent();
             Icon = Resources.icon;
@@ -62,14 +64,18 @@ namespace Netch.Forms.Mode
             };
 
             if (dialog.ShowDialog(Handle) == CommonFileDialogResult.Ok)
+            {
                 foreach (var p in dialog.FileNames)
                 {
                     var path = p;
                     if (!path.EndsWith(@"\"))
+                    {
                         path += @"\";
+                    }
 
                     RuleAdd($"^{path.ToRegexString()}");
                 }
+            }
         }
 
         public void ControlButton_Click(object sender, EventArgs e)
@@ -171,20 +177,28 @@ namespace Netch.Forms.Mode
         private void ScanDirectory(string directory, List<string> list, uint maxCount = 30)
         {
             foreach (var dir in Directory.GetDirectories(directory))
+            {
                 ScanDirectory(dir, list, maxCount);
+            }
 
             list.AddRange(Directory.GetFiles(directory).Select(Path.GetFileName).Where(s => s.EndsWith(".exe")).Select(s => s.ToRegexString()));
 
             if (maxCount != 0 && list.Count > maxCount)
+            {
                 throw new Exception("The number of filter results is greater than maxCount");
+            }
         }
 
         private void ValidationButton_Click(object sender, EventArgs e)
         {
             if (NFController.CheckRules(Rules, out var results))
+            {
                 MessageBoxX.Show(NFController.GenerateInvalidRulesMessage(results), LogLevel.WARNING);
+            }
             else
+            {
                 MessageBoxX.Show("Fine");
+            }
         }
 
         #region Model
@@ -199,7 +213,9 @@ namespace Netch.Forms.Mode
         private void RuleAddRange(IEnumerable<string> value)
         {
             foreach (var s in value)
+            {
                 RuleAdd(s);
+            }
         }
 
         #endregion

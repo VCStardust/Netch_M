@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Win32;
+using System;
 using System.Linq;
-using Microsoft.Win32;
 
 namespace Netch.Utils
 {
@@ -33,11 +32,15 @@ namespace Netch.Utils
                     var adapterRegistry = adaptersRegistry.OpenSubKey(keyName)!;
                     var componentId = adapterRegistry.GetValue("ComponentId")?.ToString();
                     if (componentId == null)
+                    {
                         continue;
+                    }
 
                     if (componentIds.Contains(componentId))
+                    {
                         return (string)(adapterRegistry.GetValue("NetCfgInstanceId") ??
-                                        throw new Exception("Tap adapter have no NetCfgInstanceId key"));
+                                         throw new Exception("Tap adapter have no NetCfgInstanceId key"));
+                    }
                 }
             }
             catch (Exception e)

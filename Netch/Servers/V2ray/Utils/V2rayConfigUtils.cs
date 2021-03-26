@@ -66,6 +66,7 @@ namespace Netch.Servers.V2ray.Utils
                 };
 
                 if (mode.BypassChina)
+                {
                     switch (mode.Type)
                     {
                         case 0:
@@ -79,27 +80,38 @@ namespace Netch.Servers.V2ray.Utils
                             directRuleObject.domain.Add("geosite:cn");
                             break;
                     }
+                }
 
                 if (mode.Type is 0 or 1 or 2)
+                {
                     blockRuleObject.ip.Add("geoip:private");
+                }
 
                 static bool CheckRuleItem(ref RulesItem rulesItem)
                 {
                     bool ipResult, domainResult;
                     if (!(ipResult = rulesItem.ip?.Any() ?? false))
+                    {
                         rulesItem.ip = null;
+                    }
 
                     if (!(domainResult = rulesItem.domain?.Any() ?? false))
+                    {
                         rulesItem.domain = null;
+                    }
 
                     return ipResult || domainResult;
                 }
 
                 if (CheckRuleItem(ref directRuleObject))
+                {
                     v2rayConfig.routing.rules.Add(directRuleObject);
+                }
 
                 if (CheckRuleItem(ref blockRuleObject))
+                {
                     v2rayConfig.routing.rules.Add(blockRuleObject);
+                }
             }
             catch
             {
@@ -319,8 +331,10 @@ namespace Netch.Servers.V2ray.Utils
                         };
 
                         if (server.TLSSecureType != "none")
+                        {
                             // tls or xtls
                             streamSettings.tlsSettings.serverName = server.Hostname;
+                        }
 
                         streamSettings.quicSettings = quicSettings;
                         break;

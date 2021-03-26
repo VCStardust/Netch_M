@@ -67,13 +67,17 @@ namespace Netch.Utils
 
             Data = new Hashtable();
             foreach (var v in dictionary)
+            {
                 Data.Add(v.Key, v.Value);
+            }
         }
 
         private static string GetLanguage(string culture)
         {
             if (!culture.Contains('-'))
+            {
                 return "";
+            }
 
             return culture.Substring(0, culture.IndexOf('-'));
         }
@@ -87,10 +91,16 @@ namespace Netch.Utils
         {
             var a = new StringBuilder();
             foreach (var t in text)
+            {
                 if (t is string)
+                {
                     a.Append(Data.Contains(t) ? Data[t].ToString() : t);
+                }
                 else
+                {
                     a.Append(t);
+                }
+            }
 
             return a.ToString();
         }
@@ -98,8 +108,12 @@ namespace Netch.Utils
         public static string TranslateFormat(string format, params object[] args)
         {
             for (var i = 0; i < args.Length; i++)
+            {
                 if (args[i] is string)
+                {
                     args[i] = Translate((string)args[i]);
+                }
+            }
 
             return string.Format(Translate(format), args);
         }
@@ -109,7 +123,9 @@ namespace Netch.Utils
             var translateFile = new List<string> { "System", "zh-CN", "en-US" };
 
             if (!Directory.Exists("i18n"))
+            {
                 return translateFile;
+            }
 
             translateFile.AddRange(Directory.GetFiles("i18n", "*").Select(fileName => fileName.Substring(5)));
             return translateFile;

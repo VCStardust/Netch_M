@@ -22,6 +22,7 @@ namespace Netch.Forms
         {
             MessageBoxIcon msgIcon;
             if (string.IsNullOrWhiteSpace(title))
+            {
                 title = level switch
                 {
                     LogLevel.INFO => "Information",
@@ -29,6 +30,7 @@ namespace Netch.Forms
                     LogLevel.ERROR => "Error",
                     _ => throw new ArgumentOutOfRangeException(nameof(level), level, null)
                 };
+            }
 
             msgIcon = level switch
             {

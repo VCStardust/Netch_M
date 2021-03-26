@@ -23,14 +23,20 @@ namespace Netch.Utils
             try
             {
                 if (Cache.Contains(hostname))
+                {
                     return Cache[hostname] as IPAddress;
+                }
 
                 var task = Dns.GetHostAddressesAsync(hostname);
                 if (!task.Wait(1000))
+                {
                     return null;
+                }
 
                 if (task.Result.Length == 0)
+                {
                     return null;
+                }
 
                 Cache.Add(hostname, task.Result[0]);
 

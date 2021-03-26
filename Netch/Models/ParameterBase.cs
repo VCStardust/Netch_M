@@ -32,11 +32,17 @@ namespace Netch.Models
             // prefix
             bool full;
             if (p.IsDefined(typeof(VerbAttribute)))
+            {
                 full = false;
+            }
             else if (p.IsDefined(typeof(FullAttribute)))
+            {
                 full = true;
+            }
             else
+            {
                 full = _full;
+            }
 
             var prefix = full ? FullPrefix : VerbPrefix;
             // key
@@ -50,10 +56,14 @@ namespace Netch.Models
                     return b ? $"{prefix}{key}" : null;
                 default:
                     if ((value?.ToString() ?? null).IsNullOrWhiteSpace())
+                    {
                         return p.IsDefined(typeof(OptionalAttribute)) ? null : throw new RequiredArgumentValueInvalidException(p.Name, this, null);
+                    }
 
                     if (p.IsDefined(typeof(QuoteAttribute)))
+                    {
                         value = $"\"{value}\"";
+                    }
 
                     return $"{prefix}{key}{Separate}{value}";
             }

@@ -50,7 +50,9 @@ namespace Netch.Utils
                 set
                 {
                     if (!ValueIsEnabled(Global.Settings.DetectionTick))
+                    {
                         return;
+                    }
 
                     Timer.Enabled = value;
                 }
@@ -68,7 +70,9 @@ namespace Netch.Utils
             public static void TestAllDelay()
             {
                 if (_mux)
+                {
                     return;
+                }
 
                 try
                 {
@@ -88,7 +92,9 @@ namespace Netch.Utils
                 Timer.Stop();
 
                 if (!ValueIsEnabled(Global.Settings.DetectionTick))
+                {
                     return;
+                }
 
                 Timer.Interval = Global.Settings.DetectionTick * 1000;
                 Task.Run(TestAllDelay);
@@ -105,7 +111,9 @@ namespace Netch.Utils
         public static IServerUtil GetUtilByTypeName(string typeName)
         {
             if (string.IsNullOrEmpty(typeName))
+            {
                 throw new ArgumentNullException();
+            }
 
             return ServerUtils.Single(i => i.TypeName.Equals(typeName));
         }
@@ -113,7 +121,9 @@ namespace Netch.Utils
         public static IServerUtil GetUtilByFullName(string fullName)
         {
             if (string.IsNullOrEmpty(fullName))
+            {
                 throw new ArgumentNullException();
+            }
 
             return ServerUtils.Single(i => i.FullName.Equals(fullName));
         }

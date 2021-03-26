@@ -16,7 +16,9 @@ namespace Netch.Models
         {
             // 寻找出口适配器
             if (IpHlpApi.GetBestRoute(BitConverter.ToUInt32(IPAddress.Parse("114.114.114.114").GetAddressBytes(), 0), 0, out var pRoute) != 0)
+            {
                 throw new MessageException("GetBestRoute 搜索失败");
+            }
 
             NetworkInterface = NetworkInterface.GetAllNetworkInterfaces()
                 .First(ni => ni.Supports(NetworkInterfaceComponent.IPv4) &&

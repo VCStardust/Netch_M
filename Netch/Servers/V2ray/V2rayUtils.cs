@@ -54,14 +54,18 @@ namespace Netch.Servers.V2ray
                 {
                     server.Host = parameter.Get("sni") ?? "";
                     if (server.TLSSecureType == "xtls")
+                    {
                         ((VLESS.VLESS)server).Flow = parameter.Get("flow") ?? "";
+                    }
                 }
             }
 
             var finder = new Regex(@$"^{scheme}://(?<guid>.+?)@(?<server>.+):(?<port>\d+)");
             var match = finder.Match(text.Split('?')[0]);
             if (!match.Success)
+            {
                 throw new FormatException();
+            }
 
             server.UserID = match.Groups["guid"].Value;
             server.Hostname = match.Groups["server"].Value;
@@ -74,10 +78,12 @@ namespace Netch.Servers.V2ray
         {
             // https://github.com/XTLS/Xray-core/issues/91
             var server = (VMess.VMess)s;
-            var parameter = new Dictionary<string, string>();
-            // protocol-specific fields
-            parameter.Add("type", server.TransferProtocol);
-            parameter.Add("encryption", server.EncryptMethod);
+            var parameter = new Dictionary<string, string>
+            {
+                // protocol-specific fields
+                { "type", server.TransferProtocol },
+                { "encryption", server.EncryptMethod }
+            };
 
             // transport-specific fields
             switch (server.TransferProtocol)
@@ -86,22 +92,30 @@ namespace Netch.Servers.V2ray
                     break;
                 case "kcp":
                     if (server.FakeType != "none")
+                    {
                         parameter.Add("headerType", server.FakeType);
+                    }
 
                     if (!server.Path.IsNullOrWhiteSpace())
+                    {
                         parameter.Add("seed", Uri.EscapeDataString(server.Path!));
+                    }
 
                     break;
                 case "ws":
                     parameter.Add("path", Uri.EscapeDataString(server.Path.IsNullOrWhiteSpace() ? "/" : server.Path!));
                     if (!server.Host.IsNullOrWhiteSpace())
+                    {
                         parameter.Add("host", Uri.EscapeDataString(server.Host!));
+                    }
 
                     break;
                 case "h2":
                     parameter.Add("path", Uri.EscapeDataString(server.Path.IsNullOrWhiteSpace() ? "/" : server.Path!));
                     if (!server.Host.IsNullOrWhiteSpace())
+                    {
                         parameter.Add("host", Uri.EscapeDataString(server.Host!));
+                    }
 
                     break;
                 case "quic":
@@ -113,7 +127,9 @@ namespace Netch.Servers.V2ray
                     }
 
                     if (server.FakeType != "none")
+                    {
                         parameter.Add("headerType", server.FakeType);
+                    }
 
                     break;
             }
@@ -123,13 +139,17 @@ namespace Netch.Servers.V2ray
                 parameter.Add("security", server.TLSSecureType);
 
                 if (!server.Host.IsNullOrWhiteSpace())
+                {
                     parameter.Add("sni", server.Host!);
+                }
 
                 if (server.TLSSecureType == "xtls")
                 {
                     var flow = ((VLESS.VLESS)server).Flow;
                     if (!flow.IsNullOrWhiteSpace())
+                    {
                         parameter.Add("flow", flow!.Replace("-udp443", ""));
+                    }
                 }
             }
 

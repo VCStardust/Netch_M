@@ -42,7 +42,9 @@ namespace Netch.Models.GitHubRelease
         public int CompareTo(object obj)
         {
             if (obj is not SuffixVersion version)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             return CompareTo(version);
         }
@@ -57,13 +59,19 @@ namespace Netch.Models.GitHubRelease
         {
             var versionComparison = Version.CompareTo(other.Version);
             if (versionComparison != 0)
+            {
                 return versionComparison;
+            }
 
             if (Suffix == string.Empty)
+            {
                 return other.Suffix == string.Empty ? 0 : 1;
+            }
 
             if (other.Suffix == string.Empty)
+            {
                 return -1;
+            }
 
             var suffixComparison = string.Compare(Suffix, other.Suffix, StringComparison.OrdinalIgnoreCase);
             return suffixComparison;
@@ -73,7 +81,9 @@ namespace Netch.Models.GitHubRelease
         {
             var s = Version.ToString();
             if (Suffix != string.Empty)
+            {
                 s += $"-{Suffix}";
+            }
 
             return s;
         }

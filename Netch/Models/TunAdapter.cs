@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Netch.Utils;
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using Netch.Utils;
 
 namespace Netch.Models
 {

@@ -86,7 +86,7 @@ namespace Netch.Servers.VMess
                 return V2rayUtils.ParseVUri(text);
             }
 
-            V2rayNSharing vmess = JsonSerializer.Deserialize<V2rayNSharing>(s,
+            var vmess = JsonSerializer.Deserialize<V2rayNSharing>(s,
                 new JsonSerializerOptions { NumberHandling = JsonNumberHandling.WriteAsString | JsonNumberHandling.AllowReadingFromString })!;
 
             data.Remark = vmess.ps;

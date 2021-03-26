@@ -194,9 +194,12 @@ namespace Netch.Forms
             }
 
             if (!flag)
+            {
                 return;
+            }
 
             foreach (var pair in _saveActions)
+            {
                 switch (pair.Key)
                 {
                     case CheckBox c:
@@ -206,9 +209,12 @@ namespace Netch.Forms
                         pair.Value.Invoke(pair.Key.Text);
                         break;
                 }
+            }
 
             if (Global.Settings.Server.IndexOf(Server) == -1)
+            {
                 Global.Settings.Server.Add(Server);
+            }
 
             MessageBoxX.Show(i18N.Translate("Saved"));
 
@@ -218,7 +224,9 @@ namespace Netch.Forms
         protected override void Dispose(bool disposing)
         {
             if (disposing)
+            {
                 components?.Dispose();
+            }
 
             base.Dispose(disposing);
         }

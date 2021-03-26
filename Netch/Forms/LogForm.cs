@@ -54,7 +54,9 @@ namespace Netch.Forms
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
             if (!checkBox1.Checked)
+            {
                 return;
+            }
 
             richTextBox1.SelectionStart = richTextBox1.Text.Length;
             richTextBox1.ScrollToCaret();

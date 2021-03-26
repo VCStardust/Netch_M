@@ -15,17 +15,23 @@ namespace Netch.Models
         {
             _lazyRule = new Lazy<List<string>>(ReadRules);
             if (fullName == null)
+            {
                 return;
+            }
 
             FullName = fullName;
             if (!File.Exists(FullName))
+            {
                 return;
+            }
 
             var text = File.ReadLines(FullName).First();
 
             // load head
             if (text.First() != '#')
+            {
                 throw new Exception($"mode {FullName} head not found at Line 0");
+            }
 
             var split = text.Substring(1).SplitTrimEntries(',');
             Remark = split[0];
@@ -86,10 +92,14 @@ namespace Netch.Models
                 foreach (var s in Rule)
                 {
                     if (string.IsNullOrWhiteSpace(s))
+                    {
                         continue;
+                    }
 
                     if (s.StartsWith("//"))
+                    {
                         continue;
+                    }
 
                     if (s.StartsWith("#include"))
                     {
@@ -101,16 +111,24 @@ namespace Netch.Models
                         var mode = Global.Modes.FirstOrDefault(m => m.FullName != null && m.RelativePath!.Equals(relativePath.ToString()));
 
                         if (mode == null)
+                        {
                             throw new MessageException($"{relativePath} file included in {Remark} not found");
+                        }
 
                         if (mode == this)
+                        {
                             throw new MessageException("Can't self-reference");
+                        }
 
                         if (mode.Type != Type)
+                        {
                             throw new MessageException($"{mode.Remark}'s mode is not as same as {Remark}'s mode");
+                        }
 
                         if (mode.Rule.Any(rule => rule.StartsWith("#include")))
+                        {
                             throw new Exception("Cannot reference mode that reference other mode");
+                        }
 
                         result.AddRange(mode.FullRule);
                     }
@@ -127,7 +145,9 @@ namespace Netch.Models
         private List<string> ReadRules()
         {
             if (FullName == null || !File.Exists(FullName))
+            {
                 return new List<string>();
+            }
 
             return File.ReadLines(FullName!).Skip(1).ToList();
         }
@@ -135,11 +155,15 @@ namespace Netch.Models
         public void WriteFile(string? fullName = null)
         {
             if (fullName != null)
+            {
                 throw new NotImplementedException();
+            }
 
             var dir = Path.GetDirectoryName(FullName)!;
             if (!Directory.Exists(dir))
+            {
                 Directory.CreateDirectory(dir);
+            }
 
             // 写入到模式文件里
             File.WriteAllText(FullName!, ToFileString());

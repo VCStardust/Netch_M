@@ -64,8 +64,8 @@ namespace nfapinet
     public struct NF_RULE
     {
         public int protocol;      // IPPROTO_TCP or IPPROTO_UDP        
-        public UInt32 processId;  // Process identifier
-        public Byte direction;    // See NF_DIRECTION
+        public uint processId;  // Process identifier
+        public byte direction;    // See NF_DIRECTION
         public ushort localPort;  // Local port
         public ushort remotePort; // Remote port
         public ushort ip_family;  // AF_INET for IPv4 and AF_INET6 for IPv6
@@ -86,7 +86,7 @@ namespace nfapinet
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
         public byte[] remoteIpAddressMask;
 
-        public UInt32 filteringFlag; // See NF_FILTERING_FLAG
+        public uint filteringFlag; // See NF_FILTERING_FLAG
     };
 
     /**
@@ -96,8 +96,8 @@ namespace nfapinet
     public struct NF_RULE_EX
     {
         public int protocol;      // IPPROTO_TCP or IPPROTO_UDP        
-        public UInt32 processId;  // Process identifier
-        public Byte direction;    // See NF_DIRECTION
+        public uint processId;  // Process identifier
+        public byte direction;    // See NF_DIRECTION
         public ushort localPort;  // Local port
         public ushort remotePort; // Remote port
         public ushort ip_family;  // AF_INET for IPv4 and AF_INET6 for IPv6
@@ -118,7 +118,7 @@ namespace nfapinet
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_IP_ADDRESS_LENGTH)]
         public byte[] remoteIpAddressMask;
 
-        public UInt32 filteringFlag; // See NF_FILTERING_FLAG
+        public uint filteringFlag; // See NF_FILTERING_FLAG
 
         // Tail part of the process path mask 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
@@ -131,9 +131,9 @@ namespace nfapinet
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct NF_TCP_CONN_INFO
     {
-        public UInt32 filteringFlag; // See NF_FILTERING_FLAG
-        public UInt32 processId;     // Process identifier
-        public Byte direction;       // See NF_DIRECTION
+        public uint filteringFlag; // See NF_FILTERING_FLAG
+        public uint processId;     // Process identifier
+        public byte direction;       // See NF_DIRECTION
         public ushort ip_family;     // AF_INET for IPv4 and AF_INET6 for IPv6
 
         // Local address as sockaddr_in for IPv4 and sockaddr_in6 for IPv6
@@ -151,7 +151,7 @@ namespace nfapinet
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct NF_UDP_CONN_INFO
     {
-        public UInt32 processId; // Process identifier
+        public uint processId; // Process identifier
         public ushort ip_family; // AF_INET for IPv4 and AF_INET6 for IPv6
 
         // Local address as sockaddr_in for IPv4 and sockaddr_in6 for IPv6
@@ -165,8 +165,8 @@ namespace nfapinet
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct NF_UDP_OPTIONS
     {
-        public UInt32 flags;        // UDP flags
-        public Int32 optionsLength; // options length
+        public uint flags;        // UDP flags
+        public int optionsLength; // options length
         [MarshalAs(UnmanagedType.ByValArray)]
         public byte[] options; // Options array
     };
@@ -177,8 +177,8 @@ namespace nfapinet
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct NF_UDP_CONN_REQUEST
     {
-        public UInt32 filteringFlag; // See NF_FILTERING_FLAG
-        public UInt32 processId;     // Process identifier
+        public uint filteringFlag; // See NF_FILTERING_FLAG
+        public uint processId;     // Process identifier
         public ushort ip_family;     // AF_INET for IPv4 and AF_INET6 for IPv6
 
         // Local address as sockaddr_in for IPv4 and sockaddr_in6 for IPv6
@@ -201,11 +201,11 @@ namespace nfapinet
     public struct NF_IP_PACKET_OPTIONS
     {
         public ushort ip_family;         // AF_INET for IPv4 and AF_INET6 for IPv6
-        public UInt32 ipHeaderSize;      // Size in bytes of IP header
-        public UInt32 compartmentId;     // Network routing compartment identifier (can be zero)
-        public UInt32 interfaceIndex;    // Index of the interface on which the original packet data was received (irrelevant to outgoing packets)
-        public UInt32 subInterfaceIndex; // Index of the subinterface on which the original packet data was received (irrelevant to outgoing packets)
-        public UInt32 flags;             // Can be a combination of flags from NF_IP_FLAG enumeration
+        public uint ipHeaderSize;      // Size in bytes of IP header
+        public uint compartmentId;     // Network routing compartment identifier (can be zero)
+        public uint interfaceIndex;    // Index of the interface on which the original packet data was received (irrelevant to outgoing packets)
+        public uint subInterfaceIndex; // Index of the subinterface on which the original packet data was received (irrelevant to outgoing packets)
+        public uint flags;             // Can be a combination of flags from NF_IP_FLAG enumeration
     };
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -218,7 +218,7 @@ namespace nfapinet
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct NF_FLOWCTL_MODIFY_DATA
     {
-        public UInt32 fcHandle;
+        public uint fcHandle;
         public NF_FLOWCTL_DATA data;
     };
 
@@ -233,7 +233,7 @@ namespace nfapinet
     public struct NF_FLOWCTL_SET_DATA
     {
         public ulong endpointId;
-        public UInt32 fcHandle;
+        public uint fcHandle;
     };
 
     /**
@@ -246,7 +246,7 @@ namespace nfapinet
         public int protocol;
 
         // Process identifier
-        public UInt32 processId;
+        public uint processId;
 
         // Tail part of the process path mask 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
@@ -278,58 +278,58 @@ namespace nfapinet
     };
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_threadStart();
+    internal delegate void cbd_threadStart();
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_threadEnd();
+    internal delegate void cbd_threadEnd();
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_tcpConnectRequest(ulong id, ref NF_TCP_CONN_INFO pConnInfo);
+    internal delegate void cbd_tcpConnectRequest(ulong id, ref NF_TCP_CONN_INFO pConnInfo);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_tcpConnected(ulong id, ref NF_TCP_CONN_INFO pConnInfo);
+    internal delegate void cbd_tcpConnected(ulong id, ref NF_TCP_CONN_INFO pConnInfo);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_tcpClosed(ulong id, ref NF_TCP_CONN_INFO pConnInfo);
+    internal delegate void cbd_tcpClosed(ulong id, ref NF_TCP_CONN_INFO pConnInfo);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_tcpReceive(ulong id, IntPtr buf, int len);
+    internal delegate void cbd_tcpReceive(ulong id, IntPtr buf, int len);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_tcpSend(ulong id, IntPtr buf, int len);
+    internal delegate void cbd_tcpSend(ulong id, IntPtr buf, int len);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_tcpCanReceive(ulong id);
+    internal delegate void cbd_tcpCanReceive(ulong id);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_tcpCanSend(ulong id);
+    internal delegate void cbd_tcpCanSend(ulong id);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_udpCreated(ulong id, ref NF_UDP_CONN_INFO pConnInfo);
+    internal delegate void cbd_udpCreated(ulong id, ref NF_UDP_CONN_INFO pConnInfo);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_udpConnectRequest(ulong id, ref NF_UDP_CONN_REQUEST pConnReq);
+    internal delegate void cbd_udpConnectRequest(ulong id, ref NF_UDP_CONN_REQUEST pConnReq);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_udpClosed(ulong id, ref NF_UDP_CONN_INFO pConnInfo);
+    internal delegate void cbd_udpClosed(ulong id, ref NF_UDP_CONN_INFO pConnInfo);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_udpReceive(ulong id, IntPtr remoteAddress, IntPtr buf, int len, IntPtr options);
+    internal delegate void cbd_udpReceive(ulong id, IntPtr remoteAddress, IntPtr buf, int len, IntPtr options);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_udpSend(ulong id, IntPtr remoteAddress, IntPtr buf, int len, IntPtr options);
+    internal delegate void cbd_udpSend(ulong id, IntPtr remoteAddress, IntPtr buf, int len, IntPtr options);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_udpCanReceive(ulong id);
+    internal delegate void cbd_udpCanReceive(ulong id);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_udpCanSend(ulong id);
+    internal delegate void cbd_udpCanSend(ulong id);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_ipReceive(IntPtr buf, int len, ref NF_IP_PACKET_OPTIONS ipOptions);
+    internal delegate void cbd_ipReceive(IntPtr buf, int len, ref NF_IP_PACKET_OPTIONS ipOptions);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void cbd_ipSend(IntPtr buf, int len, ref NF_IP_PACKET_OPTIONS ipOptions);
+    internal delegate void cbd_ipSend(IntPtr buf, int len, ref NF_IP_PACKET_OPTIONS ipOptions);
 
     /*
      * Event handler interface
@@ -366,7 +366,7 @@ namespace nfapinet
     /*
      *  Internal events forwarder
      */
-    class NF_EventHandlerFwd
+    internal class NF_EventHandlerFwd
     {
         public static NF_EventHandler m_pEventHandler = null;
 
@@ -434,8 +434,8 @@ namespace nfapinet
         {
             if (options.ToInt64() != 0)
             {
-                NF_UDP_OPTIONS optionsCopy = (NF_UDP_OPTIONS)Marshal.PtrToStructure(options, typeof(NF_UDP_OPTIONS));
-                int optionsLen = 8 + optionsCopy.optionsLength;
+                var optionsCopy = (NF_UDP_OPTIONS)Marshal.PtrToStructure(options, typeof(NF_UDP_OPTIONS));
+                var optionsLen = 8 + optionsCopy.optionsLength;
                 m_pEventHandler.udpReceive(id, remoteAddress, buf, len, options, optionsLen);
             }
             else
@@ -448,8 +448,8 @@ namespace nfapinet
         {
             if (options.ToInt64() != 0)
             {
-                NF_UDP_OPTIONS optionsCopy = (NF_UDP_OPTIONS)Marshal.PtrToStructure(options, typeof(NF_UDP_OPTIONS));
-                int optionsLen = 8 + optionsCopy.optionsLength;
+                var optionsCopy = (NF_UDP_OPTIONS)Marshal.PtrToStructure(options, typeof(NF_UDP_OPTIONS));
+                var optionsLen = 8 + optionsCopy.optionsLength;
                 m_pEventHandler.udpSend(id, remoteAddress, buf, len, options, optionsLen);
             }
             else
@@ -472,7 +472,7 @@ namespace nfapinet
     /*
      *  Internal IP events forwarder
      */
-    class NF_IPEventHandlerFwd
+    internal class NF_IPEventHandlerFwd
     {
         public static NF_IPEventHandler m_pEventHandler = null;
 
@@ -491,7 +491,7 @@ namespace nfapinet
      *  Event handler structure for C API
      */
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    struct NF_EventHandlerInternal
+    internal struct NF_EventHandlerInternal
     {
         public cbd_threadStart threadStart;
         public cbd_threadEnd threadEnd;
@@ -515,7 +515,7 @@ namespace nfapinet
      *  IP event handler structure for C API
      */
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    struct NF_IPEventHandlerInternal
+    internal struct NF_IPEventHandlerInternal
     {
         public cbd_ipReceive ipReceive;
         public cbd_ipSend ipSend;
@@ -545,32 +545,33 @@ namespace nfapinet
          * @param pHandler Pointer to event handling object
          */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern NF_STATUS nf_init(String driverName, IntPtr pHandler);
+        public static extern NF_STATUS nf_init(string driverName, IntPtr pHandler);
 
-        public static NF_STATUS nf_init(String driverName, NF_EventHandler pHandler)
+        public static NF_STATUS nf_init(string driverName, NF_EventHandler pHandler)
         {
             NF_EventHandlerFwd.m_pEventHandler = pHandler;
 
             nf_adjustProcessPriviledges();
 
-            m_pEventHandler = new NF_EventHandlerInternal();
-
-            m_pEventHandler.threadStart = new cbd_threadStart(NF_EventHandlerFwd.threadStart);
-            m_pEventHandler.threadEnd = new cbd_threadEnd(NF_EventHandlerFwd.threadEnd);
-            m_pEventHandler.tcpConnectRequest = new cbd_tcpConnectRequest(NF_EventHandlerFwd.tcpConnectRequest);
-            m_pEventHandler.tcpConnected = new cbd_tcpConnected(NF_EventHandlerFwd.tcpConnected);
-            m_pEventHandler.tcpClosed = new cbd_tcpClosed(NF_EventHandlerFwd.tcpClosed);
-            m_pEventHandler.tcpReceive = new cbd_tcpReceive(NF_EventHandlerFwd.tcpReceive);
-            m_pEventHandler.tcpSend = new cbd_tcpSend(NF_EventHandlerFwd.tcpSend);
-            m_pEventHandler.tcpCanReceive = new cbd_tcpCanReceive(NF_EventHandlerFwd.tcpCanReceive);
-            m_pEventHandler.tcpCanSend = new cbd_tcpCanSend(NF_EventHandlerFwd.tcpCanSend);
-            m_pEventHandler.udpCreated = new cbd_udpCreated(NF_EventHandlerFwd.udpCreated);
-            m_pEventHandler.udpConnectRequest = new cbd_udpConnectRequest(NF_EventHandlerFwd.udpConnectRequest);
-            m_pEventHandler.udpClosed = new cbd_udpClosed(NF_EventHandlerFwd.udpClosed);
-            m_pEventHandler.udpReceive = new cbd_udpReceive(NF_EventHandlerFwd.udpReceive);
-            m_pEventHandler.udpSend = new cbd_udpSend(NF_EventHandlerFwd.udpSend);
-            m_pEventHandler.udpCanReceive = new cbd_udpCanReceive(NF_EventHandlerFwd.udpCanReceive);
-            m_pEventHandler.udpCanSend = new cbd_udpCanSend(NF_EventHandlerFwd.udpCanSend);
+            m_pEventHandler = new NF_EventHandlerInternal
+            {
+                threadStart = new cbd_threadStart(NF_EventHandlerFwd.threadStart),
+                threadEnd = new cbd_threadEnd(NF_EventHandlerFwd.threadEnd),
+                tcpConnectRequest = new cbd_tcpConnectRequest(NF_EventHandlerFwd.tcpConnectRequest),
+                tcpConnected = new cbd_tcpConnected(NF_EventHandlerFwd.tcpConnected),
+                tcpClosed = new cbd_tcpClosed(NF_EventHandlerFwd.tcpClosed),
+                tcpReceive = new cbd_tcpReceive(NF_EventHandlerFwd.tcpReceive),
+                tcpSend = new cbd_tcpSend(NF_EventHandlerFwd.tcpSend),
+                tcpCanReceive = new cbd_tcpCanReceive(NF_EventHandlerFwd.tcpCanReceive),
+                tcpCanSend = new cbd_tcpCanSend(NF_EventHandlerFwd.tcpCanSend),
+                udpCreated = new cbd_udpCreated(NF_EventHandlerFwd.udpCreated),
+                udpConnectRequest = new cbd_udpConnectRequest(NF_EventHandlerFwd.udpConnectRequest),
+                udpClosed = new cbd_udpClosed(NF_EventHandlerFwd.udpClosed),
+                udpReceive = new cbd_udpReceive(NF_EventHandlerFwd.udpReceive),
+                udpSend = new cbd_udpSend(NF_EventHandlerFwd.udpSend),
+                udpCanReceive = new cbd_udpCanReceive(NF_EventHandlerFwd.udpCanReceive),
+                udpCanSend = new cbd_udpCanSend(NF_EventHandlerFwd.udpCanSend)
+            };
 
             m_pEventHandlerRaw = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(NF_EventHandlerInternal)));
             Marshal.StructureToPtr(m_pEventHandler, m_pEventHandlerRaw, true);
@@ -590,14 +591,14 @@ namespace nfapinet
          * @param driverName
          */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern NF_STATUS nf_registerDriver(String driverName);
+        public static extern NF_STATUS nf_registerDriver(string driverName);
 
         /**
          * Unregisters a driver with specified name (without ".sys" extension)
          * @param driverName
          */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern NF_STATUS nf_unRegisterDriver(String driverName);
+        public static extern NF_STATUS nf_unRegisterDriver(string driverName);
 
         //
         // TCP control routines
@@ -757,10 +758,10 @@ namespace nfapinet
         {
             NF_RULE pRule;
 
-            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(NF_RULE)) * rules.Length);
+            var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(NF_RULE)) * rules.Length);
 
-            long longPtr = ptr.ToInt64();
-            for (int i = 0; i < rules.Length; i++)
+            var longPtr = ptr.ToInt64();
+            for (var i = 0; i < rules.Length; i++)
             {
                 pRule = rules[i];
 
@@ -791,10 +792,10 @@ namespace nfapinet
         {
             NF_RULE_EX pRule;
 
-            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(NF_RULE_EX)) * rules.Length);
+            var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(NF_RULE_EX)) * rules.Length);
 
-            long longPtr = ptr.ToInt64();
-            for (int i = 0; i < rules.Length; i++)
+            var longPtr = ptr.ToInt64();
+            for (var i = 0; i < rules.Length; i++)
             {
                 pRule = rules[i];
 
@@ -822,7 +823,7 @@ namespace nfapinet
          * @param timeout Timeout value in milliseconds. Specify zero value to disable timeouts.
          */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern UInt32 nf_setTCPTimeout(UInt32 timeout);
+        public static extern uint nf_setTCPTimeout(uint timeout);
 
         /**
          * Disables indicating TCP packets to user mode for the specified endpoint
@@ -888,9 +889,9 @@ namespace nfapinet
         /**
          * Returns the process name for given process id
          */
-        public static unsafe String nf_getProcessNameFromKernel(UInt32 processId)
+        public static unsafe string nf_getProcessNameFromKernel(uint processId)
         {
-            char[] buf = new char[1024];
+            var buf = new char[1024];
 
             fixed (char* p = buf)
             {
@@ -906,9 +907,9 @@ namespace nfapinet
         /**
          * Returns the process name for given process id
          */
-        public static unsafe String nf_getProcessName(UInt32 processId)
+        public static unsafe string nf_getProcessName(uint processId)
         {
-            char[] buf = new char[256];
+            var buf = new char[256];
 
             fixed (char* p = buf)
             {
@@ -937,10 +938,11 @@ namespace nfapinet
         {
             NF_IPEventHandlerFwd.m_pEventHandler = pHandler;
 
-            m_pIPEventHandler = new NF_IPEventHandlerInternal();
-
-            m_pIPEventHandler.ipReceive = new cbd_ipReceive(NF_IPEventHandlerFwd.ipReceive);
-            m_pIPEventHandler.ipSend = new cbd_ipSend(NF_IPEventHandlerFwd.ipSend);
+            m_pIPEventHandler = new NF_IPEventHandlerInternal
+            {
+                ipReceive = new cbd_ipReceive(NF_IPEventHandlerFwd.ipReceive),
+                ipSend = new cbd_ipSend(NF_IPEventHandlerFwd.ipSend)
+            };
 
             m_pIPEventHandlerRaw = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(NF_IPEventHandlerInternal)));
             Marshal.StructureToPtr(m_pIPEventHandler, m_pIPEventHandlerRaw, true);
@@ -952,37 +954,37 @@ namespace nfapinet
         * Add flow control context
         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern NF_STATUS nf_addFlowCtl(ref NF_FLOWCTL_DATA pData, ref UInt32 pFcHandle);
+        public static extern NF_STATUS nf_addFlowCtl(ref NF_FLOWCTL_DATA pData, ref uint pFcHandle);
 
         /**
         * Delete flow control context
         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern NF_STATUS nf_deleteFlowCtl(UInt32 fcHandle);
+        public static extern NF_STATUS nf_deleteFlowCtl(uint fcHandle);
 
         /**
         * Associate flow control context with TCP connection
         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern NF_STATUS nf_setTCPFlowCtl(ulong id, UInt32 fcHandle);
+        public static extern NF_STATUS nf_setTCPFlowCtl(ulong id, uint fcHandle);
 
         /**
         * Associate flow control context with UDP socket
         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern NF_STATUS nf_setUDPFlowCtl(ulong id, UInt32 fcHandle);
+        public static extern NF_STATUS nf_setUDPFlowCtl(ulong id, uint fcHandle);
 
         /**
         * Modify flow control context limits
         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern NF_STATUS nf_modifyFlowCtl(UInt32 fcHandle, ref NF_FLOWCTL_DATA pData);
+        public static extern NF_STATUS nf_modifyFlowCtl(uint fcHandle, ref NF_FLOWCTL_DATA pData);
 
         /**
         * Get flow control context statistics as the numbers of in/out bytes
         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern NF_STATUS nf_getFlowCtlStat(UInt32 fcHandle, ref NF_FLOWCTL_STAT pStat);
+        public static extern NF_STATUS nf_getFlowCtlStat(uint fcHandle, ref NF_FLOWCTL_STAT pStat);
 
         /**
         * Get TCP connection statistics as the numbers of in/out bytes.
@@ -1006,7 +1008,7 @@ namespace nfapinet
 
         public static NF_STATUS nf_tcpSetSockOpt(ulong id, NF_SOCKET_OPTIONS optname, bool optval)
         {
-            int dword = optval ? 1 : 0;
+            var dword = optval ? 1 : 0;
             return nf_tcpSetSockOpt(id, optname, ref dword, Marshal.SizeOf(typeof(int)));
         }
 
@@ -1035,6 +1037,6 @@ namespace nfapinet
         * Returns the type of attached driver (DT_WFP, DT_TDI or DT_UNKNOWN)
         */
         [DllImport("bin\\nfapinet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern UInt32 nf_getDriverType();
+        public static extern uint nf_getDriverType();
     };
 }

@@ -55,7 +55,9 @@ namespace Netch.Utils
             }
 #else
             lock (FileLock)
+            {
                 File.AppendAllText(LogFile, contents);
+            }
 #endif
         }
     }

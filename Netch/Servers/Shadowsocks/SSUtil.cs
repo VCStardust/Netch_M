@@ -52,10 +52,14 @@ namespace Netch.Servers.Shadowsocks
         public IEnumerable<Server> ParseUri(string text)
         {
             if (text.StartsWith("ss://"))
+            {
                 return new[] { ParseSsUri(text) };
+            }
 
             if (text.StartsWith("ssd://"))
+            {
                 return ParseSsdUri(text);
+            }
 
             throw new FormatException();
         }
@@ -110,7 +114,9 @@ namespace Netch.Servers.Shadowsocks
                 var match = finder.Match(text);
 
                 if (!match.Success)
+                {
                     throw new FormatException();
+                }
 
                 var plugins = HttpUtility.UrlDecode(HttpUtility.ParseQueryString(new Uri(text).Query).Get("plugin"));
                 if (plugins != null)
@@ -123,13 +129,17 @@ namespace Netch.Servers.Shadowsocks
                         case "simple-obfs":
                             plugin = "simple-obfs";
                             if (!pluginopts.Contains("obfs="))
+                            {
                                 pluginopts = "obfs=http;obfs-host=" + pluginopts;
+                            }
 
                             break;
                         case "simple-obfs-tls":
                             plugin = "simple-obfs";
                             if (!pluginopts.Contains("obfs="))
+                            {
                                 pluginopts = "obfs=tls;obfs-host=" + pluginopts;
+                            }
 
                             break;
                     }
@@ -147,7 +157,9 @@ namespace Netch.Servers.Shadowsocks
                 var parser = new Regex(@"^(?<method>.+?):(?<password>.+)$");
                 var match = finder.Match(text);
                 if (!match.Success)
+                {
                     throw new FormatException();
+                }
 
                 data.Hostname = match.Groups["server"].Value;
                 data.Port = ushort.Parse(match.Groups["port"].Value);
@@ -155,7 +167,9 @@ namespace Netch.Servers.Shadowsocks
                 var base64 = ShareLink.URLSafeBase64Decode(match.Groups["base64"].Value);
                 match = parser.Match(base64);
                 if (!match.Success)
+                {
                     throw new FormatException();
+                }
 
                 data.EncryptMethod = match.Groups["method"].Value;
                 data.Password = match.Groups["password"].Value;
@@ -165,7 +179,9 @@ namespace Netch.Servers.Shadowsocks
                 var parser = new Regex(@"^((?<method>.+?):(?<password>.+)@(?<server>.+):(?<port>\d+))");
                 var match = parser.Match(ShareLink.URLSafeBase64Decode(text.Replace("ss://", "")));
                 if (!match.Success)
+                {
                     throw new FormatException();
+                }
 
                 data.Hostname = match.Groups["server"].Value;
                 data.Port = ushort.Parse(match.Groups["port"].Value);

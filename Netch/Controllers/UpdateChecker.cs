@@ -62,9 +62,13 @@ namespace Netch.Controllers
             catch (Exception e)
             {
                 if (e is WebException)
+                {
                     Logging.Warning($"获取新版本失败: {e.Message}");
+                }
                 else
+                {
                     Logging.Warning(e.ToString());
+                }
 
                 NewVersionFoundFailed?.Invoke(null, new EventArgs());
             }
@@ -85,7 +89,7 @@ namespace Netch.Controllers
               | :- | :- |
            */
 
-            Match match = keyword == null ? matches.First() : matches.First(m => m.Groups["filename"].Value.Contains(keyword));
+            var match = keyword == null ? matches.First() : matches.First(m => m.Groups["filename"].Value.Contains(keyword));
 
             fileName = match.Groups["filename"].Value;
             sha256 = match.Groups["sha256"].Value;
@@ -94,10 +98,12 @@ namespace Netch.Controllers
         public static string GetLatestReleaseContent()
         {
             var sb = new StringBuilder();
-            foreach (string l in LatestRelease.body.GetLines(false).SkipWhile(l => l.FirstOrDefault() != '#'))
+            foreach (var l in LatestRelease.body.GetLines(false).SkipWhile(l => l.FirstOrDefault() != '#'))
             {
                 if (l.Contains("校验和"))
+                {
                     break;
+                }
 
                 sb.AppendLine(l);
             }

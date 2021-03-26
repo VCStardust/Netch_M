@@ -43,7 +43,9 @@ namespace Netch.Controllers
             aio_dial((int)NameList.TYPE_FILTERCHILDPROC, Global.Settings.ChildProcessHandle.ToString().ToLower());
 
             if (!aio_init())
+            {
                 throw new MessageException("Redirector Start failed, run Netch with \"-console\" argument");
+            }
         }
 
         public void Stop()
@@ -111,17 +113,23 @@ namespace Netch.Controllers
                 if (s.StartsWith("!"))
                 {
                     if (!aio_dial((int)NameList.TYPE_BYPNAME, s.Substring(1)))
+                    {
                         list.Add(s);
+                    }
 
                     continue;
                 }
 
                 if (!aio_dial((int)NameList.TYPE_ADDNAME, s))
+                {
                     list.Add(s);
+                }
             }
 
             if (list.Any())
+            {
                 throw new MessageException(GenerateInvalidRulesMessage(list));
+            }
 
             aio_dial((int)NameList.TYPE_ADDNAME, @"NTT\.exe");
             aio_dial((int)NameList.TYPE_BYPNAME, "^" + Global.NetchDir.ToRegexString() + @"((?!NTT\.exe).)*$");
@@ -139,14 +147,18 @@ namespace Netch.Controllers
             try
             {
                 if (r.StartsWith("!"))
+                {
                     return aio_dial((int)NameList.TYPE_ADDNAME, r.Substring(1));
+                }
 
                 return aio_dial((int)NameList.TYPE_ADDNAME, r);
             }
             finally
             {
                 if (clear)
+                {
                     aio_dial((int)NameList.TYPE_CLRNAME, "");
+                }
             }
         }
 
@@ -246,22 +258,30 @@ namespace Netch.Controllers
             if (Version.TryParse(binFileVersion, out var binResult) && Version.TryParse(systemFileVersion, out var systemResult))
             {
                 if (binResult.CompareTo(systemResult) > 0)
+                {
                     // Update
                     reinstall = true;
+                }
                 else if (systemResult.Major != binResult.Major)
+                {
                     // Downgrade when Major version different (may have breaking changes)
                     reinstall = true;
+                }
             }
             else
             {
                 // Parse File versionName to Version failed
                 if (!systemFileVersion.Equals(binFileVersion))
+                {
                     // versionNames are different, Reinstall
                     reinstall = true;
+                }
             }
 
             if (!reinstall)
+            {
                 return;
+            }
 
             Logging.Info("更新驱动");
             UninstallDriver();
@@ -277,7 +297,9 @@ namespace Netch.Controllers
             Logging.Info("安装 NF 驱动");
 
             if (!File.Exists(BinDriver))
+            {
                 throw new MessageException(i18N.Translate("builtin driver files missing, can't install NF driver"));
+            }
 
             try
             {
@@ -324,7 +346,9 @@ namespace Netch.Controllers
             }
 
             if (!File.Exists(SystemDriver))
+            {
                 return true;
+            }
 
             NFAPI.nf_unRegisterDriver("netfilter2");
             File.Delete(SystemDriver);

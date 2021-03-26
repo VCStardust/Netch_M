@@ -34,9 +34,13 @@ namespace Netch.Controllers
 
             var argument = new StringBuilder($@"-i \Device\NPF_{_outbound.NetworkInterface.Id}");
             if (server is Socks5 socks5 && !socks5.Auth())
+            {
                 argument.Append($" --destination  {server.AutoResolveHostname()}:{server.Port}");
+            }
             else
+            {
                 argument.Append($" --destination  127.0.0.1:{Global.Settings.Socks5LocalPort}");
+            }
 
             argument.Append($" {mode.FullRule.FirstOrDefault() ?? "-P n"}");
             StartInstanceAuto(argument.ToString());
@@ -53,7 +57,9 @@ namespace Netch.Controllers
             Global.MainForm.BeginInvoke(new Action(() =>
             {
                 if (!_form!.IsDisposed)
+                {
                     _form.richTextBox1.AppendText(line + "\n");
+                }
             }));
         }
 

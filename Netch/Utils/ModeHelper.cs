@@ -14,6 +14,8 @@ namespace Netch.Utils
 
         private static readonly FileSystemWatcher FileSystemWatcher;
 
+        public static readonly int[] ModeTypes = { 0, 1, 2, 6 };
+
         static ModeHelper()
         {
             FileSystemWatcher = new FileSystemWatcher(ModeDirectoryFullName)
@@ -36,7 +38,9 @@ namespace Netch.Utils
         private static void OnModeChanged(object sender, FileSystemEventArgs e)
         {
             if (SuspendWatcher)
+            {
                 return;
+            }
 
             Load();
             Global.MainForm.LoadModes();
@@ -46,7 +50,9 @@ namespace Netch.Utils
         {
             var length = ModeDirectoryFullName.Length;
             if (!ModeDirectoryFullName.EndsWith("\\"))
+            {
                 length++;
+            }
 
             return fullName.Substring(length);
         }
@@ -72,22 +78,27 @@ namespace Netch.Utils
             try
             {
                 foreach (var directory in Directory.GetDirectories(modeDirectory))
+                {
                     LoadModeDirectory(directory);
+                }
 
                 // skip Directory with a disabled file in
                 if (File.Exists(Path.Combine(modeDirectory, DisableModeDirectoryFileName)))
+                {
                     return;
+                }
 
                 foreach (var file in Directory.GetFiles(modeDirectory).Where(f => f.EndsWith(".txt")))
-
+                {
                     try
                     {
                         Global.Modes.Add(new Mode(file));
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Logging.Warning($"Load mode \"{file}\" failed: {e.Message}");
                     }
+                }
             }
             catch
             {
@@ -103,7 +114,9 @@ namespace Netch.Utils
         public static void Delete(Mode mode)
         {
             if (mode.FullName == null)
+            {
                 throw new ArgumentException(nameof(mode.FullName));
+            }
 
             File.Delete(mode.FullName);
         }
@@ -114,11 +127,11 @@ namespace Netch.Utils
             {
                 case 0:
                     return server switch
-                           {
-                               Socks5 => true,
-                               Shadowsocks shadowsocks when !shadowsocks.HasPlugin() && Global.Settings.RedirectorSS => true,
-                               _ => false
-                           };
+                    {
+                        Socks5 => true,
+                        Shadowsocks shadowsocks when !shadowsocks.HasPlugin() && Global.Settings.RedirectorSS => true,
+                        _ => false
+                    };
                 case 1:
                 case 2:
                     return server is Socks5;
@@ -126,8 +139,6 @@ namespace Netch.Utils
                     return false;
             }
         }
-
-        public static readonly int[] ModeTypes = { 0, 1, 2, 6 };
 
         public static IModeController GetModeControllerByType(int type, out ushort? port, out string portName)
         {

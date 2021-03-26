@@ -30,6 +30,7 @@ namespace Netch.Utils
         public static void Load()
         {
             if (File.Exists(SettingFileFullName))
+            {
                 try
                 {
                     using var fileStream = File.OpenRead(SettingFileFullName);
@@ -46,9 +47,12 @@ namespace Netch.Utils
                     Environment.Exit(-1);
                     Global.Settings = null!;
                 }
+            }
             else
+            {
                 // 保存默认设置
                 Save();
+            }
         }
 
         private static void CheckSetting(Setting settings)
@@ -56,8 +60,12 @@ namespace Netch.Utils
             settings.Profiles.RemoveAll(p => p.ServerRemark == string.Empty || p.ModeRemark == string.Empty);
 
             if (settings.Profiles.Any(p => settings.Profiles.Any(p1 => p1 != p && p1.Index == p.Index)))
+            {
                 for (var i = 0; i < settings.Profiles.Count; i++)
+                {
                     settings.Profiles[i].Index = i;
+                }
+            }
         }
 
         /// <summary>
@@ -66,7 +74,9 @@ namespace Netch.Utils
         public static void Save()
         {
             if (!Directory.Exists(DataDirectoryFullName))
+            {
                 Directory.CreateDirectory(DataDirectoryFullName);
+            }
 
             File.WriteAllBytes(SettingFileFullName, JsonSerializer.SerializeToUtf8Bytes(Global.Settings, JsonSerializerOptions));
         }

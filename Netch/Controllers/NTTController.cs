@@ -43,18 +43,22 @@ namespace Netch.Controllers
                 }
 
                 if (output.IsNullOrWhiteSpace())
+                {
                     if (!error.IsNullOrWhiteSpace())
                     {
                         error = error.Trim();
                         var errorFirst = error.Substring(0, error.IndexOf('\n')).Trim();
                         return (errorFirst.SplitTrimEntries(':').Last(), null, null);
                     }
+                }
 
                 foreach (var line in output.Split('\n'))
                 {
                     var str = line.SplitTrimEntries(':');
                     if (str.Length < 2)
+                    {
                         continue;
+                    }
 
                     var key = str[0];
                     var value = str[1];
@@ -80,7 +84,9 @@ namespace Netch.Controllers
                 }
 
                 if (bindingTest == "Fail")
+                {
                     result = "Fail";
+                }
 
                 return (result, localEnd, publicEnd);
             }

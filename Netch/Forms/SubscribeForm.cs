@@ -25,7 +25,9 @@ namespace Netch.Forms
             get
             {
                 if (SubscribeLinkListView.MultiSelect)
+                {
                     throw new Exception();
+                }
 
                 return SubscribeLinkListView.SelectedIndices.Count == 0 ? -1 : SubscribeLinkListView.SelectedIndices[0];
             }
@@ -36,8 +38,12 @@ namespace Netch.Forms
         private void SubscribeLinkListView_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
+            {
                 if (SelectedIndex != -1)
+                {
                     pContextMenuStrip.Show(SubscribeLinkListView, e.Location);
+                }
+            }
         }
 
         /// <summary>
@@ -129,7 +135,9 @@ namespace Netch.Forms
         {
             if (MessageBoxX.Show(i18N.Translate("Delete or not ? Will clean up the corresponding group of items in the server list"),
                 confirm: true) != DialogResult.OK)
+            {
                 return;
+            }
 
             var subscribeLink = Global.Settings.SubscribeLink[SelectedIndex];
             DeleteServers(subscribeLink.Remark);
@@ -141,7 +149,9 @@ namespace Netch.Forms
         private void deleteServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (MessageBoxX.Show(i18N.Translate("Confirm deletion?"), confirm: true) != DialogResult.OK)
+            {
                 return;
+            }
 
             DeleteServers(Global.Settings.SubscribeLink[SelectedIndex].Remark);
         }
@@ -163,7 +173,9 @@ namespace Netch.Forms
         private static void RenameServers(string oldGroup, string newGroup)
         {
             foreach (var server in Global.Settings.Server.Where(server => server.Group == oldGroup))
+            {
                 server.Group = newGroup;
+            }
         }
 
         private void InitSubscribeLink()
@@ -171,6 +183,7 @@ namespace Netch.Forms
             SubscribeLinkListView.Items.Clear();
 
             foreach (var item in Global.Settings.SubscribeLink)
+            {
                 SubscribeLinkListView.Items.Add(new ListViewItem(new[]
                 {
                     "",
@@ -181,6 +194,7 @@ namespace Netch.Forms
                 {
                     Checked = item.Enable
                 });
+            }
 
             ResetEditingGroup();
         }

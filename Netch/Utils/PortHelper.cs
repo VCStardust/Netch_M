@@ -31,7 +31,9 @@ namespace Netch.Utils
         public static IEnumerable<Process> GetProcessByUsedTcpPort(ushort port)
         {
             if (port == 0)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             var row = GetTcpTable2().Where(r => ntohs((ushort)r.dwLocalPort) == port).Where(r => r.dwOwningPid is not (0 or 4));
 
@@ -59,10 +61,14 @@ namespace Netch.Utils
             {
                 var value = line.Trim().SplitRemoveEmptyEntries(' ');
                 if (value.Length != 2)
+                {
                     continue;
+                }
 
                 if (!ushort.TryParse(value[0], out var start) || !ushort.TryParse(value[1], out var end))
+                {
                     continue;
+                }
 
                 targetList.Add(new Range(start, end));
             }
@@ -99,12 +105,16 @@ namespace Netch.Utils
                     break;
                 case PortType.TCP:
                     if (NetInfo.GetActiveTcpListeners().Any(ipEndPoint => ipEndPoint.Port == port))
+                    {
                         throw new PortInUseException();
+                    }
 
                     break;
                 case PortType.UDP:
                     if (NetInfo.GetActiveUdpListeners().Any(ipEndPoint => ipEndPoint.Port == port))
+                    {
                         throw new PortInUseException();
+                    }
 
                     break;
                 default:
@@ -125,12 +135,16 @@ namespace Netch.Utils
                     return;
                 case PortType.TCP:
                     if (TCPReservedRanges.Any(range => range.InRange(port)))
+                    {
                         throw new PortReservedException();
+                    }
 
                     break;
                 case PortType.UDP:
                     if (UDPReservedRanges.Any(range => range.InRange(port)))
+                    {
                         throw new PortReservedException();
+                    }
 
                     break;
                 default:

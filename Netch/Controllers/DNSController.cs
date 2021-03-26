@@ -28,7 +28,9 @@ namespace Netch.Controllers
             aiodns_dial((int)NameList.TYPE_METH, Encoding.UTF8.GetBytes(Global.Settings.AioDNS.Protocol));
 
             if (!aiodns_init())
+            {
                 throw new Exception("AioDNS start failed");
+            }
         }
 
         #region NativeMethods

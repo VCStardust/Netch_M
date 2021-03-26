@@ -62,13 +62,19 @@ namespace Netch.Models
             var remark = string.IsNullOrWhiteSpace(Remark) ? $"{Hostname}:{Port}" : Remark;
 
             if (Group.Equals("None") || Group.Equals(""))
+            {
                 Group = "NONE";
+            }
 
             string shortName;
             if (Type == string.Empty)
+            {
                 shortName = "WTF";
+            }
             else
+            {
                 shortName = ServerHelper.GetUtilByTypeName(Type).ShortName;
+            }
 
             return $"[{shortName}][{Group}] {remark}";
         }
@@ -83,10 +89,13 @@ namespace Netch.Models
             {
                 var destination = DnsUtils.Lookup(Hostname);
                 if (destination == null)
+                {
                     return Delay = -2;
+                }
 
                 var list = new Task<int>[3];
                 for (var i = 0; i < 3; i++)
+                {
                     list[i] = Task.Run(async () =>
                     {
                         try
@@ -100,6 +109,7 @@ namespace Netch.Models
                             return -4;
                         }
                     });
+                }
 
                 Task.WaitAll(list[0], list[1], list[2]);
 

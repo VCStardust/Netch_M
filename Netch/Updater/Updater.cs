@@ -34,6 +34,7 @@ namespace Netch.Updater
         public static void CleanOld(string targetPath)
         {
             foreach (var f in Directory.GetFiles(targetPath, "*.old", SearchOption.AllDirectories))
+            {
                 try
                 {
                     File.Delete(f);
@@ -42,6 +43,7 @@ namespace Netch.Updater
                 {
                     // ignored
                 }
+            }
         }
 
         #endregion
@@ -103,7 +105,9 @@ namespace Netch.Updater
             }
 
             if (Utils.Utils.SHA256CheckSum(fileFullPath) != sha256)
+            {
                 throw new MessageException(i18N.Translate("The downloaded file has the wrong hash"));
+            }
         }
 
         #endregion
@@ -141,7 +145,9 @@ namespace Netch.Updater
             var extractPath = Path.Combine(_tempDirectory, "extract");
             int exitCode;
             if ((exitCode = Extract(extractPath, true)) != 0)
+            {
                 throw new Exception(i18N.Translate($"7za exit with code {exitCode}"));
+            }
 
             // rename install directory files with .old suffix unless in keep folders
             MarkFilesOld();
@@ -164,17 +170,23 @@ namespace Netch.Updater
             foreach (var file in Directory.GetFiles(_installDirectory, "*", SearchOption.AllDirectories))
             {
                 if (extendedKeepDirectories.Any(p => file.StartsWith(p)))
+                {
                     continue;
+                }
 
                 if (Path.GetFileName(file) is ModeHelper.DisableModeDirectoryFileName)
+                {
                     continue;
+                }
 
                 filesToDelete.Add(file);
             }
 
             // rename files
             foreach (var file in filesToDelete)
+            {
                 File.Move(file, file + ".old");
+            }
         }
 
         private int Extract(string destDirName, bool overwrite)
@@ -183,13 +195,17 @@ namespace Netch.Updater
             var temp7za = Path.Combine(_tempDirectory, "7za.exe");
 
             if (!File.Exists(temp7za))
+            {
                 File.WriteAllBytes(temp7za, Resources._7za);
+            }
 
             // run 7za
             var argument = new StringBuilder();
             argument.Append($" x \"{_updateFile}\" -o\"{destDirName}\"");
             if (overwrite)
+            {
                 argument.Append(" -y");
+            }
 
             var process = Process.Start(new ProcessStartInfo
             {
@@ -205,17 +221,19 @@ namespace Netch.Updater
 
         private static void MoveAllFilesOver(string source, string target)
         {
-            foreach (string directory in Directory.GetDirectories(source))
+            foreach (var directory in Directory.GetDirectories(source))
             {
-                string dirName = Path.GetFileName(directory);
+                var dirName = Path.GetFileName(directory);
 
                 if (!Directory.Exists(Path.Combine(target, dirName)))
+                {
                     Directory.CreateDirectory(Path.Combine(target, dirName));
+                }
 
                 MoveAllFilesOver(directory, Path.Combine(target, dirName));
             }
 
-            foreach (string file in Directory.GetFiles(source))
+            foreach (var file in Directory.GetFiles(source))
             {
                 var destFile = Path.Combine(target, Path.GetFileName(file));
                 File.Delete(destFile);

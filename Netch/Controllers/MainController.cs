@@ -62,7 +62,9 @@ namespace Netch.Controllers
             NativeMethods.FlushDNSResolverCache();
 
             if (DnsUtils.Lookup(server.Hostname) == null)
+            {
                 throw new MessageException(i18N.Translate("Lookup Server hostname failed"));
+            }
 
             // 添加Netch到防火墙
             Firewall.AddNetchFwRules();
@@ -109,7 +111,9 @@ namespace Netch.Controllers
             if (server is Socks5 socks5)
             {
                 if (socks5.Auth())
+                {
                     StatusPortInfoText.Socks5Port = controller.Socks5LocalPort();
+                }
             }
             else
             {
@@ -122,7 +126,9 @@ namespace Netch.Controllers
             ModeController = ModeHelper.GetModeControllerByType(mode.Type, out var port, out var portName);
 
             if (port != null)
+            {
                 TryReleaseTcpPort((ushort)port, portName);
+            }
 
             Global.MainForm.StatusText(i18N.TranslateFormat("Starting {0}", ModeController.Name));
 
@@ -140,7 +146,9 @@ namespace Netch.Controllers
         public static void Stop()
         {
             if (_serverController == null && ModeController == null)
+            {
                 return;
+            }
 
             StatusPortInfoText.Reset();
 
