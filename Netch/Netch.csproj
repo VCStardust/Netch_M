@@ -76,6 +76,8 @@
     </ItemGroup>
 
     <ItemGroup>
+        <None Visible="false" Include="..\binaries\**" LinkBase="bin" CopyToPublishDirectory="PreserveNewest" CopyToOutputDirectory="PreserveNewest" />
+        <None Remove="..\binaries\.git" />
         <ProjectReference Include="..\Interop.nfapinet\Interop.nfapinet.csproj" />
         <ProjectReference Include="..\SearchComboBox\SearchComboBox.csproj" />
     </ItemGroup>
