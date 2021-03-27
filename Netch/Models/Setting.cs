@@ -16,7 +16,7 @@ namespace Netch.Models
         /// <summary>
         ///     DNS
         /// </summary>
-        public List<string> DNS { get; set; } = new();
+        public string HijackDNS { get; set; } = "tcp://1.1.1.1:53";
 
         /// <summary>
         ///     网关
@@ -36,7 +36,7 @@ namespace Netch.Models
         /// <summary>
         ///     使用自定义 DNS 设置
         /// </summary>
-        public bool UseCustomDNS { get; set; } = false;
+        public bool UseCustomDNS { get; set; } = true;
     }
 
     public class KcpConfig
@@ -71,11 +71,11 @@ namespace Netch.Models
 
     public class AioDNSConfig
     {
-        public string ChinaDNS { get; set; } = "223.5.5.5";
+        public string ChinaDNS { get; set; } = "tcp://223.5.5.5:53";
 
-        public string OtherDNS { get; set; } = "1.1.1.1";
+        public string OtherDNS { get; set; } = "tcp://1.1.1.1:53";
 
-        public string Protocol { get; set; } = "tcp";
+        public ushort ListenPort { get; set; } = 53;
 
         public string RulePath { get; set; } = "bin\\aiodns.conf";
     }
@@ -89,11 +89,6 @@ namespace Netch.Models
         ///     服务器列表
         /// </summary>
         public List<Server> Server { get; set; } = new();
-
-        /// <summary>
-        ///     ACL规则
-        /// </summary>
-        public string ACL { get; set; } = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/banAD.acl";
 
         public AioDNSConfig AioDNS { get; set; } = new();
 
@@ -145,17 +140,17 @@ namespace Netch.Models
         /// <summary>
         ///     模式选择位置
         /// </summary>
-        public int ModeComboBoxSelectedIndex { get; set; } = 0;
+        public int ModeComboBoxSelectedIndex { get; set; } = -1;
 
         /// <summary>
         ///     转发DNS地址
         /// </summary>
-        public string RedirectDNSAddr { get; set; } = "8.8.8.8";
+        public string RedirectDNSAddr { get; set; } = "1.1.1.1";
 
         /// <summary>
         ///     是否开启DNS转发
         /// </summary>
-        public bool RedirectDNS { get; set; } = false;
+        public bool RedirectDNS { get; set; } = true;
 
         /// <summary>
         ///     转发ICMP地址
@@ -166,16 +161,6 @@ namespace Netch.Models
         ///     是否开启ICMP转发
         /// </summary>
         public bool RedirectICMP { get; set; } = false;
-
-        /// <summary>
-        ///     GFWList
-        /// </summary>
-        public string PAC { get; set; } = "https://raw.githubusercontent.com/HMBSbige/Text_Translation/master/ShadowsocksR/ss_white.pac";
-
-        /// <summary>
-        ///     PAC端口
-        /// </summary>
-        public ushort Pac_Port { get; set; } = 2803;
 
         /// <summary>
         ///     不代理TCP
@@ -200,7 +185,7 @@ namespace Netch.Models
         /// <summary>
         ///     是否使用RDR内置SS
         /// </summary>
-        public bool RedirectorSS { get; set; } = false;
+        public bool RedirectorSS { get; set; } = true;
 
         /// <summary>
         ///     是否代理子进程
@@ -220,7 +205,7 @@ namespace Netch.Models
         /// <summary>
         ///     解析服务器主机名
         /// </summary>
-        public bool ResolveServerHostname { get; set; } = false;
+        public bool ResolveServerHostname { get; set; } = true;
 
         /// <summary>
         ///     是否开机启动软件
@@ -230,7 +215,7 @@ namespace Netch.Models
         /// <summary>
         ///     服务器选择位置
         /// </summary>
-        public int ServerComboBoxSelectedIndex { get; set; } = 0;
+        public int ServerComboBoxSelectedIndex { get; set; } = -1;
 
         /// <summary>
         ///     服务器测试方式 false.ICMPing true.TCPing
@@ -275,7 +260,7 @@ namespace Netch.Models
         /// <summary>
         ///     TUNTAP 适配器配置
         /// </summary>
-        public TUNConfig WinTUN { get; set; } = new();
+        public TUNConfig TUNTAP { get; set; } = new();
 
         /// <summary>
         ///     是否打开软件时更新订阅
@@ -284,11 +269,15 @@ namespace Netch.Models
 
         public V2rayConfig V2RayConfig { get; set; } = new();
 
-        public bool? AlwaysStartPACServer { get; set; }
-
         public Setting Clone()
         {
             return (Setting)MemberwiseClone();
+        }
+
+        public void Set(Setting value)
+        {
+            foreach (var p in typeof(Setting).GetProperties())
+                p.SetValue(this, p.GetValue(value));
         }
     }
 }

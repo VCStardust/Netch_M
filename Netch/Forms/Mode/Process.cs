@@ -119,7 +119,6 @@ namespace Netch.Forms.Mode
 
                 var mode = new Models.Mode(fullName)
                 {
-                    BypassChina = false,
                     Type = 0,
                     Remark = RemarkTextBox.Text
                 };
@@ -133,7 +132,7 @@ namespace Netch.Forms.Mode
             Close();
         }
 
-        private void RemarkTextBox_TextChanged(object sender, EventArgs e)
+        private void RemarkTextBox_TextChanged(object? sender, EventArgs? e)
         {
             BeginInvoke(new Action(() =>
             {
@@ -181,7 +180,8 @@ namespace Netch.Forms.Mode
                 ScanDirectory(dir, list, maxCount);
             }
 
-            list.AddRange(Directory.GetFiles(directory).Select(Path.GetFileName).Where(s => s.EndsWith(".exe")).Select(s => s.ToRegexString()));
+            list.AddRange(
+                Directory.GetFiles(directory).Select(s => Path.GetFileName(s)).Where(s => s.EndsWith(".exe")).Select(s => s.ToRegexString()));
 
             if (maxCount != 0 && list.Count > maxCount)
             {
@@ -191,7 +191,7 @@ namespace Netch.Forms.Mode
 
         private void ValidationButton_Click(object sender, EventArgs e)
         {
-            if (NFController.CheckRules(Rules, out var results))
+            if (!NFController.CheckRules(Rules, out var results))
             {
                 MessageBoxX.Show(NFController.GenerateInvalidRulesMessage(results), LogLevel.WARNING);
             }

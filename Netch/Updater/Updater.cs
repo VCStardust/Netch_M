@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Windows.Threading;
+using Netch.Models;
 
 namespace Netch.Updater
 {

@@ -94,7 +94,7 @@ namespace Netch.Utils
             {
                 if (t is string)
                 {
-                    a.Append(Data.Contains(t) ? Data[t].ToString() : t);
+                    a.Append(Data[t]?.ToString() ?? t);
                 }
                 else
                 {

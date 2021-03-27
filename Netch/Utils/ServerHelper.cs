@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
+using Range = Netch.Models.Range;
 
 namespace Netch.Utils
 {
@@ -16,7 +17,7 @@ namespace Netch.Utils
                 .GetExportedTypes()
                 .Where(type => type.GetInterfaces().Contains(typeof(IServerUtil)));
 
-            ServerUtils = serversUtilsTypes.Select(t => (IServerUtil)Activator.CreateInstance(t)).OrderBy(util => util.Priority);
+            ServerUtils = serversUtilsTypes.Select(t => (IServerUtil)Activator.CreateInstance(t)!).OrderBy(util => util.Priority);
         }
 
         public static Type GetTypeByTypeName(string typeName)

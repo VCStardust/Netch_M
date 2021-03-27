@@ -14,6 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Task = System.Threading.Tasks.Task;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Netch.Utils
 {
@@ -122,7 +123,10 @@ namespace Netch.Utils
 
         public static string GetFileVersion(string file)
         {
-            return File.Exists(file) ? FileVersionInfo.GetVersionInfo(file).FileVersion : string.Empty;
+            if (File.Exists(file))
+                return FileVersionInfo.GetVersionInfo(file).FileVersion ?? "";
+
+            return "";
         }
 
         public static void DrawCenterComboBox(object sender, DrawItemEventArgs e)
@@ -249,7 +253,7 @@ namespace Netch.Utils
             }
         }
 
-        public static async Task ProcessRunHiddenAsync(string fileName, string? arguments = null, bool print = true)
+        public static async Task ProcessRunHiddenAsync(string fileName, string arguments = "", bool print = true)
         {
             var p = new Process
             {
@@ -278,6 +282,23 @@ namespace Netch.Utils
             }
 
             p.WaitForExit();
+        }
+        public static int SubnetToCidr(string value)
+        {
+            var subnet = IPAddress.Parse(value);
+            return SubnetToCidr(subnet);
+        }
+
+        public static int SubnetToCidr(IPAddress subnet)
+        {
+            return subnet.GetAddressBytes().Sum(b => Convert.ToString(b, 2).Count(c => c == '1'));
+        }
+        public static string HostAppendPort(string host, ushort port = 53)
+        {
+            if (!host.Contains(':'))
+                host += $":{port}";
+
+            return host;
         }
     }
 }

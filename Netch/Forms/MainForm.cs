@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Netch.Forms
 {
@@ -46,18 +47,6 @@ namespace Netch.Forms
 
             // 监听电源事件
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
-
-            ModeComboBox.KeyUp += (_, args) =>
-            {
-                switch (args.KeyData)
-                {
-                    case Keys.Escape:
-                        {
-                            SelectLastMode();
-                            return;
-                        }
-                }
-            };
 
             CheckForIllegalCrossThreadCalls = false;
         }
@@ -247,8 +236,14 @@ namespace Netch.Forms
             }
         }
 
-        private void AddServerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AddServerToolStripMenuItem_Click([NotNull] object? sender, EventArgs e)
         {
+
+            if (sender == null)
+                throw new ArgumentNullException(nameof(sender));
+
+            // TODO get Util from Tag
+
             var s = ((ToolStripMenuItem)sender).Text;
 
             var start = s.IndexOf("[", StringComparison.Ordinal) + 1;
@@ -333,12 +328,12 @@ namespace Netch.Forms
         {
             Task.Run(() =>
             {
-                void OnNewVersionNotFound(object o, EventArgs args)
+                void OnNewVersionNotFound(object? o, EventArgs? args)
                 {
                     NotifyTip(i18N.Translate("Already latest version"));
                 }
 
-                void OnNewVersionFoundFailed(object o, EventArgs args)
+                void OnNewVersionFoundFailed(object? o, EventArgs? args)
                 {
                     NotifyTip(i18N.Translate("New version found failed"), info: false);
                 }
@@ -381,33 +376,6 @@ namespace Netch.Forms
             finally
             {
                 StatusText();
-            }
-        }
-
-        private void updateACLToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            UpdateACL();
-        }
-
-        private async void UpdateACL()
-        {
-            Enabled = false;
-            StatusText(i18N.TranslateFormat("Updating {0}", "ACL"));
-            try
-            {
-                var req = WebUtil.CreateRequest(Global.Settings.ACL);
-                await WebUtil.DownloadFileAsync(req, Path.Combine(Global.NetchDir, Constants.UserACL));
-                NotifyTip(i18N.Translate("ACL updated successfully"));
-            }
-            catch (Exception e)
-            {
-                NotifyTip(i18N.Translate("ACL update failed") + "\n" + e.Message, info: false);
-                Logging.Error("更新 ACL 失败！" + e);
-            }
-            finally
-            {
-                StatusText();
-                Enabled = true;
             }
         }
 
@@ -534,9 +502,6 @@ namespace Netch.Forms
                 MessageBoxX.Show(i18N.Translate("Please select a mode first"));
                 return;
             }
-
-            // 清除模式搜索框文本选择
-            ModeComboBox.Select(0, 0);
 
             State = State.Starting;
 
@@ -692,7 +657,7 @@ namespace Netch.Forms
                 ServerHelper.DelayTestHelper.TestDelayFinished += OnTestDelayFinished;
                 _ = Task.Run(ServerHelper.DelayTestHelper.TestAllDelay);
 
-                void OnTestDelayFinished(object o1, EventArgs e1)
+                void OnTestDelayFinished(object? o1, EventArgs? e1)
                 {
                     Refresh();
 
@@ -919,7 +884,6 @@ namespace Netch.Forms
         private void ActiveProfile(Profile profile)
         {
             ProfileNameText.Text = profile.ProfileName;
-            ModeComboBox.ResetCompletionList();
 
             var server = ServerComboBox.Items.Cast<Server>().FirstOrDefault(s => s.Remark.Equals(profile.ServerRemark));
             var mode = ModeComboBox.Items.Cast<Models.Mode>().FirstOrDefault(m => m.Remark.Equals(profile.ModeRemark));
@@ -955,8 +919,11 @@ namespace Netch.Forms
             return profile;
         }
 
-        private async void ProfileButton_Click(object sender, EventArgs e)
+        private async void ProfileButton_Click([NotNull] object? sender, EventArgs? e)
         {
+            if (sender == null)
+                throw new ArgumentNullException(nameof(sender));
+
             var profileButton = (Button)sender;
             var profile = (Profile?)profileButton.Tag;
             var index = ProfileTable.Controls.IndexOf(profileButton);
@@ -1048,8 +1015,7 @@ namespace Netch.Forms
                         EditServerPictureBox.Enabled = DeleteModePictureBox.Enabled = DeleteServerPictureBox.Enabled = enabled;
 
                     // 启动需要禁用的控件
-                    UninstallServiceToolStripMenuItem.Enabled =
-                        UpdateACLToolStripMenuItem.Enabled = UpdateServersFromSubscribeLinksToolStripMenuItem.Enabled = enabled;
+                    UninstallServiceToolStripMenuItem.Enabled = UpdateServersFromSubscribeLinksToolStripMenuItem.Enabled = enabled;
                 }
 
                 _state = value;
@@ -1398,7 +1364,7 @@ namespace Netch.Forms
                 UpdateChecker.NewVersionFound -= OnUpdateCheckerOnNewVersionFound;
             }
 
-            void OnUpdateCheckerOnNewVersionFound(object o, EventArgs eventArgs)
+            void OnUpdateCheckerOnNewVersionFound(object? o, EventArgs? eventArgs)
             {
                 NotifyTip($"{i18N.Translate(@"New version available", ": ")}{UpdateChecker.LatestVersionNumber}");
                 NewVersionLabel.Text = i18N.Translate("New version available");

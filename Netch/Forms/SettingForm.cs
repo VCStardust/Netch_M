@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
+using Netch.Models;
 
 namespace Netch.Forms
 {
@@ -102,12 +103,7 @@ namespace Netch.Forms
                 Global.Settings.STUN_Server + ":" + Global.Settings.STUN_Server_Port,
                 stuns);
 
-            BindTextBox<string>(AclAddrTextBox, s => true, s => Global.Settings.ACL = s, Global.Settings.ACL);
-
-            BindListComboBox(LanguageComboBox,
-                o => Global.Settings.Language = o.ToString(),
-                i18N.GetTranslateList().Cast<object>().ToArray(),
-                Global.Settings.Language);
+            BindListComboBox(LanguageComboBox, o => Global.Settings.Language = o.ToString(), i18N.GetTranslateList(), Global.Settings.Language);
 
             #endregion
 
@@ -133,7 +129,7 @@ namespace Netch.Forms
 
             BindListComboBox(ProcessProxyProtocolComboBox,
                 s => Global.Settings.ProcessProxyProtocol = (PortType)Enum.Parse(typeof(PortType), s.ToString(), false),
-                Enum.GetNames(typeof(PortType)).Cast<object>().ToArray(),
+                Enum.GetNames(typeof(PortType)),
                 Global.Settings.ProcessProxyProtocol.ToString());
 
             #endregion
@@ -142,33 +138,33 @@ namespace Netch.Forms
 
             BindTextBox(TUNTAPAddressTextBox,
                 s => IPAddress.TryParse(s, out _),
-                s => Global.Settings.WinTUN.Address = s,
-                Global.Settings.WinTUN.Address);
+                s => Global.Settings.TUNTAP.Address = s,
+                Global.Settings.TUNTAP.Address);
 
             BindTextBox(TUNTAPNetmaskTextBox,
                 s => IPAddress.TryParse(s, out _),
-                s => Global.Settings.WinTUN.Netmask = s,
-                Global.Settings.WinTUN.Netmask);
+                s => Global.Settings.TUNTAP.Netmask = s,
+                Global.Settings.TUNTAP.Netmask);
 
             BindTextBox(TUNTAPGatewayTextBox,
                 s => IPAddress.TryParse(s, out _),
-                s => Global.Settings.WinTUN.Gateway = s,
-                Global.Settings.WinTUN.Gateway);
+                s => Global.Settings.TUNTAP.Gateway = s,
+                Global.Settings.TUNTAP.Gateway);
 
-            BindCheckBox(UseCustomDNSCheckBox, b => { Global.Settings.WinTUN.UseCustomDNS = b; }, Global.Settings.WinTUN.UseCustomDNS);
+            BindCheckBox(UseCustomDNSCheckBox, b => { Global.Settings.TUNTAP.UseCustomDNS = b; }, Global.Settings.TUNTAP.UseCustomDNS);
 
-            BindTextBox(TUNTAPDNSTextBox,
-                s => !UseCustomDNSCheckBox.Checked || DnsUtils.TrySplit(s, out _, 2),
+            BindTextBox(TUNTAPDNSTextBox, 
+                _ => true,
                 s =>
                 {
                     if (UseCustomDNSCheckBox.Checked)
                     {
-                        Global.Settings.WinTUN.DNS = DnsUtils.Split(s).ToList();
+                        Global.Settings.TUNTAP.HijackDNS = s;
                     }
                 },
-                DnsUtils.Join(Global.Settings.WinTUN.DNS));
+                Global.Settings.TUNTAP.HijackDNS);
 
-            BindCheckBox(ProxyDNSCheckBox, b => Global.Settings.WinTUN.ProxyDNS = b, Global.Settings.WinTUN.ProxyDNS);
+            BindCheckBox(ProxyDNSCheckBox, b => Global.Settings.TUNTAP.ProxyDNS = b, Global.Settings.TUNTAP.ProxyDNS);
 
             #endregion
 
@@ -229,17 +225,11 @@ namespace Netch.Forms
 
             #region AioDNS
 
-            BindTextBox(AioDNSRulePathTextBox, s => true, s => Global.Settings.AioDNS.RulePath = s, Global.Settings.AioDNS.RulePath);
+            BindTextBox(AioDNSRulePathTextBox, _ => true, s => Global.Settings.AioDNS.RulePath = s, Global.Settings.AioDNS.RulePath);
 
-            BindTextBox(ChinaDNSTextBox,
-                s => IPAddress.TryParse(s, out _),
-                s => Global.Settings.AioDNS.ChinaDNS = s,
-                Global.Settings.AioDNS.ChinaDNS);
+            BindTextBox(ChinaDNSTextBox, _ => true, s => Global.Settings.AioDNS.ChinaDNS = s, Global.Settings.AioDNS.ChinaDNS);
 
-            BindTextBox(OtherDNSTextBox,
-                s => IPAddress.TryParse(s, out _),
-                s => Global.Settings.AioDNS.OtherDNS = s,
-                Global.Settings.AioDNS.OtherDNS);
+            BindTextBox(OtherDNSTextBox, _ => true, s => Global.Settings.AioDNS.OtherDNS = s, Global.Settings.AioDNS.OtherDNS);
 
             #endregion
         }
@@ -253,7 +243,7 @@ namespace Netch.Forms
         {
             if (UseCustomDNSCheckBox.Checked)
             {
-                TUNTAPDNSTextBox.Text = Global.Settings.WinTUN.DNS.Any() ? DnsUtils.Join(Global.Settings.WinTUN.DNS) : "1.1.1.1";
+                TUNTAPDNSTextBox.Text = Global.Settings.TUNTAP.HijackDNS;
             }
             else
             {
@@ -341,16 +331,21 @@ namespace Netch.Forms
             _saveActions.Add(control, c => save.Invoke(((RadioButton)c).Checked));
         }
 
-        private void BindListComboBox(ComboBox control, Action<object> save, object[] values, object value, string propertyName = "SelectedItem")
+        private void BindListComboBox<T>(ComboBox comboBox, Action<T> save, IEnumerable<T> values, T value) where T : notnull
         {
-            if (control.DropDownStyle != ComboBoxStyle.DropDownList)
+            if(comboBox.DropDownStyle != ComboBoxStyle.DropDownList)
             {
                 throw new ArgumentOutOfRangeException();
             }
 
-            control.Items.AddRange(values);
-            _saveActions.Add(control, c => save.Invoke(((ComboBox)c).SelectedItem));
-            Load += (_, _) => { control.SelectedItem = value; };
+            var tagItems = values.Select(o => new TagItem<T>(o, o.ToString()!)).ToArray();
+            comboBox.Items.AddRange(tagItems.Cast<object>().ToArray());
+
+            comboBox.ValueMember = nameof(TagItem<T>.Value);
+            comboBox.DisplayMember = nameof(TagItem<T>.Text);
+
+            _saveActions.Add(comboBox, c => save.Invoke(((TagItem<T>)((ComboBox)c).SelectedItem).Value));
+            Load += (_, _) => { comboBox.SelectedItem = tagItems.SingleOrDefault(t => t.Value.Equals(value)); };
         }
 
         private void BindComboBox(ComboBox control, Func<string, bool> check, Action<string> save, string value, object[]? values = null)

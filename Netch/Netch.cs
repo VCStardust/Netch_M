@@ -27,7 +27,7 @@ namespace Netch
 #else
             if (args.Contains(Constants.Parameter.Console))
             {
-                AttachConsole();
+                AttachAllocConsole();
             }
 #endif
 
@@ -99,17 +99,16 @@ namespace Netch
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.ThreadException += Application_OnException;
 
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(Global.MainForm);
         }
 
-        private static void AttachConsole()
+        private static void AttachAllocConsole()
         {
-            if (!NativeMethods.AttachConsole(-1))
-            {
-                NativeMethods.AllocConsole();
-            }
+            if (!AttachConsole(ATTACH_PARENT_PROCESS))
+                AllocConsole();
         }
 
         public static void Application_OnException(object sender, ThreadExceptionEventArgs e)

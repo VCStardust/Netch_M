@@ -64,6 +64,9 @@ namespace Netch.Utils
                 for (var i = 0; i < settings.Profiles.Count; i++)
                 {
                     settings.Profiles[i].Index = i;
+
+                    settings.AioDNS.ChinaDNS = Utils.HostAppendPort(settings.AioDNS.ChinaDNS);
+                    settings.AioDNS.OtherDNS = Utils.HostAppendPort(settings.AioDNS.OtherDNS);
                 }
             }
         }

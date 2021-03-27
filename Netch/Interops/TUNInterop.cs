@@ -1,10 +1,10 @@
-﻿using Netch.Utils;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text;
+using Netch.Utils;
 
-namespace Netch.Controllers
+namespace Netch.Interops
 {
-    public class TUNInterop
+    public static class TUNInterop
     {
         public enum NameList
         {
@@ -36,38 +36,38 @@ namespace Netch.Controllers
 
         private const string tun2socks_bin = "tun2socks.bin";
 
-        public bool Dial(NameList name, string value)
+        public static bool Dial(NameList name, string value)
         {
             Logging.Debug($"Dial {name} {value}");
             return tun_dial(name, Encoding.UTF8.GetBytes(value));
         }
 
-        public bool Init()
+        public static bool Init()
         {
             return tun_init();
         }
 
-        public bool Free()
+        public static bool Free()
         {
             return tun_free();
         }
 
         [DllImport(tun2socks_bin, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool tun_dial(NameList name, byte[] value);
+        private static extern bool tun_dial(NameList name, byte[] value);
 
         [DllImport(tun2socks_bin, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool tun_init();
+        private static extern bool tun_init();
 
         [DllImport(tun2socks_bin, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool tun_free();
+        private static extern bool tun_free();
 
         [DllImport(tun2socks_bin, CallingConvention = CallingConvention.Cdecl)]
-        public static extern ulong tun_luid();
+        private static extern ulong tun_luid();
 
         [DllImport(tun2socks_bin, CallingConvention = CallingConvention.Cdecl)]
-        public static extern ulong tun_getUP();
+        private static extern ulong tun_getUP();
 
         [DllImport(tun2socks_bin, CallingConvention = CallingConvention.Cdecl)]
-        public static extern ulong tun_getDL();
+        private static extern ulong tun_getDL();
     }
 }

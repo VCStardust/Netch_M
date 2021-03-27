@@ -12,7 +12,7 @@ namespace Netch.Models
     {
         private readonly RegistryKey _parametersRegistry;
 
-        public OutboundAdapter(bool logging = true)
+        public OutboundAdapter()
         {
             // 寻找出口适配器
             if (IpHlpApi.GetBestRoute(BitConverter.ToUInt32(IPAddress.Parse("114.114.114.114").GetAddressBytes(), 0), 0, out var pRoute) != 0)
@@ -24,33 +24,15 @@ namespace Netch.Models
                 .First(ni => ni.Supports(NetworkInterfaceComponent.IPv4) &&
                              ni.GetIPProperties().GetIPv4Properties().Index == pRoute.dwForwardIfIndex);
 
+            Address = new IPAddress(pRoute.dwForwardNextHop.S_addr);
             InterfaceIndex = (int)pRoute.dwForwardIfIndex;
             Gateway = new IPAddress(pRoute.dwForwardNextHop.S_un_b);
-            _parametersRegistry =
-                Registry.LocalMachine.OpenSubKey($@"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\{NetworkInterface.Id}", true)!;
 
-            if (logging)
-            {
-                Logging.Info($"出口 网关 地址：{Gateway}");
-                Logging.Info($"出口适配器：{NetworkInterface.Name} {NetworkInterface.Id} {NetworkInterface.Description}, index: {InterfaceIndex}");
-            }
+            Logging.Info($"出口 网关 地址：{Gateway}");
+            Logging.Info($"出口适配器：{NetworkInterface.Name} {NetworkInterface.Id} {NetworkInterface.Description}, index: {InterfaceIndex}");
         }
 
-        public string DNS
-        {
-            get
-            {
-                try
-                {
-                    return (string)_parametersRegistry.GetValue("NameServer");
-                }
-                catch
-                {
-                    return string.Empty;
-                }
-            }
-            set => _parametersRegistry.SetValue("NameServer", value, RegistryValueKind.String);
-        }
+        public IPAddress Address { get; set; }
 
         /// <summary>
         ///     索引

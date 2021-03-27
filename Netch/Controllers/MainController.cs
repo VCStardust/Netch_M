@@ -197,7 +197,7 @@ namespace Netch.Controllers
                 string fileName;
                 try
                 {
-                    fileName = p.MainModule!.FileName;
+                    fileName = p.MainModule?.FileName ?? throw new Exception();   // TODO what's this exception?
                 }
                 catch (Exception e)
                 {
@@ -218,16 +218,5 @@ namespace Netch.Controllers
 
             PortCheck(port, portName, PortType.TCP);
         }
-    }
-}
-
-public class MessageException : Exception
-{
-    public MessageException()
-    {
-    }
-
-    public MessageException(string message) : base(message)
-    {
     }
 }

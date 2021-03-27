@@ -38,10 +38,8 @@ namespace Netch.Models
 
             var typeResult = int.TryParse(split.ElementAtOrDefault(1), out var type);
             Type = typeResult ? type : 0;
-            // TODO throw NotSupportedModeTypeException
-
-            var bypassChinaResult = int.TryParse(split.ElementAtOrDefault(2), out var bypassChina);
-            BypassChina = this.ClientRouting() && bypassChinaResult && bypassChina == 1;
+            if (!ModeHelper.ModeTypes.Contains(Type))
+                throw new NotSupportedException($"not support mode \"[{Type}]{Remark}\".");
         }
 
         public string? FullName { get; }
@@ -50,11 +48,6 @@ namespace Netch.Models
         ///     规则
         /// </summary>
         public List<string> Rule => _lazyRule.Value;
-
-        /// <summary>
-        ///     绕过中国（0. 不绕过 1. 绕过）
-        /// </summary>
-        public bool BypassChina { get; set; }
 
         /// <summary>
         ///     备注
@@ -184,7 +177,7 @@ namespace Netch.Models
         /// <returns>模式文件字符串</returns>
         public string ToFileString()
         {
-            return $"# {Remark}, {Type}, {(BypassChina ? 1 : 0)}{Constants.EOF}{string.Join(Constants.EOF, Rule)}";
+            return $"# {Remark}, {Type}{Constants.EOF}{string.Join(Constants.EOF, Rule)}";
         }
     }
 
@@ -196,10 +189,5 @@ namespace Netch.Models
             return mode.Type is 0 or 2;
         }
 
-        /// Socks5 分流是否能被有效实施
-        public static bool ClientRouting(this Mode mode)
-        {
-            return mode.Type is not (1 or 2);
-        }
     }
 }
