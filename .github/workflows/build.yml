@@ -1,4 +1,4 @@
-name: Netch CI 48
+name: Netch CI
 on:
   push:
     branches:
