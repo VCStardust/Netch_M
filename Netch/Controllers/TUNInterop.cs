@@ -1,6 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using Netch.Utils;
+using System.Runtime.InteropServices;
 using System.Text;
-using Netch.Utils;
 
 namespace Netch.Controllers
 {

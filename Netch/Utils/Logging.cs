@@ -61,6 +61,7 @@ case LogLevel.DEBUG:
             }
 #endif
         }
+
         public static void Debug(string s)
         {
 #if DEBUG

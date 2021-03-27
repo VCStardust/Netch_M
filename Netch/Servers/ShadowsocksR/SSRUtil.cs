@@ -132,7 +132,7 @@ namespace Netch.Servers.ShadowsocksR
                         EncryptMethod = method,
                         Password = password,
                         Remark = remarks,
-                        Group = group
+                        Group = @group
                     }
                 };
             }

@@ -81,8 +81,8 @@ namespace Netch.Servers.V2ray
             var parameter = new Dictionary<string, string>
             {
                 // protocol-specific fields
-                { "type", server.TransferProtocol },
-                { "encryption", server.EncryptMethod }
+                {"type", server.TransferProtocol},
+                {"encryption", server.EncryptMethod}
             };
 
             // transport-specific fields

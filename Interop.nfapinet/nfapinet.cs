@@ -64,7 +64,7 @@ namespace nfapinet
     public struct NF_RULE
     {
         public int protocol;      // IPPROTO_TCP or IPPROTO_UDP        
-        public uint processId;  // Process identifier
+        public uint processId;    // Process identifier
         public byte direction;    // See NF_DIRECTION
         public ushort localPort;  // Local port
         public ushort remotePort; // Remote port
@@ -96,7 +96,7 @@ namespace nfapinet
     public struct NF_RULE_EX
     {
         public int protocol;      // IPPROTO_TCP or IPPROTO_UDP        
-        public uint processId;  // Process identifier
+        public uint processId;    // Process identifier
         public byte direction;    // See NF_DIRECTION
         public ushort localPort;  // Local port
         public ushort remotePort; // Remote port
@@ -133,8 +133,8 @@ namespace nfapinet
     {
         public uint filteringFlag; // See NF_FILTERING_FLAG
         public uint processId;     // Process identifier
-        public byte direction;       // See NF_DIRECTION
-        public ushort ip_family;     // AF_INET for IPv4 and AF_INET6 for IPv6
+        public byte direction;     // See NF_DIRECTION
+        public ushort ip_family;   // AF_INET for IPv4 and AF_INET6 for IPv6
 
         // Local address as sockaddr_in for IPv4 and sockaddr_in6 for IPv6
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_ADDRESS_LENGTH)]
@@ -151,7 +151,7 @@ namespace nfapinet
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct NF_UDP_CONN_INFO
     {
-        public uint processId; // Process identifier
+        public uint processId;   // Process identifier
         public ushort ip_family; // AF_INET for IPv4 and AF_INET6 for IPv6
 
         // Local address as sockaddr_in for IPv4 and sockaddr_in6 for IPv6
@@ -179,7 +179,7 @@ namespace nfapinet
     {
         public uint filteringFlag; // See NF_FILTERING_FLAG
         public uint processId;     // Process identifier
-        public ushort ip_family;     // AF_INET for IPv4 and AF_INET6 for IPv6
+        public ushort ip_family;   // AF_INET for IPv4 and AF_INET6 for IPv6
 
         // Local address as sockaddr_in for IPv4 and sockaddr_in6 for IPv6
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)NF_CONSTS.NF_MAX_ADDRESS_LENGTH)]
@@ -200,7 +200,7 @@ namespace nfapinet
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct NF_IP_PACKET_OPTIONS
     {
-        public ushort ip_family;         // AF_INET for IPv4 and AF_INET6 for IPv6
+        public ushort ip_family;       // AF_INET for IPv4 and AF_INET6 for IPv6
         public uint ipHeaderSize;      // Size in bytes of IP header
         public uint compartmentId;     // Network routing compartment identifier (can be zero)
         public uint interfaceIndex;    // Index of the interface on which the original packet data was received (irrelevant to outgoing packets)

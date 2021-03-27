@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 using static Netch.Controllers.TUNInterop;
 
@@ -19,20 +18,20 @@ namespace Netch.Controllers
         private readonly OutboundAdapter _outboundAdapter = new();
 
         private readonly List<string> _proxyIPs = new();
+
+        private readonly TUNInterop _tunInterop = new();
+
+        /// <summary>
+        ///     本地 DNS 服务控制器
+        /// </summary>
+        public readonly DNSController DNSController = new();
         /// <summary>
         ///     服务器 IP 地址
         /// </summary>
         private IPAddress _serverAddresses = null!;
         private IAdapter _tunAdapter = null!;
 
-        /// <summary>
-        ///     本地 DNS 服务控制器
-        /// </summary>
-        public readonly DNSController DNSController = new();
-
         public string Name { get; } = "tun2socks";
-
-        private readonly TUNInterop _tunInterop = new();
 
         public void Start(in Mode mode)
         {
@@ -297,6 +296,7 @@ namespace Netch.Controllers
             Create,
             Delete
         }
+
         #endregion
     }
 }
