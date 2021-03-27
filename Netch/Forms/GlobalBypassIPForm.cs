@@ -3,6 +3,7 @@ using Netch.Utils;
 using System;
 using System.Net;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace Netch.Forms
 {
@@ -18,7 +19,7 @@ namespace Netch.Forms
         {
             i18N.TranslateForm(this);
 
-            IPListBox.Items.AddRange(Global.Settings.BypassIPs.ToArray());
+            IPListBox.Items.AddRange(Global.Settings.TUNTAP.BypassIPs.Cast<object>().ToArray());
 
             for (var i = 32; i >= 1; i--)
             {
@@ -34,7 +35,7 @@ namespace Netch.Forms
             {
                 if (IPAddress.TryParse(IPTextBox.Text, out var address))
                 {
-                    IPListBox.Items.Add(string.Format("{0}/{1}", address, PrefixComboBox.SelectedItem));
+                    IPListBox.Items.Add($"{address}/{PrefixComboBox.SelectedItem}");
                 }
                 else
                 {
@@ -61,10 +62,10 @@ namespace Netch.Forms
 
         private void ControlButton_Click(object sender, EventArgs e)
         {
-            Global.Settings.BypassIPs.Clear();
+            Global.Settings.TUNTAP.BypassIPs.Clear();
             foreach (var ip in IPListBox.Items)
             {
-                Global.Settings.BypassIPs.Add((string)ip);
+                Global.Settings.TUNTAP.BypassIPs.Add((string)ip);
             }
 
             Configuration.Save();

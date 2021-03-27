@@ -38,8 +38,6 @@ namespace Netch.Forms
             this.Socks5PortTextBox = new System.Windows.Forms.TextBox();
             this.HTTPPortLabel = new System.Windows.Forms.Label();
             this.HTTPPortTextBox = new System.Windows.Forms.TextBox();
-            this.RedirectorLabel = new System.Windows.Forms.Label();
-            this.RedirectorTextBox = new System.Windows.Forms.TextBox();
             this.AllowDevicesCheckBox = new System.Windows.Forms.CheckBox();
             this.ResolveServerHostnameCheckBox = new System.Windows.Forms.CheckBox();
             this.ServerPingTypeLabel = new System.Windows.Forms.Label();
@@ -59,14 +57,14 @@ namespace Netch.Forms
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.ProcessProxyProtocolLabel = new System.Windows.Forms.Label();
             this.ProcessProxyProtocolComboBox = new System.Windows.Forms.ComboBox();
-            this.DNSRedirectorCheckBox = new System.Windows.Forms.CheckBox();
-            this.RDRDNSTextBox = new System.Windows.Forms.TextBox();
-            this.ICMPRedirectorCheckBox = new System.Windows.Forms.CheckBox();
-            this.ModifiedICMPTextBox = new System.Windows.Forms.TextBox();
+            this.DNSHijackCheckBox = new System.Windows.Forms.CheckBox();
+            this.DNSHijackHostTextBox = new System.Windows.Forms.TextBox();
+            this.ICMPHijackCheckBox = new System.Windows.Forms.CheckBox();
+            this.ICMPHijackHostTextBox = new System.Windows.Forms.TextBox();
             this.RedirectorSSCheckBox = new System.Windows.Forms.CheckBox();
             this.ChildProcessHandleCheckBox = new System.Windows.Forms.CheckBox();
-            this.TAPTabPage = new System.Windows.Forms.TabPage();
-            this.TUNTAPGroupBox = new System.Windows.Forms.GroupBox();
+            this.WinTUNTabPage = new System.Windows.Forms.TabPage();
+            this.WinTUNGroupBox = new System.Windows.Forms.GroupBox();
             this.TUNTAPAddressLabel = new System.Windows.Forms.Label();
             this.TUNTAPAddressTextBox = new System.Windows.Forms.TextBox();
             this.TUNTAPNetmaskLabel = new System.Windows.Forms.Label();
@@ -119,8 +117,8 @@ namespace Netch.Forms
             this.PortGroupBox.SuspendLayout();
             this.NFTabPage.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.TAPTabPage.SuspendLayout();
-            this.TUNTAPGroupBox.SuspendLayout();
+            this.WinTUNTabPage.SuspendLayout();
+            this.WinTUNGroupBox.SuspendLayout();
             this.v2rayTabPage.SuspendLayout();
             this.KCPGroupBox.SuspendLayout();
             this.OtherTabPage.SuspendLayout();
@@ -132,7 +130,7 @@ namespace Netch.Forms
             // 
             this.TabControl.Controls.Add(this.GeneralTabPage);
             this.TabControl.Controls.Add(this.NFTabPage);
-            this.TabControl.Controls.Add(this.TAPTabPage);
+            this.TabControl.Controls.Add(this.WinTUNTabPage);
             this.TabControl.Controls.Add(this.v2rayTabPage);
             this.TabControl.Controls.Add(this.OtherTabPage);
             this.TabControl.Controls.Add(this.AioDNSTabPage);
@@ -173,8 +171,6 @@ namespace Netch.Forms
             this.PortGroupBox.Controls.Add(this.Socks5PortTextBox);
             this.PortGroupBox.Controls.Add(this.HTTPPortLabel);
             this.PortGroupBox.Controls.Add(this.HTTPPortTextBox);
-            this.PortGroupBox.Controls.Add(this.RedirectorLabel);
-            this.PortGroupBox.Controls.Add(this.RedirectorTextBox);
             this.PortGroupBox.Controls.Add(this.AllowDevicesCheckBox);
             this.PortGroupBox.Location = new System.Drawing.Point(8, 6);
             this.PortGroupBox.Name = "PortGroupBox";
@@ -216,23 +212,6 @@ namespace Netch.Forms
             this.HTTPPortTextBox.Size = new System.Drawing.Size(90, 23);
             this.HTTPPortTextBox.TabIndex = 3;
             this.HTTPPortTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // RedirectorLabel
-            // 
-            this.RedirectorLabel.AutoSize = true;
-            this.RedirectorLabel.Location = new System.Drawing.Point(9, 83);
-            this.RedirectorLabel.Name = "RedirectorLabel";
-            this.RedirectorLabel.Size = new System.Drawing.Size(95, 17);
-            this.RedirectorLabel.TabIndex = 4;
-            this.RedirectorLabel.Text = "Redirector TCP";
-            // 
-            // RedirectorTextBox
-            // 
-            this.RedirectorTextBox.Location = new System.Drawing.Point(120, 80);
-            this.RedirectorTextBox.Name = "RedirectorTextBox";
-            this.RedirectorTextBox.Size = new System.Drawing.Size(90, 23);
-            this.RedirectorTextBox.TabIndex = 5;
-            this.RedirectorTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // AllowDevicesCheckBox
             // 
@@ -389,10 +368,10 @@ namespace Netch.Forms
             // 
             this.groupBox1.Controls.Add(this.ProcessProxyProtocolLabel);
             this.groupBox1.Controls.Add(this.ProcessProxyProtocolComboBox);
-            this.groupBox1.Controls.Add(this.DNSRedirectorCheckBox);
-            this.groupBox1.Controls.Add(this.RDRDNSTextBox);
-            this.groupBox1.Controls.Add(this.ICMPRedirectorCheckBox);
-            this.groupBox1.Controls.Add(this.ModifiedICMPTextBox);
+            this.groupBox1.Controls.Add(this.DNSHijackCheckBox);
+            this.groupBox1.Controls.Add(this.DNSHijackHostTextBox);
+            this.groupBox1.Controls.Add(this.ICMPHijackCheckBox);
+            this.groupBox1.Controls.Add(this.ICMPHijackHostTextBox);
             this.groupBox1.Location = new System.Drawing.Point(5, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(450, 117);
@@ -417,43 +396,43 @@ namespace Netch.Forms
             this.ProcessProxyProtocolComboBox.Size = new System.Drawing.Size(191, 25);
             this.ProcessProxyProtocolComboBox.TabIndex = 1;
             // 
-            // DNSRedirectorCheckBox
+            // DNSHijackCheckBox
             // 
-            this.DNSRedirectorCheckBox.AutoSize = true;
-            this.DNSRedirectorCheckBox.Location = new System.Drawing.Point(6, 51);
-            this.DNSRedirectorCheckBox.Name = "DNSRedirectorCheckBox";
-            this.DNSRedirectorCheckBox.Size = new System.Drawing.Size(196, 21);
-            this.DNSRedirectorCheckBox.TabIndex = 2;
-            this.DNSRedirectorCheckBox.Text = "Handle process\'s DNS Hijack";
-            this.DNSRedirectorCheckBox.UseVisualStyleBackColor = true;
+            this.DNSHijackCheckBox.AutoSize = true;
+            this.DNSHijackCheckBox.Location = new System.Drawing.Point(6, 51);
+            this.DNSHijackCheckBox.Name = "DNSHijackCheckBox";
+            this.DNSHijackCheckBox.Size = new System.Drawing.Size(196, 21);
+            this.DNSHijackCheckBox.TabIndex = 2;
+            this.DNSHijackCheckBox.Text = "Handle process\'s DNS Hijack";
+            this.DNSHijackCheckBox.UseVisualStyleBackColor = true;
             // 
-            // RDRDNSTextBox
+            // DNSHijackHostTextBox
             // 
-            this.RDRDNSTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Enabled", this.DNSRedirectorCheckBox, "Checked", true));
-            this.RDRDNSTextBox.Location = new System.Drawing.Point(253, 46);
-            this.RDRDNSTextBox.Name = "RDRDNSTextBox";
-            this.RDRDNSTextBox.Size = new System.Drawing.Size(191, 23);
-            this.RDRDNSTextBox.TabIndex = 4;
-            this.RDRDNSTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.DNSHijackHostTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Enabled", this.DNSHijackCheckBox, "Checked", true));
+            this.DNSHijackHostTextBox.Location = new System.Drawing.Point(253, 46);
+            this.DNSHijackHostTextBox.Name = "DNSHijackHostTextBox";
+            this.DNSHijackHostTextBox.Size = new System.Drawing.Size(191, 23);
+            this.DNSHijackHostTextBox.TabIndex = 4;
+            this.DNSHijackHostTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // ICMPRedirectorCheckBox
+            // ICMPHijackCheckBox
             // 
-            this.ICMPRedirectorCheckBox.AutoSize = true;
-            this.ICMPRedirectorCheckBox.Location = new System.Drawing.Point(6, 81);
-            this.ICMPRedirectorCheckBox.Name = "ICMPRedirectorCheckBox";
-            this.ICMPRedirectorCheckBox.Size = new System.Drawing.Size(139, 21);
-            this.ICMPRedirectorCheckBox.TabIndex = 5;
-            this.ICMPRedirectorCheckBox.Text = "Global ICMP Hijack";
-            this.ICMPRedirectorCheckBox.UseVisualStyleBackColor = true;
+            this.ICMPHijackCheckBox.AutoSize = true;
+            this.ICMPHijackCheckBox.Location = new System.Drawing.Point(6, 81);
+            this.ICMPHijackCheckBox.Name = "ICMPHijackCheckBox";
+            this.ICMPHijackCheckBox.Size = new System.Drawing.Size(139, 21);
+            this.ICMPHijackCheckBox.TabIndex = 5;
+            this.ICMPHijackCheckBox.Text = "Global ICMP Hijack";
+            this.ICMPHijackCheckBox.UseVisualStyleBackColor = true;
             // 
-            // ModifiedICMPTextBox
+            // ICMPHijackHostTextBox
             // 
-            this.ModifiedICMPTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Enabled", this.ICMPRedirectorCheckBox, "Checked", true));
-            this.ModifiedICMPTextBox.Location = new System.Drawing.Point(253, 78);
-            this.ModifiedICMPTextBox.Name = "ModifiedICMPTextBox";
-            this.ModifiedICMPTextBox.Size = new System.Drawing.Size(191, 23);
-            this.ModifiedICMPTextBox.TabIndex = 7;
-            this.ModifiedICMPTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.ICMPHijackHostTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Enabled", this.ICMPHijackCheckBox, "Checked", true));
+            this.ICMPHijackHostTextBox.Location = new System.Drawing.Point(253, 78);
+            this.ICMPHijackHostTextBox.Name = "ICMPHijackHostTextBox";
+            this.ICMPHijackHostTextBox.Size = new System.Drawing.Size(191, 23);
+            this.ICMPHijackHostTextBox.TabIndex = 7;
+            this.ICMPHijackHostTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // RedirectorSSCheckBox
             // 
@@ -475,36 +454,36 @@ namespace Netch.Forms
             this.ChildProcessHandleCheckBox.Text = "Child Process Handle";
             this.ChildProcessHandleCheckBox.UseVisualStyleBackColor = true;
             // 
-            // TAPTabPage
+            // WinTUNTabPage
             // 
-            this.TAPTabPage.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.TAPTabPage.Controls.Add(this.TUNTAPGroupBox);
-            this.TAPTabPage.Controls.Add(this.GlobalBypassIPsButton);
-            this.TAPTabPage.Location = new System.Drawing.Point(4, 26);
-            this.TAPTabPage.Name = "TAPTabPage";
-            this.TAPTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.TAPTabPage.Size = new System.Drawing.Size(461, 324);
-            this.TAPTabPage.TabIndex = 2;
-            this.TAPTabPage.Text = "TAP";
+            this.WinTUNTabPage.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.WinTUNTabPage.Controls.Add(this.WinTUNGroupBox);
+            this.WinTUNTabPage.Controls.Add(this.GlobalBypassIPsButton);
+            this.WinTUNTabPage.Location = new System.Drawing.Point(4, 26);
+            this.WinTUNTabPage.Name = "WinTUNTabPage";
+            this.WinTUNTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.WinTUNTabPage.Size = new System.Drawing.Size(461, 324);
+            this.WinTUNTabPage.TabIndex = 2;
+            this.WinTUNTabPage.Text = "TAP";
             // 
-            // TUNTAPGroupBox
+            // WinTUNGroupBox
             // 
-            this.TUNTAPGroupBox.Controls.Add(this.TUNTAPAddressLabel);
-            this.TUNTAPGroupBox.Controls.Add(this.TUNTAPAddressTextBox);
-            this.TUNTAPGroupBox.Controls.Add(this.TUNTAPNetmaskLabel);
-            this.TUNTAPGroupBox.Controls.Add(this.TUNTAPNetmaskTextBox);
-            this.TUNTAPGroupBox.Controls.Add(this.TUNTAPGatewayLabel);
-            this.TUNTAPGroupBox.Controls.Add(this.TUNTAPGatewayTextBox);
-            this.TUNTAPGroupBox.Controls.Add(this.TUNTAPDNSLabel);
-            this.TUNTAPGroupBox.Controls.Add(this.TUNTAPDNSTextBox);
-            this.TUNTAPGroupBox.Controls.Add(this.UseCustomDNSCheckBox);
-            this.TUNTAPGroupBox.Controls.Add(this.ProxyDNSCheckBox);
-            this.TUNTAPGroupBox.Location = new System.Drawing.Point(6, 6);
-            this.TUNTAPGroupBox.Name = "TUNTAPGroupBox";
-            this.TUNTAPGroupBox.Size = new System.Drawing.Size(420, 168);
-            this.TUNTAPGroupBox.TabIndex = 0;
-            this.TUNTAPGroupBox.TabStop = false;
-            this.TUNTAPGroupBox.Text = "TUN/TAP";
+            this.WinTUNGroupBox.Controls.Add(this.TUNTAPAddressLabel);
+            this.WinTUNGroupBox.Controls.Add(this.TUNTAPAddressTextBox);
+            this.WinTUNGroupBox.Controls.Add(this.TUNTAPNetmaskLabel);
+            this.WinTUNGroupBox.Controls.Add(this.TUNTAPNetmaskTextBox);
+            this.WinTUNGroupBox.Controls.Add(this.TUNTAPGatewayLabel);
+            this.WinTUNGroupBox.Controls.Add(this.TUNTAPGatewayTextBox);
+            this.WinTUNGroupBox.Controls.Add(this.TUNTAPDNSLabel);
+            this.WinTUNGroupBox.Controls.Add(this.TUNTAPDNSTextBox);
+            this.WinTUNGroupBox.Controls.Add(this.UseCustomDNSCheckBox);
+            this.WinTUNGroupBox.Controls.Add(this.ProxyDNSCheckBox);
+            this.WinTUNGroupBox.Location = new System.Drawing.Point(6, 6);
+            this.WinTUNGroupBox.Name = "WinTUNGroupBox";
+            this.WinTUNGroupBox.Size = new System.Drawing.Size(420, 168);
+            this.WinTUNGroupBox.TabIndex = 0;
+            this.WinTUNGroupBox.TabStop = false;
+            this.WinTUNGroupBox.Text = "WinTUN";
             // 
             // TUNTAPAddressLabel
             // 
@@ -1001,9 +980,9 @@ namespace Netch.Forms
             this.NFTabPage.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.TAPTabPage.ResumeLayout(false);
-            this.TUNTAPGroupBox.ResumeLayout(false);
-            this.TUNTAPGroupBox.PerformLayout();
+            this.WinTUNTabPage.ResumeLayout(false);
+            this.WinTUNGroupBox.ResumeLayout(false);
+            this.WinTUNGroupBox.PerformLayout();
             this.v2rayTabPage.ResumeLayout(false);
             this.v2rayTabPage.PerformLayout();
             this.KCPGroupBox.ResumeLayout(false);
@@ -1025,18 +1004,16 @@ namespace Netch.Forms
         private System.Windows.Forms.TabControl TabControl;
         private System.Windows.Forms.TabPage GeneralTabPage;
         private System.Windows.Forms.TabPage NFTabPage;
-        private System.Windows.Forms.TabPage TAPTabPage;
+        private System.Windows.Forms.TabPage WinTUNTabPage;
         private System.Windows.Forms.TabPage v2rayTabPage;
         private System.Windows.Forms.GroupBox PortGroupBox;
-        private System.Windows.Forms.Label RedirectorLabel;
-        private System.Windows.Forms.TextBox RedirectorTextBox;
         private System.Windows.Forms.CheckBox AllowDevicesCheckBox;
         private System.Windows.Forms.Label HTTPPortLabel;
         private System.Windows.Forms.TextBox HTTPPortTextBox;
         private System.Windows.Forms.Label Socks5PortLabel;
         private System.Windows.Forms.TextBox Socks5PortTextBox;
         private System.Windows.Forms.CheckBox ResolveServerHostnameCheckBox;
-        private System.Windows.Forms.GroupBox TUNTAPGroupBox;
+        private System.Windows.Forms.GroupBox WinTUNGroupBox;
         private System.Windows.Forms.CheckBox ProxyDNSCheckBox;
         private System.Windows.Forms.CheckBox UseCustomDNSCheckBox;
         private System.Windows.Forms.Label TUNTAPDNSLabel;
@@ -1048,7 +1025,7 @@ namespace Netch.Forms
         private System.Windows.Forms.Label TUNTAPAddressLabel;
         private System.Windows.Forms.TextBox TUNTAPAddressTextBox;
         private System.Windows.Forms.Button GlobalBypassIPsButton;
-        private System.Windows.Forms.CheckBox DNSRedirectorCheckBox;
+        private System.Windows.Forms.CheckBox DNSHijackCheckBox;
         private System.Windows.Forms.Button ControlButton;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.TabPage OtherTabPage;
@@ -1092,15 +1069,15 @@ namespace Netch.Forms
         private System.Windows.Forms.Label ChinaDNSLabel;
         private System.Windows.Forms.TextBox OtherDNSTextBox;
         private System.Windows.Forms.TextBox ChinaDNSTextBox;
-        private System.Windows.Forms.TextBox RDRDNSTextBox;
+        private System.Windows.Forms.TextBox DNSHijackHostTextBox;
         private System.Windows.Forms.CheckBox RedirectorSSCheckBox;
         private System.Windows.Forms.Label ServerPingTypeLabel;
         private System.Windows.Forms.RadioButton TCPingRadioBtn;
         private System.Windows.Forms.RadioButton ICMPingRadioBtn;
         private System.Windows.Forms.ComboBox ProcessProxyProtocolComboBox;
         private System.Windows.Forms.Label ProcessProxyProtocolLabel;
-        private System.Windows.Forms.CheckBox ICMPRedirectorCheckBox;
-        private System.Windows.Forms.TextBox ModifiedICMPTextBox;
+        private System.Windows.Forms.CheckBox ICMPHijackCheckBox;
+        private System.Windows.Forms.TextBox ICMPHijackHostTextBox;
         private System.Windows.Forms.CheckBox ChildProcessHandleCheckBox;
         private System.Windows.Forms.GroupBox groupBox1;
     }

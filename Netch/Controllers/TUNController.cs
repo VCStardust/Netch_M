@@ -158,7 +158,7 @@ namespace Netch.Controllers
             }
 
             Logging.Info("绕行 → 全局绕过 IP");
-            RouteAction(Action.Create, Global.Settings.BypassIPs, RouteType.Outbound);
+            RouteAction(Action.Create, Global.Settings.TUNTAP.BypassIPs, RouteType.Outbound);
 
             #region Rule IPs
 
@@ -200,7 +200,7 @@ namespace Netch.Controllers
             }
 
             Logging.Info("绕行 → 全局绕过 IP");
-            RouteAction(Action.Create, Global.Settings.BypassIPs, RouteType.Outbound);
+            RouteAction(Action.Create, Global.Settings.TUNTAP.BypassIPs, RouteType.Outbound);
 
             if (mode.Type == 2)
             {
