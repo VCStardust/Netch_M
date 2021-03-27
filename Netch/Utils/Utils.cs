@@ -266,9 +266,7 @@ namespace Netch.Utils
                 }
             };
 
-#if DEBUG
-            Console.WriteLine($"{fileName} {arguments}");
-#endif
+            Logging.Debug($"{fileName} {arguments}");
 
             p.Start();
             var output = await p.StandardOutput.ReadToEndAsync();

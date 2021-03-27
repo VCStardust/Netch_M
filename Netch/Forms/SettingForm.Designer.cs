@@ -548,7 +548,6 @@ namespace Netch.Forms
             this.TUNTAPGroupBox.TabIndex = 0;
             this.TUNTAPGroupBox.TabStop = false;
             this.TUNTAPGroupBox.Text = "TUN/TAP";
-            this.TUNTAPGroupBox.Visible = false;
             // 
             // TUNTAPAddressLabel
             // 
@@ -575,6 +574,7 @@ namespace Netch.Forms
             this.TUNTAPNetmaskLabel.Size = new System.Drawing.Size(47, 12);
             this.TUNTAPNetmaskLabel.TabIndex = 2;
             this.TUNTAPNetmaskLabel.Text = "Netmask";
+            this.TUNTAPNetmaskLabel.Visible = false;
             // 
             // TUNTAPNetmaskTextBox
             // 
@@ -583,6 +583,7 @@ namespace Netch.Forms
             this.TUNTAPNetmaskTextBox.Size = new System.Drawing.Size(294, 21);
             this.TUNTAPNetmaskTextBox.TabIndex = 3;
             this.TUNTAPNetmaskTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.TUNTAPNetmaskTextBox.Visible = false;
             // 
             // TUNTAPGatewayLabel
             // 

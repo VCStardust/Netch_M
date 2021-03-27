@@ -43,6 +43,7 @@ namespace Netch.Utils
 #if DEBUG
             switch (logLevel)
             {
+case LogLevel.DEBUG:
                 case LogLevel.INFO:
                 case LogLevel.WARNING:
                     Console.Write(contents);
@@ -58,6 +59,12 @@ namespace Netch.Utils
             {
                 File.AppendAllText(LogFile, contents);
             }
+#endif
+        }
+        public static void Debug(string s)
+        {
+#if DEBUG
+            Write(s, LogLevel.DEBUG);
 #endif
         }
     }
