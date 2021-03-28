@@ -8,7 +8,7 @@ dotnet publish `
 	-p:SelfContained=false `
 	-p:PublishTrimmed=false `
 	-p:PublishReadyToRun=true `
-    
+	-p:IncludeAllContentInSingleFile=true `
 	Netch\Netch.csproj
 
 if ($LASTEXITCODE) { exit $LASTEXITCODE } 

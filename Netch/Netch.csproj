@@ -20,7 +20,6 @@
         <Platforms>x64</Platforms>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-        <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
         <!--        <EnableNETAnalyzers>true</EnableNETAnalyzers>
                 <AnalysisMode>AllEnabledByDefault</AnalysisMode>
                 <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>-->
