@@ -25,10 +25,10 @@ jobs:
       shell: pwsh
       run: |
         New-Item -ItemType Directory -Path C:\builtfiles -Force > $null
-        7z a -mx9 C:\builtfiles\Netch.7z .\Netch\bin\Publish\
+        7z a -mx9 C:\builtfiles\Netch.7z .\Netch\bin\x64\Release\win-x64\publish\
         7z rn C:\builtfiles\Netch.7z Publish Netch
         echo "Netch_SHA256=$(.\GetSHA256.ps1 C:\builtfiles\Netch.7z)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-        echo "Netch_EXE_SHA256=$(.\GetSHA256.ps1 Netch\bin\Publish\Netch.exe)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        echo "Netch_EXE_SHA256=$(.\GetSHA256.ps1 Netch\bin\x64\Release\win-x64\publish\Netch.exe)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
     - name: Release
       uses: softprops/action-gh-release@v1
       env:
