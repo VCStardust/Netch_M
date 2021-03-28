@@ -8,6 +8,7 @@ dotnet publish `
 	-p:SelfContained=false `
 	-p:PublishTrimmed=false `
 	-p:PublishReadyToRun=true `
+    -p:IncludeAllContentForSelfExtract`
     
 	Netch\Netch.csproj
 
