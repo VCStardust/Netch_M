@@ -119,7 +119,6 @@ namespace Netch.Updater
 
         private void ApplyUpdate()
         {
-            var dispatcher = Dispatcher.CurrentDispatcher;
             var mainForm = Global.MainForm;
 
             #region PreUpdate
@@ -156,7 +155,7 @@ namespace Netch.Updater
             // move {tempDirectory}\extract\Netch to install folder
             MoveAllFilesOver(Path.Combine(extractPath, "Netch"), _installDirectory);
 
-            dispatcher.Invoke(Netch.SingleInstance.Dispose);
+            mainForm.Invoke(new Action(Netch.SingleInstance.Dispose));
             Process.Start(Global.NetchExecutable);
             Environment.Exit(0);
         }

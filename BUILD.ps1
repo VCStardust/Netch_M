@@ -1,9 +1,10 @@
 Write-Host 'Building'
 
-dotnet build -p:Configuration="Release" `
-	-p:SolutionDir="$pwd\" `
+dotnet build `
+	-c "Release" `
+	-p:Platform="x64" `
 	-restore `
-    -p:Platform="x64" `
+    
 	Netch\Netch.csproj
 
 if ($LASTEXITCODE) { exit $LASTEXITCODE } 
