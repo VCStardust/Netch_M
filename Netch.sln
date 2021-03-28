@@ -29,6 +29,7 @@ Global
 		{571A915E-42B9-4C05-9654-71877B4B9D54}.Debug|x64.Build.0 = Debug|x64
 		{571A915E-42B9-4C05-9654-71877B4B9D54}.Release|Any CPU.ActiveCfg = Release|x64
 		{571A915E-42B9-4C05-9654-71877B4B9D54}.Release|x64.ActiveCfg = Release|x64
+		{571A915E-42B9-4C05-9654-71877B4B9D54}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
