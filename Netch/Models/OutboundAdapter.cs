@@ -32,7 +32,7 @@ namespace Netch.Models
             Logging.Info($"出口适配器：{NetworkInterface.Name} {NetworkInterface.Id} {NetworkInterface.Description}, index: {InterfaceIndex}");
         }
 
-        public IPAddress Address { get; set; }
+        public IPAddress Address { get; }
 
         /// <summary>
         ///     索引

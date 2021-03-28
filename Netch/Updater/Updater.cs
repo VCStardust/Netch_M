@@ -115,7 +115,7 @@ namespace Netch.Updater
 
         #region Apply Update
 
-        private static readonly ImmutableArray<string> KeepDirectories = new List<string> { "data", "mode\\Custom" }.ToImmutableArray();
+        private static readonly ImmutableArray<string> KeepDirectories = new List<string> { "data", "mode\\Custom", "logging" }.ToImmutableArray();
 
         private void ApplyUpdate()
         {
@@ -186,7 +186,15 @@ namespace Netch.Updater
             // rename files
             foreach (var file in filesToDelete)
             {
-                File.Move(file, file + ".old");
+                try
+                {
+                    File.Move(file, file + ".old");
+                }
+                catch
+                {
+                    Logging.Error($"failed to rename file \"{file}\"");
+                    throw;
+                }
             }
         }
 
