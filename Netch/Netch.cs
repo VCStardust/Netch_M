@@ -23,7 +23,7 @@ namespace Netch
         public static void Main(string[] args)
         {
 #if DEBUG
-            AttachConsole();
+            AttachAllocConsole();
 #else
             if (args.Contains(Constants.Parameter.Console))
             {

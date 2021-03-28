@@ -41,7 +41,7 @@ namespace Netch.Controllers
             // Features
             Dial(NameList.TYPE_DNSHOST, Global.Settings.Redirector.DNSHijack ? Global.Settings.Redirector.DNSHijackHost : "");
 
-            if (Init())
+            if (!Init())
             {
                 throw new MessageException("Redirector Start failed, run Netch with \"-console\" argument");
             }
