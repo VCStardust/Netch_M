@@ -6,7 +6,7 @@ dotnet publish `
 	-p:Platform="x64" `
 	-p:PublishSingleFile=true `
 	-p:SelfContained=false `
-	-p:PublishTrimmed=true `
+	-p:PublishTrimmed=false `
 	-p:PublishReadyToRun=true `
     
 	Netch\Netch.csproj
