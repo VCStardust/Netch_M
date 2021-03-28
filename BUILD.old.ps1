@@ -1,13 +1,9 @@
 Write-Host 'Building'
 
-dotnet publish `
+dotnet build `
 	-c "Release" `
-	-r "win-x64" `
 	-p:Platform="x64" `
-	-p:PublishSingleFile=true `
-	-p:SelfContained=false `
-	-p:PublishTrimmed=true `
-	-p:PublishReadyToRun=true `
+	-restore `
     
 	Netch\Netch.csproj
 
