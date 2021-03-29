@@ -21,7 +21,7 @@ jobs:
 
     - name: Build Solution
       shell: pwsh
-      run: .\BUILD.ps1
+      run: .\BUILD_p.ps1
 
     - name: Upload Artifact
       continue-on-error: true
