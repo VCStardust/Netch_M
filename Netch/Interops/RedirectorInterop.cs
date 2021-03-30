@@ -7,13 +7,14 @@ namespace Netch.Interops
     {
         public enum NameList
         {
-            TYPE_FILTLOP,
-        TYPE_FILTTCP,
-        TYPE_FILTUDP,
-        TYPE_CLRNAME,
-        TYPE_ADDNAME,
-        TYPE_BYPNAME,
-        TYPE_DNSHOST,
+            TYPE_FILTERLOOPBACK,
+            TYPE_FILTERICMP,
+            TYPE_FILTERTCP,
+            TYPE_FILTERUDP,
+            TYPE_CLRNAME,
+            TYPE_ADDNAME,
+            TYPE_BYPNAME,
+            TYPE_DNSHOST,
 
             TYPE_TCPLISN,
             TYPE_TCPTYPE,
@@ -55,7 +56,7 @@ namespace Netch.Interops
             return aio_free();
         }
 
-        public const int UdpNameListOffset = (int)NameList.TYPE_UDPLISN - (int)NameList.TYPE_TCPLISN;
+        public const int UdpNameListOffset = (int) NameList.TYPE_UDPLISN - (int) NameList.TYPE_TCPLISN;
 
         private const string Redirector_bin = "Redirector.bin";
 
