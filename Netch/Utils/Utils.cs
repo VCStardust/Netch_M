@@ -112,8 +112,8 @@ namespace Netch.Utils
             try
             {
                 var sha256 = SHA256.Create();
-                var fileStream = File.OpenRead(filePath);
-                return sha256.ComputeHash(fileStream).Aggregate(string.Empty, (current, b) => current + b.ToString("x2"));
+                using var fileStream = File.OpenRead(filePath);
+                return string.Concat(sha256.ComputeHash(fileStream).Select(b => b.ToString("x2")));
             }
             catch
             {
@@ -270,7 +270,7 @@ namespace Netch.Utils
                 }
             };
 
-            Logging.Debug($"{fileName} {arguments}");
+            Global.Logger.Debug($"{fileName} {arguments}");
 
             p.Start();
             var output = await p.StandardOutput.ReadToEndAsync();

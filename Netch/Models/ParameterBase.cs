@@ -1,5 +1,4 @@
-﻿using Netch.Utils;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 
@@ -55,7 +54,7 @@ namespace Netch.Models
                 case bool b:
                     return b ? $"{prefix}{key}" : null;
                 default:
-                    if ((value?.ToString() ?? null).IsNullOrWhiteSpace())
+                    if (string.IsNullOrWhiteSpace(value?.ToString()))
                     {
                         return p.IsDefined(typeof(OptionalAttribute)) ? null : throw new RequiredArgumentValueInvalidException(p.Name, this, null);
                     }

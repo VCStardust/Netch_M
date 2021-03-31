@@ -32,17 +32,16 @@ namespace Netch.Utils
 
             try
             {
-                list.AddRange(JsonSerializer.Deserialize<List<ShadowsocksConfig>>(text)!
-                    .Select(server => new Shadowsocks
-                    {
-                        Hostname = server.server,
-                        Port = server.server_port,
-                        EncryptMethod = server.method,
-                        Password = server.password,
-                        Remark = server.remarks,
-                        Plugin = server.plugin,
-                        PluginOption = server.plugin_opts
-                    }));
+                list.AddRange(JsonSerializer.Deserialize<List<ShadowsocksConfig>>(text)!.Select(server => new Shadowsocks
+                {
+                    Hostname = server.server,
+                    Port = server.server_port,
+                    EncryptMethod = server.method,
+                    Password = server.password,
+                    Remark = server.remarks,
+                    Plugin = server.plugin,
+                    PluginOption = server.plugin_opts
+                }));
             }
             catch (JsonException)
             {
@@ -56,18 +55,18 @@ namespace Netch.Utils
                     catch (Exception e)
                     {
                         errorFlag = true;
-                        Logging.Error(e.ToString());
+                        Global.Logger.Error(e.ToString());
                     }
                 }
 
                 if (errorFlag)
                 {
-                    Utils.Open(Logging.LogFile);
+                    Global.Logger.ShowLog();
                 }
             }
             catch (Exception e)
             {
-                Logging.Error(e.ToString());
+                Global.Logger.Error(e.ToString());
             }
 
             return list;
@@ -95,7 +94,7 @@ namespace Netch.Utils
                 }
                 else
                 {
-                    Logging.Warning($"无法处理 {scheme} 协议订阅链接");
+                    Global.Logger.Warning($"无法处理 {scheme} 协议订阅链接");
                 }
             }
 

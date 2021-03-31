@@ -54,7 +54,7 @@ namespace Netch.Controllers
 
         public static void Start(Server server, Mode mode)
         {
-            Logging.Info($"启动主控制器: {server.Type} [{mode.Type}]{mode.Remark}");
+            Global.Logger.Info($"启动主控制器: {server.Type} [{mode.Type}]{mode.Remark}");
             Server = server;
             Mode = mode;
 
@@ -91,8 +91,8 @@ namespace Netch.Controllers
                     case MessageException:
                         throw;
                     default:
-                        Logging.Error(e.ToString());
-                        Utils.Utils.Open(Logging.LogFile);
+                        Global.Logger.Error(e.ToString());
+                        Global.Logger.ShowLog();
                         throw new MessageException($"未处理异常\n{e.Message}");
                 }
             }
@@ -166,8 +166,8 @@ namespace Netch.Controllers
             }
             catch (Exception e)
             {
-                Logging.Error(e.ToString());
-                Utils.Utils.Open(Logging.LogFile);
+                Global.Logger.Error(e.ToString());
+                Global.Logger.ShowLog();
             }
 
             ModeController = null;
@@ -201,7 +201,7 @@ namespace Netch.Controllers
                 }
                 catch (Exception e)
                 {
-                    Logging.Warning(e.ToString());
+                    Global.Logger.Warning(e.ToString());
                     continue;
                 }
 

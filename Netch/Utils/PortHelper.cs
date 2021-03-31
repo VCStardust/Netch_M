@@ -25,7 +25,7 @@ namespace Netch.Utils
             }
             catch (Exception e)
             {
-                Logging.Error("获取保留端口失败: " + e);
+                Global.Logger.Error("获取保留端口失败: " + e);
             }
         }
 
