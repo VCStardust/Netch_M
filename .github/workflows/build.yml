@@ -29,4 +29,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Netch
-          path: release
+          path: Netch\bin\x64\Release\win-x64\publish\

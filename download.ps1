@@ -2,7 +2,7 @@ param(
     [Parameter()]
     [ValidateNotNullOrEmpty()]
     [string]
-    $OutputPath = "release",
+    $OutputPath = "Netch\bin\x64\Release\win-x64\publish",
 
     [Parameter()]
     [ValidateNotNullOrEmpty()]

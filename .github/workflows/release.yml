@@ -25,9 +25,9 @@ jobs:
     - name: Package
       shell: pwsh
       run: |
-        7z a -mx9 Netch.7z release
+        7z a -mx9 Netch.7z .\Netch\bin\x64\Release\win-x64\publish\
         7z rn Netch.7z release Netch
-        echo "NETCH_SHA256=$(.\sha256.ps1 Netch.7z)" | Out-File -Append -Encoding UTF8 -FilePath $Env:GITHUB_ENV
+        echo "NETCH_SHA256=$(.\sha256.ps1 Netch\bin\x64\Release\win-x64\publish\Netch.exe)" | Out-File -Append -Encoding UTF8 -FilePath $Env:GITHUB_ENV
     - name: Release
       uses: softprops/action-gh-release@v1
       env:

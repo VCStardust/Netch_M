@@ -1,4 +1,4 @@
-.\download.ps1 $OutputPath
+.\download.ps1 'Netch\bin\x64\Release\win-x64\publish'
 
 Write-Host "Building $Configuration to $OutputPath"
 
@@ -10,7 +10,6 @@ dotnet publish `
 	-p:SelfContained=false `
 	-p:PublishTrimmed=false `
 	-p:PublishReadyToRun=true `
-	-p:IncludeAllContentInSingleFile=true `
 	Netch\Netch.csproj
 
 if ($lastExitCode) { exit $lastExitCode } 
