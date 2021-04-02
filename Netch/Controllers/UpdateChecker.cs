@@ -20,7 +20,7 @@ namespace Netch.Controllers
         public const string Copyright = @"Copyright © 2019 - 2021";
 
         public const string AssemblyVersion = @"1.8.3";
-        private const string Suffix = @"b6";
+        private const string Suffix = @"b7";
 
         public static readonly string Version = $"{AssemblyVersion}{(string.IsNullOrEmpty(Suffix) ? "" : $"-{Suffix}")}";
 
@@ -46,7 +46,7 @@ namespace Netch.Controllers
                 var json = await WebUtil.DownloadStringAsync(WebUtil.CreateRequest(url));
 
                 var releases = JsonSerializer.Deserialize<List<Release>>(json)!;
-                LatestRelease = VersionUtil.GetLatestRelease(releases, isPreRelease);
+                LatestRelease = GetLatestRelease(releases, isPreRelease);
                 Global.Logger.Info($"Github 最新发布版本: {LatestRelease.tag_name}");
                 if (VersionUtil.CompareVersion(LatestRelease.tag_name, Version) > 0)
                 {
@@ -109,6 +109,14 @@ namespace Netch.Controllers
             }
 
             return sb.ToString();
+        }
+        public static Release GetLatestRelease(IEnumerable<Release> releases, bool isPreRelease)
+        {
+            if (!isPreRelease)
+                releases = releases.Where(release => !release.prerelease);
+
+            var ordered = releases.OrderByDescending(release => release.tag_name, new VersionUtil.VersionComparer());
+            return ordered.ElementAt(0);
         }
     }
 }

@@ -96,9 +96,9 @@ namespace Netch.Controllers
             Init();
             _tunAdapter = new TunAdapter();
 
-            NativeMethods.CreateUnicastIP((int)AddressFamily.InterNetwork,
+            NativeMethods.CreateUnicastIP(AddressFamily.InterNetwork,
                 Global.Settings.TUNTAP.Address,
-                Utils.Utils.SubnetToCidr(Global.Settings.TUNTAP.Netmask),
+                (byte)Utils.Utils.SubnetToCidr(Global.Settings.TUNTAP.Netmask),
                 _tunAdapter.InterfaceIndex);
 
             SetupRouteTable(mode);
@@ -282,12 +282,12 @@ namespace Netch.Controllers
             switch (action)
             {
                 case Action.Create:
-                    result = NativeMethods.CreateRoute((int)AddressFamily.InterNetwork, ip, cidr, gateway, index, metric);
+                    result = NativeMethods.CreateRoute(AddressFamily.InterNetwork, ip, (byte)cidr, gateway, index, metric);
                     if (result && record)
                         ipList.Add(ipNetwork);
                     break;
                 case Action.Delete:
-                    result = NativeMethods.DeleteRoute((int)AddressFamily.InterNetwork, ip, cidr, gateway, index, metric);
+                    result = NativeMethods.DeleteRoute(AddressFamily.InterNetwork, ip, (byte)cidr, gateway, index, metric);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(action), action, null);

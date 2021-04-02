@@ -59,7 +59,7 @@ namespace Netch.Controllers
             Mode = mode;
 
             // 刷新DNS缓存
-            NativeMethods.FlushDNSResolverCache();
+            NativeMethods.RefreshDNSCache();
 
             if (DnsUtils.Lookup(server.Hostname) == null)
             {

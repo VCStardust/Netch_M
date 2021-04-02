@@ -1,4 +1,6 @@
-Write-Host 'Building'
+.\download.ps1 $OutputPath
+
+Write-Host "Building $Configuration to $OutputPath"
 
 dotnet publish `
 	-c "Release" `
@@ -11,6 +13,5 @@ dotnet publish `
 	-p:IncludeAllContentInSingleFile=true `
 	Netch\Netch.csproj
 
-if ($LASTEXITCODE) { exit $LASTEXITCODE } 
-
-Write-Host 'Build done'
+if ($lastExitCode) { exit $lastExitCode } 
+exit 0

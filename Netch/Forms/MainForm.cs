@@ -363,7 +363,7 @@ namespace Netch.Forms
             {
                 await Task.Run(() =>
                 {
-                    NativeMethods.FlushDNSResolverCache();
+                    NativeMethods.RefreshDNSCache();
                     DnsUtils.ClearCache();
                 });
 

@@ -1,6 +1,4 @@
-﻿using Microsoft.Win32;
-using Netch.Utils;
-using System;
+﻿using System;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -24,7 +22,7 @@ namespace Netch.Models
                              ni.GetIPProperties().GetIPv4Properties().Index == pRoute.dwForwardIfIndex);
 
             Address = new IPAddress(pRoute.dwForwardNextHop.S_addr);
-            InterfaceIndex = (int)pRoute.dwForwardIfIndex;
+            InterfaceIndex = (ulong)pRoute.dwForwardIfIndex;
             Gateway = new IPAddress(pRoute.dwForwardNextHop.S_un_b);
 
             Global.Logger.Info($"出口 网关 地址：{Gateway}");
@@ -36,7 +34,7 @@ namespace Netch.Models
         /// <summary>
         ///     索引
         /// </summary>
-        public int InterfaceIndex { get; }
+        public ulong InterfaceIndex { get; }
 
         /// <summary>
         ///     网关

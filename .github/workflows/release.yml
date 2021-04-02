@@ -2,42 +2,41 @@ name: Netch Release
 on:
   push:
     tags:
-    - '*.*'
+    - '*.*.*'
+
 jobs:
   build:
     name: Build
     runs-on: windows-latest
     steps:
-    - name: Setup MSBuild
+    - name: MSBuild
       uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Checkout
       uses: actions/checkout@v2
       with:
         submodules: true
+        fetch-depth: 1
 
-    - name: Build Solution
+    - name: Build
       shell: pwsh
-      run: .\PUBLISH.ps1
+      run: .\build.ps1
 
     - name: Package
-      if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') }}
       shell: pwsh
       run: |
-        New-Item -ItemType Directory -Path C:\builtfiles -Force > $null
-        7z a -mx9 C:\builtfiles\Netch.7z .\Netch\bin\x64\Release\win-x64\publish\
-        7z rn C:\builtfiles\Netch.7z Publish Netch
-        echo "Netch_SHA256=$(.\GetSHA256.ps1 C:\builtfiles\Netch.7z)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-        echo "Netch_EXE_SHA256=$(.\GetSHA256.ps1 Netch\bin\x64\Release\win-x64\publish\Netch.exe)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        7z a -mx9 Netch.7z release
+        7z rn Netch.7z release Netch
+        echo "NETCH_SHA256=$(.\sha256.ps1 Netch.7z)" | Out-File -Append -Encoding UTF8 -FilePath $Env:GITHUB_ENV
     - name: Release
       uses: softprops/action-gh-release@v1
       env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         prerelease: ${{ contains(github.ref, '-') }}
         draft: false
         files: |
-          C:\builtfiles\Netch.7z
+          Netch.7z
         body: |
           ## 更新日志
           * 参考原库对应版本

@@ -2,13 +2,13 @@
 using Netch.Servers.Shadowsocks;
 using Netch.Servers.Socks5;
 using Netch.Utils;
-using nfapinet;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
 using static Netch.Interops.RedirectorInterop;
+using Netch.Interops;
 
 namespace Netch.Controllers
 {

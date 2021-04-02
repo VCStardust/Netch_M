@@ -1,5 +1,4 @@
-﻿using Netch.Utils;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using Netch.Interops;
@@ -10,13 +9,13 @@ namespace Netch.Models
     {
         public TunAdapter()
         {
-            InterfaceIndex = (int)NativeMethods.ConvertLuidToIndex(TUNInterop.tun_luid());
-            NetworkInterface = NetworkInterface.GetAllNetworkInterfaces().First(i => i.GetIPProperties().GetIPv4Properties().Index == InterfaceIndex);
+            InterfaceIndex = NativeMethods.ConvertLuidToIndex(TUNInterop.tun_luid());
+            NetworkInterface = NetworkInterface.GetAllNetworkInterfaces().First(i => i.GetIPProperties().GetIPv4Properties().Index == (int)InterfaceIndex);
             Gateway = IPAddress.Parse(Global.Settings.TUNTAP.Gateway);
             Global.Logger.Info($"WinTUN 适配器：{NetworkInterface.Name} {NetworkInterface.Id} {NetworkInterface.Description}, index: {InterfaceIndex}");
         }
 
-        public int InterfaceIndex { get; }
+        public ulong InterfaceIndex { get; }
 
         public IPAddress Gateway { get; }
 
