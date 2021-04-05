@@ -5,5 +5,4 @@
 *.csproj.user
 /DataCache
 /release
-/_ReSharper.Caches/ReSharperPlatformVs16211_269e25e5.Netch.00/BuildScriptCache
-/_ReSharper.Caches/ReSharperPlatformVs16211_269e25e5.Netch.00
+/_ReSharper.Caches
