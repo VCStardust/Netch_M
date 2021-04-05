@@ -1,6 +1,6 @@
-.\download.ps1 'Netch\bin\x64\Release\win-x64\publish'
+.\scripts\download.ps1 'Netch\bin\x64\Release\win-x64\publish'
 
-Write-Host "Building $Configuration to $OutputPath"
+Write-Host "Building"
 
 dotnet publish `
 	-c "Release" `
