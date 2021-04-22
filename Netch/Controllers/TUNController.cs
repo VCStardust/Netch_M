@@ -30,7 +30,7 @@ namespace Netch.Controllers
         private IPAddress _serverAddresses = null!;
         private IAdapter _tunAdapter = null!;
 
-        private const string DummyDns = "6.6.6.6";
+        private const string DummyDns = "1.1.1.1";
 
         public string Name { get; } = "tun2socks";
 
