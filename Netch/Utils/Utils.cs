@@ -281,7 +281,7 @@ namespace Netch.Utils
                 Console.Write(error);
             }
 
-            p.WaitForExit();
+            await p.WaitForExitAsync();
         }
         public static int SubnetToCidr(string value)
         {

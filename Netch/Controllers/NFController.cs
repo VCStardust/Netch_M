@@ -7,8 +7,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
-using static Netch.Interops.RedirectorInterop;
+using static Netch.Interops.Redirector;
 using Netch.Interops;
+using Netch.Interfaces;
 
 namespace Netch.Controllers
 {

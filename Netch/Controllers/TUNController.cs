@@ -7,8 +7,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using static Netch.Interops.TUNInterop;
+using static Netch.Interops.tun2socks;
 using System.IO;
+using Netch.Interfaces;
+using Netch.Interops;
+using Netch.Models.Adapter;
 
 namespace Netch.Controllers
 {
@@ -106,7 +109,7 @@ namespace Netch.Controllers
                     break;
             }
 
-            NativeMethods.CreateUnicastIP(AddressFamily.InterNetwork,
+            RouteHelper.CreateUnicastIP(AddressFamily.InterNetwork,
                 Global.Settings.TUNTAP.Address,
                 (byte)Utils.Utils.SubnetToCidr(Global.Settings.TUNTAP.Netmask),
                 _tunAdapter.InterfaceIndex);
@@ -292,12 +295,12 @@ namespace Netch.Controllers
             switch (action)
             {
                 case Action.Create:
-                    result = NativeMethods.CreateRoute(AddressFamily.InterNetwork, ip, (byte)cidr, gateway, index, metric);
+                    result = RouteHelper.CreateRoute(AddressFamily.InterNetwork, ip, (byte)cidr, gateway, index, metric);
                     if (record)
                         ipList.Add(ipNetwork);
                     break;
                 case Action.Delete:
-                    result = NativeMethods.DeleteRoute(AddressFamily.InterNetwork, ip, (byte)cidr, gateway, index, metric);
+                    result = RouteHelper.DeleteRoute(AddressFamily.InterNetwork, ip, (byte)cidr, gateway, index, metric);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(action), action, null);

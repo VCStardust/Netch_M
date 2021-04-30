@@ -1,8 +1,8 @@
-﻿using Netch.Controllers;
+﻿using Netch.Models;
 using System;
 using System.Collections.Generic;
 
-namespace Netch.Models
+namespace Netch.Interfaces
 {
     public interface IServerUtil
     {

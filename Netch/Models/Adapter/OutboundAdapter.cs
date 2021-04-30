@@ -3,8 +3,9 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using Vanara.PInvoke;
+using Netch.Interfaces;
 
-namespace Netch.Models
+namespace Netch.Models.Adapter
 {
     public class OutboundAdapter : IAdapter
     {

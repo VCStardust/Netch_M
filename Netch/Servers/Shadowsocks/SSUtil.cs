@@ -1,5 +1,4 @@
-﻿using Netch.Controllers;
-using Netch.Models;
+﻿using Netch.Models;
 using Netch.Servers.Shadowsocks.Form;
 using Netch.Servers.Shadowsocks.Models.SSD;
 using Netch.Utils;
@@ -9,6 +8,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Web;
+using Netch.Interfaces;
 
 namespace Netch.Servers.Shadowsocks
 {

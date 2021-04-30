@@ -6,14 +6,13 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using static Vanara.PInvoke.IpHlpApi;
 using static Vanara.PInvoke.Ws2_32;
-using Range = Netch.Models.Range;
 
 namespace Netch.Utils
 {
     public static class PortHelper
     {
-        private static readonly List<Range> TCPReservedRanges = new();
-        private static readonly List<Range> UDPReservedRanges = new();
+        private static readonly List<NumberRange> TCPReservedRanges = new();
+        private static readonly List<NumberRange> UDPReservedRanges = new();
         private static readonly IPGlobalProperties NetInfo = IPGlobalProperties.GetIPGlobalProperties();
 
         static PortHelper()
@@ -41,7 +40,7 @@ namespace Netch.Utils
             return row.Select(r => Process.GetProcessById((int)r.dwOwningPid));
         }
 
-        private static void GetReservedPortRange(PortType portType, ref List<Range> targetList)
+        private static void GetReservedPortRange(PortType portType, ref List<NumberRange> targetList)
         {
             var process = new Process
             {
@@ -71,7 +70,7 @@ namespace Netch.Utils
                     continue;
                 }
 
-                targetList.Add(new Range(start, end));
+                targetList.Add(new NumberRange(start, end));
             }
         }
 

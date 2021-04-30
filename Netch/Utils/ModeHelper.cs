@@ -5,6 +5,7 @@ using Netch.Servers.Socks5;
 using System;
 using System.IO;
 using System.Linq;
+using Netch.Interfaces;
 
 namespace Netch.Utils
 {

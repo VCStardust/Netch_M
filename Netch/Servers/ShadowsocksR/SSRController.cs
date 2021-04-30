@@ -1,7 +1,7 @@
 using Netch.Controllers;
 using Netch.Models;
 using System.Collections.Generic;
-using System.IO;
+using Netch.Interfaces;
 
 namespace Netch.Servers.ShadowsocksR
 {

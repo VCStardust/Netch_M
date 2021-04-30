@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
-using static Netch.Interops.AioDNSInterops;
+using static Netch.Interops.AioDNS;
+using Netch.Interfaces;
 
 namespace Netch.Controllers
 {

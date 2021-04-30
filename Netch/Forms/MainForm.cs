@@ -14,6 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics.CodeAnalysis;
+using Netch.Interfaces;
 
 namespace Netch.Forms
 {
@@ -1311,7 +1312,7 @@ namespace Netch.Forms
                 }
             }
 
-            if (IsWaiting())
+            if (!IsWaiting())
             {
                 await StopAsyncCore();
             }

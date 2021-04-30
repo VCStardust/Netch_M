@@ -2,7 +2,7 @@
 
 namespace Netch.Interops
 {
-    public static class RedirectorInterop
+    public static class Redirector
     {
         public enum NameList
         {
