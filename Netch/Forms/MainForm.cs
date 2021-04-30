@@ -1,6 +1,7 @@
 using Microsoft.Win32;
 using Netch.Controllers;
 using Netch.Forms.Mode;
+using Netch.Interfaces;
 using Netch.Models;
 using Netch.Properties;
 using Netch.Utils;
@@ -14,7 +15,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Netch.Interfaces;
 
 namespace Netch.Forms
 {

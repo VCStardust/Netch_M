@@ -1,8 +1,8 @@
 ﻿using Netch.Interfaces;
+using Netch.Utils;
 using System;
 using System.Net;
 using System.Net.NetworkInformation;
-using Netch.Utils;
 using Vanara.PInvoke;
 
 namespace Netch.Models.Adapter
