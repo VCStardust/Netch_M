@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Netch.Interfaces;
+using System;
 using System.IO;
-using Netch.Interfaces;
 
 namespace Netch.Models.Loggers
 {

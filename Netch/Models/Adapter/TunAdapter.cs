@@ -1,8 +1,8 @@
-﻿using System.Linq;
+﻿using Netch.Interfaces;
+using Netch.Interops;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using Netch.Interops;
-using Netch.Interfaces;
 
 namespace Netch.Models.Adapter
 {

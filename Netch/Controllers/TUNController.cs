@@ -1,17 +1,16 @@
-﻿using Netch.Models;
+﻿using Netch.Interfaces;
+using Netch.Interops;
+using Netch.Models;
+using Netch.Models.Adapter;
 using Netch.Servers.Socks5;
 using Netch.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using static Netch.Interops.tun2socks;
-using System.IO;
-using Netch.Interfaces;
-using Netch.Interops;
-using Netch.Models.Adapter;
 
 namespace Netch.Controllers
 {
@@ -268,23 +267,23 @@ namespace Netch.Controllers
         {
             #region
 
-                if (!TryParseIPNetwork(ipNetwork, out var ip, out var cidr))
-                    return false;
-            
+            if (!TryParseIPNetwork(ipNetwork, out var ip, out var cidr))
+                return false;
+
 
             IAdapter adapter = routeType switch
-                               {
-                                   RouteType.Outbound => _outboundAdapter,
-                                   RouteType.TUNTAP => _tunAdapter,
-                                   _ => throw new ArgumentOutOfRangeException(nameof(routeType), routeType, null)
-                               };
+            {
+                RouteType.Outbound => _outboundAdapter,
+                RouteType.TUNTAP => _tunAdapter,
+                _ => throw new ArgumentOutOfRangeException(nameof(routeType), routeType, null)
+            };
 
             List<string> ipList = routeType switch
-                                  {
-                                      RouteType.Outbound => _directIPs,
-                                      RouteType.TUNTAP => _proxyIPs,
-                                      _ => throw new ArgumentOutOfRangeException(nameof(routeType), routeType, null)
-                                  };
+            {
+                RouteType.Outbound => _directIPs,
+                RouteType.TUNTAP => _proxyIPs,
+                _ => throw new ArgumentOutOfRangeException(nameof(routeType), routeType, null)
+            };
 
             var gateway = adapter.Gateway.ToString();
             var index = adapter.InterfaceIndex;

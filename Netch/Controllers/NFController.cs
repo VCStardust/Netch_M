@@ -1,4 +1,6 @@
-﻿using Netch.Models;
+﻿using Netch.Interfaces;
+using Netch.Interops;
+using Netch.Models;
 using Netch.Servers.Shadowsocks;
 using Netch.Servers.Socks5;
 using Netch.Utils;
@@ -8,8 +10,6 @@ using System.IO;
 using System.Linq;
 using System.ServiceProcess;
 using static Netch.Interops.Redirector;
-using Netch.Interops;
-using Netch.Interfaces;
 
 namespace Netch.Controllers
 {

@@ -1,4 +1,5 @@
 ﻿using Netch.Controllers;
+using Netch.Forms;
 using Netch.Utils;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Netch.Forms;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Netch

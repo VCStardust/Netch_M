@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Netch.Interfaces;
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using Vanara.PInvoke;
-using Netch.Interfaces;
 
 namespace Netch.Models.Adapter
 {
@@ -23,7 +23,7 @@ namespace Netch.Models.Adapter
                              ni.GetIPProperties().GetIPv4Properties().Index == pRoute.dwForwardIfIndex);
 
             Address = new IPAddress(pRoute.dwForwardNextHop.S_addr);
-            InterfaceIndex = (ulong)pRoute.dwForwardIfIndex;
+            InterfaceIndex = pRoute.dwForwardIfIndex;
             Gateway = new IPAddress(pRoute.dwForwardNextHop.S_un_b);
 
             Global.Logger.Info($"出口 网关 地址：{Gateway}");

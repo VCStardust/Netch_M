@@ -1,5 +1,7 @@
 ﻿using Netch.Forms;
+using Netch.Interfaces;
 using Netch.Models;
+using Netch.Models.Adapter;
 using Netch.Servers.Socks5;
 using System;
 using System.Collections.Generic;
@@ -8,8 +10,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Netch.Interfaces;
-using Netch.Models.Adapter;
 
 namespace Netch.Controllers
 {

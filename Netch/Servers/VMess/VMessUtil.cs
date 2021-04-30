@@ -1,3 +1,4 @@
+using Netch.Interfaces;
 using Netch.Models;
 using Netch.Servers.V2ray;
 using Netch.Servers.V2ray.Models;
@@ -8,7 +9,6 @@ using System.Collections.Generic;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Netch.Interfaces;
 
 namespace Netch.Servers.VMess
 {

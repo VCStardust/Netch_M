@@ -69,7 +69,7 @@ namespace Netch.Utils
         public static async Task<string> DownloadStringAsync(HttpWebRequest req, string encoding = "UTF-8")
         {
             using var webResponse = await req.GetResponseAsync();
-           await using var responseStream = webResponse.GetResponseStream();
+            await using var responseStream = webResponse.GetResponseStream();
             using var streamReader = new StreamReader(responseStream, Encoding.GetEncoding(encoding));
 
             return await streamReader.ReadToEndAsync();
@@ -84,8 +84,8 @@ namespace Netch.Utils
         public static async Task DownloadFileAsync(HttpWebRequest req, string fileFullPath)
         {
             using var webResponse = (HttpWebResponse)await req.GetResponseAsync();
-           await using var input = webResponse.GetResponseStream();
-           await using var fileStream = File.OpenWrite(fileFullPath);
+            await using var input = webResponse.GetResponseStream();
+            await using var fileStream = File.OpenWrite(fileFullPath);
 
             await input.CopyToAsync(fileStream);
             fileStream.Flush();

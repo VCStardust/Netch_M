@@ -125,7 +125,7 @@ namespace Netch.Models
         /// <summary>
         ///     服务器列表
         /// </summary>
-        
+
         public RedirectorConfig Redirector { get; set; } = new();
         public List<Server> Server { get; set; } = new();
 

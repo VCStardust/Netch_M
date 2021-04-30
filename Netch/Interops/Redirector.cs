@@ -55,7 +55,7 @@ namespace Netch.Interops
             return aio_free();
         }
 
-        public const int UdpNameListOffset = (int) NameList.TYPE_UDPLISN - (int) NameList.TYPE_TCPLISN;
+        public const int UdpNameListOffset = (int)NameList.TYPE_UDPLISN - (int)NameList.TYPE_TCPLISN;
 
         private const string Redirector_bin = "Redirector.bin";
 

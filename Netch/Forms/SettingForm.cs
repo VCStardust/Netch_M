@@ -1,3 +1,4 @@
+using Netch.Models;
 using Netch.Properties;
 using Netch.Utils;
 using System;
@@ -7,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
-using Netch.Models;
 
 namespace Netch.Forms
 {
@@ -147,7 +147,7 @@ namespace Netch.Forms
 
             BindCheckBox(UseCustomDNSCheckBox, b => { Global.Settings.TUNTAP.UseCustomDNS = b; }, Global.Settings.TUNTAP.UseCustomDNS);
 
-            BindTextBox(TUNTAPDNSTextBox, 
+            BindTextBox(TUNTAPDNSTextBox,
                 _ => true,
                 s =>
                 {
@@ -327,7 +327,7 @@ namespace Netch.Forms
 
         private void BindListComboBox<T>(ComboBox comboBox, Action<T> save, IEnumerable<T> values, T value) where T : notnull
         {
-            if(comboBox.DropDownStyle != ComboBoxStyle.DropDownList)
+            if (comboBox.DropDownStyle != ComboBoxStyle.DropDownList)
             {
                 throw new ArgumentOutOfRangeException();
             }

@@ -43,13 +43,13 @@ namespace Netch.Models.GitHubRelease
                 case "":
                     throw new Exception("suffix WhiteSpace");
                 default:
-                {
-                    var match = Regex.Match(suffix, @"(?<suffix>\D+)(?<num>\d+)");
-                    if (!match.Success)
-                        throw new Exception();
+                    {
+                        var match = Regex.Match(suffix, @"(?<suffix>\D+)(?<num>\d+)");
+                        if (!match.Success)
+                            throw new Exception();
 
-                    return new SuffixVersion(version, match.Groups["suffix"].Value, int.Parse(match.Groups["num"].Value));
-                }
+                        return new SuffixVersion(version, match.Groups["suffix"].Value, int.Parse(match.Groups["num"].Value));
+                    }
             }
         }
 

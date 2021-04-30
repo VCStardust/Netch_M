@@ -1,3 +1,4 @@
+using Netch.Interfaces;
 using Netch.Models;
 using System;
 using System.Collections.Generic;
@@ -5,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
-using Netch.Interfaces;
 
 namespace Netch.Utils
 {

@@ -1,4 +1,5 @@
 using Netch.Controllers;
+using Netch.Models;
 using Netch.Properties;
 using Netch.Utils;
 using System;
@@ -9,8 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Windows.Threading;
-using Netch.Models;
 
 namespace Netch.Updater
 {

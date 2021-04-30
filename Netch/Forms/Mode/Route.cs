@@ -1,9 +1,9 @@
-﻿using Netch.Properties;
+﻿using Netch.Models;
+using Netch.Properties;
 using Netch.Utils;
 using System;
 using System.IO;
 using System.Windows.Forms;
-using Netch.Models;
 
 namespace Netch.Forms.Mode
 {
