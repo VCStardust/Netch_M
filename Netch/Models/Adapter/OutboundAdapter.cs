@@ -1,8 +1,8 @@
 ﻿using Netch.Interfaces;
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using Netch.Utils;
 using Vanara.PInvoke;
 
 namespace Netch.Models.Adapter
@@ -18,9 +18,7 @@ namespace Netch.Models.Adapter
                 throw new MessageException("GetBestRoute 搜索失败");
             }
 
-            NetworkInterface = NetworkInterface.GetAllNetworkInterfaces()
-                .First(ni => ni.Supports(NetworkInterfaceComponent.IPv4) &&
-                             ni.GetIPProperties().GetIPv4Properties().Index == pRoute.dwForwardIfIndex);
+            NetworkInterface = NetworkInterfaceUtils.Get((int)pRoute.dwForwardIfIndex);
 
             Address = new IPAddress(pRoute.dwForwardNextHop.S_addr);
             InterfaceIndex = pRoute.dwForwardIfIndex;
