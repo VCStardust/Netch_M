@@ -254,6 +254,7 @@ namespace Netch.Controllers
             _logStreamWriter!.WriteLine(line);
         }
 
+        private readonly object LogStreamLock = new();
         private void CloseLogFile()
         {
             if (!RedirectToFile)
@@ -261,10 +262,17 @@ namespace Netch.Controllers
                 return;
             }
 
-            _flushFileStreamTimer.Enabled = false;
-            _logStreamWriter?.Close();
-            _logFileStream?.Close();
-            _logStreamWriter = _logStreamWriter = null;
+
+            lock (LogStreamLock)
+            {
+                if (_logFileStream == null)
+                    return;
+
+                _flushFileStreamTimer.Enabled = false;
+                _logStreamWriter?.Close();
+                _logFileStream?.Close();
+                _logStreamWriter = _logStreamWriter = null;
+            }
         }
 
         #endregion
